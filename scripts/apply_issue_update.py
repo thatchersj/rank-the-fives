@@ -20,6 +20,7 @@ This script:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import sys
@@ -27,16 +28,24 @@ from pathlib import Path
 
 
 def main() -> None:
-    if len(sys.argv) != 4:
-        print("Usage: apply_issue_update.py <github_event.json> <results_file> <output_results_file>")
-        sys.exit(2)
-
-    event_path = Path(sys.argv[1])
-    results_path = Path(sys.argv[2])
-    out_path = Path(sys.argv[3])
-
-    event = json.loads(event_path.read_text(encoding="utf-8"))
-    body = (event.get("issue") or {}).get("body") or ""
+    # Backwards-compatible CLI:
+    # 1) Old form (positional): apply_issue_update.py <github_event.json> <results_file> <output_results_file>
+    # 2) New form (used by our workflow): apply_issue_update.py --issue-body "..." --results <results_file> [--out <output_file>]
+    if len(sys.argv) == 4 and not sys.argv[1].startswith("-"):
+        event_path = Path(sys.argv[1])
+        results_path = Path(sys.argv[2])
+        out_path = Path(sys.argv[3])
+        event = json.loads(event_path.read_text(encoding="utf-8"))
+        body = (event.get("issue") or {}).get("body") or ""
+    else:
+        p = argparse.ArgumentParser(description="Append tournament block from GitHub issue body to results file")
+        p.add_argument("--issue-body", required=True, help="Full issue body text")
+        p.add_argument("--results", required=True, help="Path to TournamentResults.txt")
+        p.add_argument("--out", default=None, help="Output file path (defaults to overwriting --results)")
+        args = p.parse_args()
+        body = args.issue_body
+        results_path = Path(args.results)
+        out_path = Path(args.out) if args.out else results_path
     m = re.search(r"```(?:text)?\s*\n(.*?)\n```", body, flags=re.S | re.I)
     if not m:
         print("No fenced code block found in issue body.")
