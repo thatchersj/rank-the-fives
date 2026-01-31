@@ -368,6 +368,9 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     m["YC"] = pd.Categorical(m["Year"].astype(str) + " " + m["Comp"].astype(str), categories=level_order, ordered=True)
     m["RoundDisp"] = m["Round"].replace({"NA": "", "DNS": "P"})
 
+    m = ensure_initial_surname(m)
+
+
     pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
     pivot.columns = [short_labels[level_order.index(str(c))] for c in pivot.columns]
     pivot = pivot.reset_index()
