@@ -46,6 +46,48 @@ MAPS_POSS = {"Kinnaird": K2, "London": L2, "Northern": N2}
 
 DECAY = [1, 0.85, 0.7, 0.55, 0.4, 0.25, 0.1] + [0] * 993
 
+def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Ensure the dataframe has the legacy 'Initial' and 'Surname' columns expected by the
+    ranking logic. We derive them from a best-effort player name column.
+    """
+    if "Initial" in df.columns and "Surname" in df.columns:
+        return df
+
+    name_col = None
+    for c in ("Name", "Player", "player", "name"):
+        if c in df.columns:
+            name_col = c
+            break
+    if name_col is None:
+        raise KeyError("Missing player name column (expected 'Name' or 'Player').")
+
+    out = df.copy()
+    s = out[name_col].astype(str).str.strip()
+
+    # Match legacy R normalisation used elsewhere in this script.
+    name2 = (
+        s.str.upper()
+         .str.replace("DE ", "DE", regex=False)
+         .str.replace("SOUZA GIRAO", "SOUZAGIRAO", regex=False)
+         .str.replace("VAN ", "VAN", regex=False)
+         .str.replace(r"\s+", " ", regex=True)
+         .str.replace(" ", ".", regex=False)
+    )
+
+    out["Initial"] = np.where(
+        name2.str.contains(r"\.", regex=True),
+        name2.str.replace(r"([^.]*?)\..*", r"\1", regex=True),
+        ""
+    )
+    out["Surname"] = np.where(
+        name2.str.contains(r"\.", regex=True),
+        name2.str.replace(r"^.*\.([^.]*?)$", r"\1", regex=True),
+        name2
+    )
+    return out
+
+
 
 def read_tournaments(results_file: Path) -> Dict[str, List[str]]:
     lines = results_file.read_text(encoding="utf-8", errors="ignore").splitlines()
@@ -202,7 +244,7 @@ def adjust_leading_dns_to_na(m: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_rankings(m: pd.DataFrame) -> pd.DataFrame:
-    df = m.copy()
+    df = ensure_initial_surname(m).copy()
     age = (df["LastHeld"] - df["Year"]).astype(int)
     df["decay"] = age.apply(lambda a: DECAY[a] if 0 <= a < len(DECAY) else 0)
 
