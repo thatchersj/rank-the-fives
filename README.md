@@ -4,9 +4,9 @@ This repo hosts a static website (GitHub Pages) that:
 - ingests tournament results from `data/TournamentResults.txt`
 - recalculates rankings (7-year window + decay, as per the legacy `doRanking.R`)
 - publishes:
-  - `site/data/rankings_latest.json` (for the website)
-  - `site/downloads/rankings_latest.csv`
-  - `site/downloads/rankings_latest.xlsx` (with conditional formatting)
+  - `docs/data/rankings_latest.json` (for the website)
+  - `docs/downloads/rankings_latest.csv`
+  - `docs/downloads/rankings_latest.xlsx` (with conditional formatting)
 
 ## How to publish the site (once)
 
@@ -14,7 +14,7 @@ This repo hosts a static website (GitHub Pages) that:
 2. Set:
    - **Source**: `Deploy from a branch`
    - **Branch**: `main`
-   - **Folder**: `/site`
+   - **Folder**: `/docs`
 
 Your site will be at: `https://<org-or-user>.github.io/<repo>/`
 
@@ -40,9 +40,9 @@ python -m venv .venv
 source .venv/bin/activate
 pip install pandas openpyxl
 
-python scripts/calc_rankings.py --results data/TournamentResults.txt --outdir site/data
-cp site/data/rankings_latest.csv site/downloads/rankings_latest.csv
-python scripts/make_xlsx.py --csv site/data/rankings_latest.csv --template data/template.xlsx --out site/downloads/rankings_latest.xlsx
+python scripts/calc_rankings.py --results data/TournamentResults.txt --outdir docs/data
+cp docs/data/rankings_latest.csv docs/downloads/rankings_latest.csv
+python scripts/make_xlsx.py --csv docs/data/rankings_latest.csv --template data/template.xlsx --out docs/downloads/rankings_latest.xlsx
 ```
 
-Then open `site/index.html`.
+Then open `docs/index.html`.

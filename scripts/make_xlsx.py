@@ -3,7 +3,7 @@
 Create an Excel workbook with conditional formatting similar to the provided template.
 
 Usage:
-  python scripts/make_xlsx.py --csv site/data/rankings_latest.csv --template data/template.xlsx --out site/downloads/rankings_latest.xlsx
+  python scripts/make_xlsx.py --csv docs/data/rankings_latest.csv --template data/template.xlsx --out docs/downloads/rankings_latest.xlsx
 """
 
 from __future__ import annotations

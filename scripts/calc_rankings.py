@@ -13,7 +13,7 @@ This is a faithful port of the provided doRanking.R logic:
   - rankings_latest.json (for the website)
 
 Usage:
-  python scripts/calc_rankings.py --results data/TournamentResults.txt --outdir site/data
+  python scripts/calc_rankings.py --results data/TournamentResults.txt --outdir docs/data
 """
 
 from __future__ import annotations
