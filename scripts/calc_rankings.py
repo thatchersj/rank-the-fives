@@ -27,6 +27,65 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pandas as pd
 
+import re
+import pandas as pd
+
+def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
+    # If Initial/Surname are present in the index (e.g., after an upstream reset/pivot),
+    # pull them into columns so downstream code can sort/group reliably.
+    if getattr(df.index, "names", None):
+        idx_names = [n for n in df.index.names if n]
+        if "Initial" in idx_names or "Surname" in idx_names:
+            df = df.reset_index()
+
+    # Normalise common column-name variants.
+    rename_map = {}
+    cols = list(df.columns)
+    if "Initial" not in cols:
+        for c in cols:
+            if c.lower() == "initial" or c.lower().endswith("initial") or c.lower().startswith("initial"):
+                rename_map[c] = "Initial"
+                break
+    if "Surname" not in cols:
+        for c in cols:
+            if c.lower() == "surname" or c.lower().endswith("surname") or c.lower().startswith("surname"):
+                rename_map[c] = "Surname"
+                break
+    if rename_map:
+        df = df.rename(columns=rename_map)
+
+    if "Initial" in df.columns and "Surname" in df.columns:
+        return df
+
+    name_col = None
+    for c in ["Name", "Player", "player", "name"]:
+        if c in df.columns:
+            name_col = c
+            break
+    if name_col is None:
+        raise KeyError(
+            "Missing player identifiers. Expected columns 'Initial'/'Surname' or a name column like 'Name'/'Player'. "
+            f"Available columns: {list(df.columns)}"
+        )
+
+    def split_name(x: str):
+        s = str(x).strip()
+        s = re.sub(r"\s+", " ", s)
+        if not s:
+            return ("", "")
+        parts = s.split(" ")
+        surname = parts[-1]
+        first = re.sub(r"[^A-Za-z]", "", parts[0])
+        initial = first[:1].upper() if first else ""
+        return (initial, surname)
+
+    vals = df[name_col].apply(split_name)
+    df = df.copy()
+    df["Initial"] = vals.apply(lambda t: t[0])
+    df["Surname"] = vals.apply(lambda t: t[1])
+    return df
+
+
 
 LOSER_RE = re.compile(r".* (bt|beat) ([A-z.\' -]* & [A-z.\' -]*) .*", flags=re.I)
 WINNER_RE = re.compile(r"([A-z.\' -]* & [A-z.\' -]*) (bt|beat) ([A-z.\' -]* & [A-z.\' -]*) .*", flags=re.I)
@@ -45,48 +104,6 @@ MAPS_RPA = {"Kinnaird": K1, "London": L1, "Northern": N1}
 MAPS_POSS = {"Kinnaird": K2, "London": L2, "Northern": N2}
 
 DECAY = [1, 0.85, 0.7, 0.55, 0.4, 0.25, 0.1] + [0] * 993
-
-def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Ensure the dataframe has the legacy 'Initial' and 'Surname' columns expected by the
-    ranking logic. We derive them from a best-effort player name column.
-    """
-    if "Initial" in df.columns and "Surname" in df.columns:
-        return df
-
-    name_col = None
-    for c in ("Name", "Player", "player", "name"):
-        if c in df.columns:
-            name_col = c
-            break
-    if name_col is None:
-        raise KeyError("Missing player name column (expected 'Name' or 'Player').")
-
-    out = df.copy()
-    s = out[name_col].astype(str).str.strip()
-
-    # Match legacy R normalisation used elsewhere in this script.
-    name2 = (
-        s.str.upper()
-         .str.replace("DE ", "DE", regex=False)
-         .str.replace("SOUZA GIRAO", "SOUZAGIRAO", regex=False)
-         .str.replace("VAN ", "VAN", regex=False)
-         .str.replace(r"\s+", " ", regex=True)
-         .str.replace(" ", ".", regex=False)
-    )
-
-    out["Initial"] = np.where(
-        name2.str.contains(r"\.", regex=True),
-        name2.str.replace(r"([^.]*?)\..*", r"\1", regex=True),
-        ""
-    )
-    out["Surname"] = np.where(
-        name2.str.contains(r"\.", regex=True),
-        name2.str.replace(r"^.*\.([^.]*?)$", r"\1", regex=True),
-        name2
-    )
-    return out
-
 
 
 def read_tournaments(results_file: Path) -> Dict[str, List[str]]:
@@ -244,7 +261,7 @@ def adjust_leading_dns_to_na(m: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_rankings(m: pd.DataFrame) -> pd.DataFrame:
-    df = ensure_initial_surname(m).copy()
+    df = m.copy()
     age = (df["LastHeld"] - df["Year"]).astype(int)
     df["decay"] = age.apply(lambda a: DECAY[a] if 0 <= a < len(DECAY) else 0)
 
