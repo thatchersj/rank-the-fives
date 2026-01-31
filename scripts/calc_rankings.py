@@ -261,7 +261,9 @@ def adjust_leading_dns_to_na(m: pd.DataFrame) -> pd.DataFrame:
 
 
 def compute_rankings(m: pd.DataFrame) -> pd.DataFrame:
-    df = m.copy()
+    # Some upstream transforms can leave player identifiers in the index or with
+    # variant column names. Normalise so we always have Initial/Surname columns.
+    df = ensure_initial_surname(m).copy()
     age = (df["LastHeld"] - df["Year"]).astype(int)
     df["decay"] = age.apply(lambda a: DECAY[a] if 0 <= a < len(DECAY) else 0)
 
