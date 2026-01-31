@@ -58,7 +58,7 @@ def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
         return df
 
     name_col = None
-    for c in ["Name", "Player", "player", "name"]:
+    for c in ["Name", "Player", "p", "P", "player", "name"]:
         if c in df.columns:
             name_col = c
             break
