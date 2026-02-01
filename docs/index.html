@@ -388,7 +388,19 @@
             return w.includes(playerKey) || l.includes(playerKey);
           });
 
-          body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(tournFull)}</b></div>`;
+                    // Determine the player's team (player + partner) for this tournament
+          const prettySurname = (surname || "").slice(0,1) + (surname || "").slice(1).toLowerCase();
+          const prettyPlayer = `${initial}.${prettySurname}`;
+          let playerTeam = null;
+          if (matches.length > 0) {
+            const m0 = matches[0];
+            const won0 = (m0.winners || []).includes(playerKey);
+            playerTeam = won0 ? (m0.winnerTeam || null) : (m0.loserTeam || null);
+          }
+          if (!playerTeam) playerTeam = prettyPlayer;
+
+          body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(playerTeam)}</b></div>`;
+
 
           if (inNQ) {
             body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) for this tournament.</div>`;
@@ -418,7 +430,7 @@
               const won = (m.winners || []).includes(playerKey);
               const side = won ? "Won" : "Lost";
               body += `<div class="match">` +
-                      `<div class="line"><span class="pill">${escapeHtml(side)}</span>${wTeam} <b>beat</b> ${lTeam}</div>` +
+                      `<div class="line"><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
                       (score ? `<div class="line">${score}</div>` : ``) +
                       `</div>`;
             }
