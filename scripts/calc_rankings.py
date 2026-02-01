@@ -31,24 +31,25 @@ import re
 import pandas as pd
 
 def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
-    # If Initial/Surname are present in the index (e.g., after an upstream reset/pivot),
-    # pull them into columns so downstream code can sort/group reliably.
+    # If Initial/Surname are present in the index (e.g. after groupby/pivot), pull them into columns.
     if getattr(df.index, "names", None):
         idx_names = [n for n in df.index.names if n]
         if "Initial" in idx_names or "Surname" in idx_names:
             df = df.reset_index()
 
     # Normalise common column-name variants.
-    rename_map = {}
+    rename_map: dict[str, str] = {}
     cols = list(df.columns)
     if "Initial" not in cols:
         for c in cols:
-            if c.lower() == "initial" or c.lower().endswith("initial") or c.lower().startswith("initial"):
+            lc = str(c).lower()
+            if lc == "initial" or lc.endswith("initial") or lc.startswith("initial"):
                 rename_map[c] = "Initial"
                 break
     if "Surname" not in cols:
         for c in cols:
-            if c.lower() == "surname" or c.lower().endswith("surname") or c.lower().startswith("surname"):
+            lc = str(c).lower()
+            if lc == "surname" or lc.endswith("surname") or lc.startswith("surname"):
                 rename_map[c] = "Surname"
                 break
     if rename_map:
@@ -57,12 +58,18 @@ def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
     if "Initial" in df.columns and "Surname" in df.columns:
         return df
 
-    name_col = None
-    for c in ["Name", "Player", "p", "P", "player", "name"]:
-        if c in df.columns:
-            name_col = c
+    # Find a name column to derive from (but **do not** use internal numeric IDs like 'p').
+    # Prefer columns with alphabetic content.
+    candidates = [c for c in ["Name", "Player", "Pair", "player", "name"] if c in df.columns]
+    chosen = None
+    for c in candidates:
+        series = df[c].astype(str)
+        # choose if any value contains a letter (e.g. 'R.Houlden')
+        if series.str.contains(r"[A-Za-z]", regex=True, na=False).any():
+            chosen = c
             break
-    if name_col is None:
+
+    if chosen is None:
         raise KeyError(
             "Missing player identifiers. Expected columns 'Initial'/'Surname' or a name column like 'Name'/'Player'. "
             f"Available columns: {list(df.columns)}"
@@ -73,13 +80,16 @@ def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
         s = re.sub(r"\s+", " ", s)
         if not s:
             return ("", "")
-        parts = s.split(" ")
-        surname = parts[-1]
-        first = re.sub(r"[^A-Za-z]", "", parts[0])
+        # Names are usually like 'R.Houlden' or 'R Houlden' or 'R. Houlden'
+        s2 = s.replace(".", " ")
+        s2 = re.sub(r"\s+", " ", s2).strip()
+        parts = s2.split(" ")
+        surname = parts[-1].upper() if parts else ""
+        first = re.sub(r"[^A-Za-z]", "", parts[0]) if parts else ""
         initial = first[:1].upper() if first else ""
         return (initial, surname)
 
-    vals = df[name_col].apply(split_name)
+    vals = df[chosen].apply(split_name)
     df = df.copy()
     df["Initial"] = vals.apply(lambda t: t[0])
     df["Surname"] = vals.apply(lambda t: t[1])
