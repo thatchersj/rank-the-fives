@@ -135,6 +135,64 @@ def clean_block(block: List[str]) -> List[str]:
     return [s.strip() for s in z]
 
 
+
+
+
+def _norm_line(s: str) -> str:
+    """Normalize unicode dashes and whitespace for reliable header detection."""
+    s = (s or "").strip()
+    # Normalize common unicode dashes to ASCII hyphen
+    for ch in ["\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2212"]:
+        s = s.replace(ch, "-")
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+
+ROUND_HEADER_RE = re.compile(
+    r"^(last\s*16|quarter\s*-?\s*finals?|semi\s*-?\s*finals?|final)$",
+    re.I,
+)
+
+
+def parse_non_qualifiers(z: List[str]) -> List[str]:
+    """Parse 'Non-Qualifiers' section.
+
+    Supports:
+      - Inline: 'Non-Qualifiers: A & B, C & D' (note: clean_block removes ':')
+      - Multi-line: header followed by one or more lines, stopping at next round header.
+    """
+    nq_parts: List[str] = []
+    for i, raw in enumerate(z):
+        s = _norm_line(raw)
+        if re.match(r"^non\s*-?\s*qualifiers\b", s, flags=re.I):
+            # Inline content on same line (after header). clean_block removes ':', so split by header match
+            inline = re.sub(r"^non\s*-?\s*qualifiers\b", "", s, flags=re.I).strip()
+            if inline:
+                nq_parts.append(inline)
+
+            # Subsequent lines until next round header
+            j = i + 1
+            while j < len(z):
+                sj = _norm_line(z[j])
+                if not sj:
+                    j += 1
+                    continue
+                if ROUND_HEADER_RE.match(sj):
+                    break
+                nq_parts.append(sj)
+                j += 1
+            break
+
+    if not nq_parts:
+        return []
+
+    # Join and split into names
+    blob = ", ".join([p.strip() for p in nq_parts if p.strip()])
+    people: List[str] = []
+    for part in [p.strip() for p in blob.split(",") if p.strip()]:
+        for name in [n.strip() for n in part.split(" & ") if n.strip()]:
+            people.append(name)
+    return people
 def segment_between(z: List[str], start_pat: str, end_pat: str | None, start_offset: int = 1) -> List[str]:
     s = None
     for i, line in enumerate(z):
@@ -172,19 +230,11 @@ def parse_results(tournaments: Dict[str, List[str]]) -> pd.DataFrame:
 
         z = clean_block(block)
 
-        # Non-qualifiers: only uses the line immediately after the "Non-qualifiers" header (as in doRanking.R)
-        nq_line = None
-        for i, s in enumerate(z):
-            if re.search("Non-qualifiers", s, flags=re.I):
-                if i + 1 < len(z):
-                    nq_line = z[i + 1]
-                break
-        if nq_line:
-            for part in nq_line.split(", "):
-                for name in part.split(" & "):
-                    rows.append((tname, "NQ", name.strip()))
+        # Non-qualifiers (robust): supports inline and multi-line blocks, and stops at the next round header
+for name in parse_non_qualifiers(z):
+    rows.append((tname, "NQ", name.strip()))
 
-        # Last 16
+# Last 16
         for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
             txt = apply_loser_gsub(line)
             for name in txt.split(" & "):
