@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Eton Fives Rankings</title>
+
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    header { display:flex; gap:16px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; }
+    h1 { margin:0; font-size: 24px; }
+    .meta { color:#555; font-size: 14px; min-height: 20px; }
+    .actions { display:flex; gap:12px; flex-wrap:wrap; }
+    .actions a {
+      appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
+      background:white; cursor:pointer; text-decoration:none; color:#111; font-size:14px;
+    }
+    .actions a:hover { background:#f6f6f6; }
+    .note { margin: 12px 0 14px; color:#666; font-size: 14px; line-height:1.4; }
+    .small { font-size: 12px; color:#666; margin-top:6px; }
+    .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 0 0 12px; }
+    .controls input {
+      appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
+      background:white; font-size:14px; min-width: 220px;
+    }
+
+    .table-wrap{
+      border:1px solid #ddd; border-radius:14px; overflow:auto;
+      max-height: calc(100vh - 260px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table { border-collapse: separate; border-spacing: 0; }
+    #rankings{ width: max-content; min-width:100%; background:white; }
+    #rankings thead th{
+      background:#fafafa;
+      border-bottom:1px solid #ddd;
+      font-weight:600;
+      white-space: nowrap;
+      padding: 6px 10px;
+      position: sticky; top: 0; z-index: 5;
+      cursor: pointer;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    #rankings td{
+      padding: 6px 10px;
+      border-right:1px solid #eee;
+      border-bottom:1px solid #eee;
+      white-space: nowrap;
+      background:white;
+    }
+    #rankings tbody tr:nth-child(even) td{ background:#fcfcfc; }
+
+    /* Sticky first 3 columns */
+    #rankings th:nth-child(1), #rankings td:nth-child(1){
+      position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
+      border-right:1px solid #ddd;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      background: inherit;
+    }
+    #rankings th:nth-child(2), #rankings td:nth-child(2){
+      position: sticky; left: 60px; z-index: 6; min-width:60px; max-width:60px;
+      border-right:1px solid #ddd;
+      text-align:center;
+      background: inherit;
+    }
+    #rankings th:nth-child(3), #rankings td:nth-child(3){
+      position: sticky; left: 120px; z-index: 6; min-width:190px; max-width:190px;
+      border-right:1px solid #ddd;
+      font-weight:600;
+      background: inherit;
+    }
+
+    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3),
+    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3){
+      background: white;
+    }
+    #rankings tbody tr:nth-child(even) td:nth-child(1),
+    #rankings tbody tr:nth-child(even) td:nth-child(2),
+    #rankings tbody tr:nth-child(even) td:nth-child(3){
+      background: #fcfcfc;
+    }
+
+    .result-cell{ text-align:center; font-weight:600; }
+
+    /* Colour coding (works on mobile because it's inline classes on TD) */
+    .res-W{ background:#c6efce !important; color:#006100 !important; }   /* Winner */
+    .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }   /* Final */
+    .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }  /* Semi */
+    .res-QF{ background:#fce4d6 !important; color:#7f2a00 !important; }  /* Quarter */
+    .res-L16{ background:#fde9d9 !important; color:#7f2a00 !important; } /* Last 16 */
+    .res-NQ{ background:#f8cbad !important; color:#833c0c !important; }  /* Non-qual */
+    .res-P{ background:#e7e6e6 !important; color:#444 !important; }      /* P */
+    .res-UNK{ background:#f2f2f2 !important; color:#555 !important; font-weight:500; }
+
+    th.sorted-asc::after { content:" ▲"; font-weight:700; }
+    th.sorted-desc::after { content:" ▼"; font-weight:700; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>Eton Fives Rankings</h1>
+      <div class="meta" id="status">Loading…</div>
+    </div>
+    <div class="actions">
+      <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
+      <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
+      <a
+        href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
+        target="_blank" rel="noopener"
+      >Submit new results</a>
+    </div>
+  </header>
+
+  <div class="note">
+    Tap a column header to sort (mobile supported). Search to find a player.
+    <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>, <b>P</b>.</div>
+  </div>
+
+  <div class="controls">
+    <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
+    <span class="small" id="count"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="rankings">
+      <thead><tr id="theadRow"></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <noscript>
+    <p><b>This page needs JavaScript enabled</b> to load rankings.</p>
+  </noscript>
+
+  <script>
+    (function(){
+      const statusEl = document.getElementById("status");
+      const countEl = document.getElementById("count");
+      const searchBox = document.getElementById("searchBox");
+      const theadRow = document.getElementById("theadRow");
+      const tbody = document.querySelector("#rankings tbody");
+      const table = document.getElementById("rankings");
+
+      function normalizeResult(v) {
+        const s = (v ?? "").toString().trim().toUpperCase();
+        if (!s) return "";
+        return s.replace(/\s+/g, ""); // "L 16" -> "L16"
+      }
+      function resultClass(v) {
+        const key = normalizeResult(v);
+        if (!key) return null;
+        if (["W","F","SF","QF","NQ","L16","P"].includes(key)) return "res-" + key;
+        return "res-UNK";
+      }
+      function looksLikeResultColumn(colName) {
+        // expected like "13 N" / "13N" / "13 K" etc
+        return /^\d{2}\s*[NKL]$/i.test(colName.trim().replace(/\s+/g, " "));
+      }
+
+      async function loadData() {
+        // IMPORTANT: relative to the current page URL (works on GH Pages project sites)
+        const url = new URL("data/rankings_latest.json", window.location.href);
+        const res = await fetch(url.toString(), { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load ${url} (${res.status} ${res.statusText})`);
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) throw new Error("No data found in rankings_latest.json");
+        return data;
+      }
+
+      function render(data) {
+        const cols = Object.keys(data[0] || {});
+        theadRow.innerHTML = "";
+        tbody.innerHTML = "";
+
+        cols.forEach(c => {
+          const th = document.createElement("th");
+          th.textContent = c;
+          th.classList.add("sortable");
+          theadRow.appendChild(th);
+        });
+
+        const resultCols = new Set(cols.filter(looksLikeResultColumn));
+
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          cols.forEach(c => {
+            const td = document.createElement("td");
+            const val = row[c] ?? "";
+            td.textContent = val;
+
+            if (resultCols.has(c)) {
+              td.classList.add("result-cell");
+              const cls = resultClass(val);
+              if (cls) td.classList.add(cls);
+            }
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+
+        countEl.textContent = `${data.length} players`;
+        return cols;
+      }
+
+      function enableSortAndSearch() {
+        let sortState = { idx: 0, asc: true };
+
+        function clearIndicators(){
+          table.querySelectorAll("thead th").forEach(th => th.classList.remove("sorted-asc","sorted-desc"));
+        }
+
+        function sortBy(idx){
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const asc = (sortState.idx === idx) ? !sortState.asc : true;
+          sortState = { idx, asc };
+
+          clearIndicators();
+          const th = table.querySelectorAll("thead th")[idx];
+          th.classList.add(asc ? "sorted-asc" : "sorted-desc");
+
+          rows.sort((a,b)=>{
+            const av = (a.children[idx]?.textContent ?? "").trim();
+            const bv = (b.children[idx]?.textContent ?? "").trim();
+            const an = Number(av), bn = Number(bv);
+            const anOk = av !== "" && !Number.isNaN(an);
+            const bnOk = bv !== "" && !Number.isNaN(bn);
+            if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
+            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+          });
+          rows.forEach(r => tbody.appendChild(r));
+        }
+
+        table.querySelectorAll("thead th").forEach((th, idx)=>{
+          th.addEventListener("click", ()=>sortBy(idx));
+          th.addEventListener("touchend", (e)=>{ e.preventDefault(); sortBy(idx); }, { passive:false });
+        });
+
+        function filter(){
+          const q = (searchBox.value || "").trim().toLowerCase();
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          if (!q) { rows.forEach(r=>r.style.display=""); return; }
+          rows.forEach(r=>{
+            const a = (r.children[0]?.textContent ?? "").toLowerCase();
+            const b = (r.children[1]?.textContent ?? "").toLowerCase();
+            const c = (r.children[2]?.textContent ?? "").toLowerCase();
+            r.style.display = (a.includes(q) || b.includes(q) || c.includes(q)) ? "" : "none";
+          });
+        }
+        searchBox.addEventListener("input", filter);
+
+        // default sort by Rank
+        sortBy(0);
+      }
+
+      (async function main(){
+        try {
+          const data = await loadData();
+          render(data);
+          enableSortAndSearch();
+          statusEl.textContent = `Loaded • ${new Date().toLocaleString()}`;
+        } catch (e) {
+          console.error(e);
+          statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";
+        }
+      })();
+    })();
+  </script>
+</body>
+</html>
