@@ -389,7 +389,7 @@
             playerTeam = hitNQTeam.team;
           }
 
-const matches = (tourn.matches || []).filter(m => {
+          const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
             const l = Array.isArray(m.losers) ? m.losers : [];
             return w.includes(playerKey) || l.includes(playerKey);
