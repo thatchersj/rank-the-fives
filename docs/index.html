@@ -254,7 +254,8 @@
         }
         searchBox.addEventListener("input", filter);
 
-        // default sort by Rank
+        // default sort by Rank ascending (rank 1 at top)
+        sortState = { idx: 0, asc: true };
         sortBy(0);
       }
 
