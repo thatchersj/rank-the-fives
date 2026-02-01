@@ -352,6 +352,7 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     all_df = all_df.merge(players.reset_index().rename(columns={"index": "p"}), on="p", how="left")
 
     m = all_df.merge(dt1[["Tournament", "Initial", "Surname", "Round"]], on=["Tournament", "Initial", "Surname"], how="left")
+    m = ensure_initial_surname(m)
     m["Round"] = m["Round"].fillna("DNS")
 
     m["Comp"] = pd.Categorical(m["Comp"], categories=["Northern", "Kinnaird", "London"], ordered=True)
@@ -362,6 +363,13 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
 
     # Leading DNS before first appearance become NA
     m = adjust_leading_dns_to_na(m)
+
+    # Ensure player identifiers exist before ranking computation
+    m = ensure_initial_surname(m)
+    # Fallback: if Initial/Surname were lost, re-attach from player index mapping
+    if 'Initial' not in m.columns or 'Surname' not in m.columns:
+        _players_map = players.reset_index().rename(columns={'index': 'p'})[['p','Initial','Surname']]
+        m = m.merge(_players_map, on='p', how='left')
 
     rankings = compute_rankings(m).rename(
         columns={"CompsPlayed": "Played", "ConsecutiveCompsMissed": "MissedLast"}
