@@ -361,9 +361,10 @@
           const tr = td.parentElement;
           const tds = Array.from(tr.children);
           const colIdx = tds.indexOf(td);
-          const colName = (headers[colIdx] || "").trim();
+          const colNameRaw = (headers[colIdx] || "");
+          const colName = colNameRaw.replace(/\s+/g, " ").trim();
 
-          if (!/^\d{2}\s+[NKL]$/i.test(colName)) return;
+          if (!/^\d{2}\s*[NKL]$/i.test(colName)) return;
 
           const result = (td.textContent || "").trim();
           if (!result) return;
@@ -386,6 +387,8 @@
           }
 
           const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
+          const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
 
           const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
@@ -403,18 +406,11 @@
             playerTeam = won0 ? (m0.winnerTeam || null) : (m0.loserTeam || null);
           }
           if (!playerTeam) playerTeam = prettyPlayer;
+          if (inNQ && hitNQTeam && hitNQTeam.team) playerTeam = hitNQTeam.team;
 
           body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(playerTeam)}</b></div>`;
 
-
-          if (inNQ) {
-            const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
-            const hit = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
-            if (hit && hit.team) {
-              body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) with <b>${escapeHtml(hit.team)}</b>.</div>`;
-            } else {
-              body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) for this tournament.</div>`;
-            }
+          // (For NQ we show the partner/team in the header card, so no extra NQ message box.)
           }
 
           if (matches.length === 0) {
