@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-01T18:07:28Z",
+  "generatedAt": "2026-02-01T18:57:20Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -8,32 +8,125 @@
       "comp": "Kinnaird",
       "key": "25 K",
       "nq": [
-        "T|CAMPBELL",
         "A|FIELD",
-        "J|TYE",
-        "C|TYE",
-        "V|GUDIWALA",
-        "N|CHOUSTIKOV",
-        "L|WHITNALL",
-        "K|BHAVSAR",
-        "O|RUSHTON",
-        "H|ETHERINGTON",
-        "K|HIRD",
-        "C|COOLEY",
-        "L|DRUMMOND",
-        "J|LEVINSON",
-        "E|CALDWELL",
-        "A|PHILLIPS",
-        "M|DAVIS",
-        "E|HABERSHON",
-        "P|HALL",
-        "J|HOPKINS",
-        "T|LEACH",
         "A|KNIGHT",
-        "T|SEELY",
-        "O|AVERY",
+        "A|PHILLIPS",
+        "C|COOLEY",
+        "C|TYE",
+        "E|CALDWELL",
+        "E|HABERSHON",
+        "H|ETHERINGTON",
+        "J|HOPKINS",
+        "J|LEVINSON",
+        "J|POULARD",
         "J|ROBB",
-        "J|POULARD"
+        "J|TYE",
+        "K|BHAVSAR",
+        "K|HIRD",
+        "L|DRUMMOND",
+        "L|WHITNALL",
+        "M|DAVIS",
+        "N|CHOUSTIKOV",
+        "O|AVERY",
+        "O|RUSHTON",
+        "P|HALL",
+        "T|CAMPBELL",
+        "T|LEACH",
+        "T|SEELY",
+        "V|GUDIWALA"
+      ],
+      "nqTeams": [
+        {
+          "team": "T.Campbell & A.Field",
+          "players": [
+            "T|CAMPBELL",
+            "A|FIELD"
+          ]
+        },
+        {
+          "team": "J.Tye & C.Tye",
+          "players": [
+            "J|TYE",
+            "C|TYE"
+          ]
+        },
+        {
+          "team": "V.Gudiwala & N.Choustikov",
+          "players": [
+            "V|GUDIWALA",
+            "N|CHOUSTIKOV"
+          ]
+        },
+        {
+          "team": "L.Whitnall & K.Bhavsar",
+          "players": [
+            "L|WHITNALL",
+            "K|BHAVSAR"
+          ]
+        },
+        {
+          "team": "O.Rushton & H.Etherington",
+          "players": [
+            "O|RUSHTON",
+            "H|ETHERINGTON"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "L.Drummond & J.Levinson",
+          "players": [
+            "L|DRUMMOND",
+            "J|LEVINSON"
+          ]
+        },
+        {
+          "team": "E.Caldwell & A.Phillips",
+          "players": [
+            "E|CALDWELL",
+            "A|PHILLIPS"
+          ]
+        },
+        {
+          "team": "M.Davis & E.Habershon",
+          "players": [
+            "M|DAVIS",
+            "E|HABERSHON"
+          ]
+        },
+        {
+          "team": "P.Hall & J.Hopkins",
+          "players": [
+            "P|HALL",
+            "J|HOPKINS"
+          ]
+        },
+        {
+          "team": "T.Leach & A.Knight",
+          "players": [
+            "T|LEACH",
+            "A|KNIGHT"
+          ]
+        },
+        {
+          "team": "T.Seely & O.Avery",
+          "players": [
+            "T|SEELY",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "J.Robb & J.Poulard",
+          "players": [
+            "J|ROBB",
+            "J|POULARD"
+          ]
+        }
       ],
       "matches": [
         {
@@ -285,37 +378,150 @@
       "key": "25 N",
       "nq": [
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "M|DRAPER",
-        "L|HURSTHOUSE",
-        "H|ETHERINGTON",
-        "O|RUSHTON",
-        "W|THOMAS",
-        "P|HOLLAND",
-        "A|SAPOZHENKO",
-        "B|ADENUGBA",
-        "N|CHOUSTIKOV",
-        "V|KASSARDJIAN",
-        "E|SCOONES",
         "A|LUMBARD",
-        "I|SIMMONS",
-        "L|MALANAPHY",
-        "M|PUGH",
-        "T|ARJARIA",
-        "L|WHITNALL",
-        "K|BHAVSAR",
-        "G|BATTERSBY",
-        "H|WEBSTER",
-        "M|QUINN",
-        "P|GRIFFITHS",
-        "H|WISEMAN",
-        "A|SHETTY",
-        "D|INGRAM",
-        "C|DINMORE",
         "A|MORRIS",
-        "L|LLOYD-JONES",
+        "A|SAPOZHENKO",
+        "A|SHETTY",
+        "B|ADENUGBA",
+        "C|DINMORE",
+        "D|INGRAM",
+        "E|SCOONES",
         "F|OGILBY",
-        "M|TOMBLIN"
+        "G|BATTERSBY",
+        "H|ETHERINGTON",
+        "H|WEBSTER",
+        "H|WISEMAN",
+        "I|SIMMONS",
+        "K|BHAVSAR",
+        "L|HURSTHOUSE",
+        "L|LLOYD-JONES",
+        "L|MALANAPHY",
+        "L|WHITNALL",
+        "M|DRAPER",
+        "M|PUGH",
+        "M|QUINN",
+        "M|TOMBLIN",
+        "N|CHOUSTIKOV",
+        "O|RUSHTON",
+        "P|GRIFFITHS",
+        "P|HOLLAND",
+        "T|ARJARIA",
+        "V|KASSARDJIAN",
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "Ab.Bhattacharya & Ar.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "M.Draper & L.Hursthouse",
+          "players": [
+            "M|DRAPER",
+            "L|HURSTHOUSE"
+          ]
+        },
+        {
+          "team": "H.Etherington & O.Rushton",
+          "players": [
+            "H|ETHERINGTON",
+            "O|RUSHTON"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        },
+        {
+          "team": "A.Sapozhenko & B.Adenugba",
+          "players": [
+            "A|SAPOZHENKO",
+            "B|ADENUGBA"
+          ]
+        },
+        {
+          "team": "N.Choustikov & V.Kassardjian",
+          "players": [
+            "N|CHOUSTIKOV",
+            "V|KASSARDJIAN"
+          ]
+        },
+        {
+          "team": "E.Scoones & A.Lumbard",
+          "players": [
+            "E|SCOONES",
+            "A|LUMBARD"
+          ]
+        },
+        {
+          "team": "I.Simmons & L.Malanaphy",
+          "players": [
+            "I|SIMMONS",
+            "L|MALANAPHY"
+          ]
+        },
+        {
+          "team": "M.Pugh & T.Arjaria",
+          "players": [
+            "M|PUGH",
+            "T|ARJARIA"
+          ]
+        },
+        {
+          "team": "L.Whitnall & K.Bhavsar",
+          "players": [
+            "L|WHITNALL",
+            "K|BHAVSAR"
+          ]
+        },
+        {
+          "team": "G.Battersby & H.Webster",
+          "players": [
+            "G|BATTERSBY",
+            "H|WEBSTER"
+          ]
+        },
+        {
+          "team": "M.Quinn & P.Griffiths",
+          "players": [
+            "M|QUINN",
+            "P|GRIFFITHS"
+          ]
+        },
+        {
+          "team": "H.Wiseman & A.Shetty",
+          "players": [
+            "H|WISEMAN",
+            "A|SHETTY"
+          ]
+        },
+        {
+          "team": "D.Ingram & C.Dinmore",
+          "players": [
+            "D|INGRAM",
+            "C|DINMORE"
+          ]
+        },
+        {
+          "team": "A.Morris & L.Lloyd-Jones",
+          "players": [
+            "A|MORRIS",
+            "L|LLOYD-JONES"
+          ]
+        },
+        {
+          "team": "F.Ogilby & M.Tomblin",
+          "players": [
+            "F|OGILBY",
+            "M|TOMBLIN"
+          ]
+        }
       ],
       "matches": [
         {
@@ -438,16 +644,53 @@
       "comp": "London",
       "key": "24 L",
       "nq": [
+        "A|BHATTACHARYA",
+        "A|VINEN",
+        "E|SCOONES",
+        "F|PRICKETT",
+        "H|ETHERINGTON",
+        "J|ALSTER",
         "K|HIRD",
         "N|SHAW",
-        "F|PRICKETT",
-        "A|BHATTACHARYA",
-        "V|KASSARDJIAN",
-        "E|SCOONES",
         "P|SATHIYAMOORTHY",
-        "H|ETHERINGTON",
-        "A|VINEN",
-        "J|ALSTER"
+        "V|KASSARDJIAN"
+      ],
+      "nqTeams": [
+        {
+          "team": "K.Hird & N.Shaw",
+          "players": [
+            "K|HIRD",
+            "N|SHAW"
+          ]
+        },
+        {
+          "team": "F.Prickett & Ab.Bhattacharya",
+          "players": [
+            "F|PRICKETT",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "V.Kassardjian & E.Scoones",
+          "players": [
+            "V|KASSARDJIAN",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "P.Sathiyamoorthy & H.Etherington",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "H|ETHERINGTON"
+          ]
+        },
+        {
+          "team": "A.Vinen & J.Alster",
+          "players": [
+            "A|VINEN",
+            "J|ALSTER"
+          ]
+        }
       ],
       "matches": [
         {
@@ -570,18 +813,62 @@
       "comp": "Kinnaird",
       "key": "24 K",
       "nq": [
-        "E|CALDWELL",
-        "A|PHILLIPS",
-        "H|BARMA",
-        "O|MEREDITH",
-        "S|THATCHER",
-        "L|DRUMMOND",
-        "F|MANDERSON-HARKIN",
-        "D|FRANCIS",
-        "G|STANHOPE",
         "A|ANDERSON",
+        "A|PHILLIPS",
+        "C|COOLEY",
+        "D|FRANCIS",
+        "E|CALDWELL",
+        "F|MANDERSON-HARKIN",
+        "G|STANHOPE",
+        "H|BARMA",
         "K|HIRD",
-        "C|COOLEY"
+        "L|DRUMMOND",
+        "O|MEREDITH",
+        "S|THATCHER"
+      ],
+      "nqTeams": [
+        {
+          "team": "E.Caldwell & A.Phillips",
+          "players": [
+            "E|CALDWELL",
+            "A|PHILLIPS"
+          ]
+        },
+        {
+          "team": "H.Barma & O.Meredith",
+          "players": [
+            "H|BARMA",
+            "O|MEREDITH"
+          ]
+        },
+        {
+          "team": "S.Thatcher & L.Drummond",
+          "players": [
+            "S|THATCHER",
+            "L|DRUMMOND"
+          ]
+        },
+        {
+          "team": "F.Manderson-Harkin & D.Francis",
+          "players": [
+            "F|MANDERSON-HARKIN",
+            "D|FRANCIS"
+          ]
+        },
+        {
+          "team": "G.Stanhope & A.Anderson",
+          "players": [
+            "G|STANHOPE",
+            "A|ANDERSON"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -832,32 +1119,125 @@
       "comp": "Northern",
       "key": "24 N",
       "nq": [
-        "M|QUINN",
-        "L|LLOYD-JONES",
-        "A|PHILLIPS",
-        "H|GARDNER",
-        "G|HOLLIDAY",
-        "S|MOTALA-EVANS",
-        "W|WOODS",
-        "E|CALDWELL",
-        "A|SAPOZHENKO",
         "A|AKANDA",
-        "S|MCLOUGHLIN",
-        "D|MCLOUGHLIN",
-        "M|HUGHES",
-        "G|WILLIAMS",
-        "M|DRAPER",
-        "O|PARTON",
         "A|CAMERON-BLACKIE",
-        "E|GOSNELL",
-        "T|FARMER",
-        "T|ARJARIA",
         "A|MORRIS",
+        "A|PHILLIPS",
+        "A|SAPOZHENKO",
+        "D|MCLOUGHLIN",
         "D|TAYLOR-WEST",
+        "E|CALDWELL",
+        "E|GOSNELL",
         "G|BATTERSBY",
+        "G|HOLLIDAY",
+        "G|WILLIAMS",
+        "H|GARDNER",
         "L|HURSTHOUSE",
+        "L|LLOYD-JONES",
+        "M|DRAPER",
+        "M|HUGHES",
+        "M|QUINN",
+        "O|PARTON",
+        "S|BURNELL",
+        "S|MCLOUGHLIN",
+        "S|MOTALA-EVANS",
+        "T|ARJARIA",
+        "T|FARMER",
         "T|GREGORY",
-        "S|BURNELL"
+        "W|WOODS"
+      ],
+      "nqTeams": [
+        {
+          "team": "M.Quinn & L.Lloyd-Jones",
+          "players": [
+            "M|QUINN",
+            "L|LLOYD-JONES"
+          ]
+        },
+        {
+          "team": "A.Phillips & H.Gardner",
+          "players": [
+            "A|PHILLIPS",
+            "H|GARDNER"
+          ]
+        },
+        {
+          "team": "G.Holliday & S.Motala-Evans",
+          "players": [
+            "G|HOLLIDAY",
+            "S|MOTALA-EVANS"
+          ]
+        },
+        {
+          "team": "W.Woods & E.Caldwell",
+          "players": [
+            "W|WOODS",
+            "E|CALDWELL"
+          ]
+        },
+        {
+          "team": "A.Sapozhenko & A.Akanda",
+          "players": [
+            "A|SAPOZHENKO",
+            "A|AKANDA"
+          ]
+        },
+        {
+          "team": "S.Mcloughlin & D.Mcloughlin",
+          "players": [
+            "S|MCLOUGHLIN",
+            "D|MCLOUGHLIN"
+          ]
+        },
+        {
+          "team": "M.Hughes & Grant Williams",
+          "players": [
+            "M|HUGHES",
+            "G|WILLIAMS"
+          ]
+        },
+        {
+          "team": "M.Draper & O.Parton",
+          "players": [
+            "M|DRAPER",
+            "O|PARTON"
+          ]
+        },
+        {
+          "team": "A.Cameron-Blackie & E.Gosnell",
+          "players": [
+            "A|CAMERON-BLACKIE",
+            "E|GOSNELL"
+          ]
+        },
+        {
+          "team": "T.Farmer & T.Arjaria",
+          "players": [
+            "T|FARMER",
+            "T|ARJARIA"
+          ]
+        },
+        {
+          "team": "A.Morris & D.Taylor-West",
+          "players": [
+            "A|MORRIS",
+            "D|TAYLOR-WEST"
+          ]
+        },
+        {
+          "team": "G.Battersby & L.Hursthouse",
+          "players": [
+            "G|BATTERSBY",
+            "L|HURSTHOUSE"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        }
       ],
       "matches": [
         {
@@ -980,38 +1360,152 @@
       "comp": "London",
       "key": "23 L",
       "nq": [
-        "I|HUTCHINSON",
-        "G|STANHOPE",
         "A|ABRAHAMS",
-        "B|MERRETT",
-        "A|TAYLOR",
-        "M|DAVIS",
-        "O|DENBY",
-        "F|PRICKETT",
-        "B|SWALLOW",
-        "N|CHOUSTIKOV",
-        "A|PHILLIPS",
-        "H|GARDNER",
-        "A|BHATTACHARYA",
-        "V|KASSARDJIAN",
-        "V|BALLINGAL",
         "A|ANDERSON",
-        "A|VINEN",
-        "J|ALSTER",
-        "R|SWALLOW",
-        "B|BANNERMAN",
-        "L|BROCK",
-        "S|SHAH",
+        "A|BHATTACHARYA",
         "A|CAMERON-BLACKIE",
-        "E|GOSNELL",
-        "T|CAMPBELL",
-        "F|LEBON",
-        "R|TYLER",
+        "A|PHILLIPS",
+        "A|TAYLOR",
+        "A|VINEN",
+        "B|BANNERMAN",
+        "B|MERRETT",
+        "B|SWALLOW",
+        "C|COOLEY",
         "C|KOKSAL",
-        "W|THOMAS",
-        "O|AVERY",
+        "E|GOSNELL",
+        "F|LEBON",
+        "F|PRICKETT",
+        "G|STANHOPE",
+        "H|GARDNER",
+        "I|HUTCHINSON",
+        "J|ALSTER",
         "K|HIRD",
-        "C|COOLEY"
+        "L|BROCK",
+        "M|DAVIS",
+        "N|CHOUSTIKOV",
+        "O|AVERY",
+        "O|DENBY",
+        "R|SWALLOW",
+        "R|TYLER",
+        "S|SHAH",
+        "T|CAMPBELL",
+        "V|BALLINGAL",
+        "V|KASSARDJIAN",
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "I.Hutchinson & G.Stanhope",
+          "players": [
+            "I|HUTCHINSON",
+            "G|STANHOPE"
+          ]
+        },
+        {
+          "team": "A.Abrahams & B.Merrett",
+          "players": [
+            "A|ABRAHAMS",
+            "B|MERRETT"
+          ]
+        },
+        {
+          "team": "A.Taylor & M.Davis",
+          "players": [
+            "A|TAYLOR",
+            "M|DAVIS"
+          ]
+        },
+        {
+          "team": "O.Denby & F.Prickett",
+          "players": [
+            "O|DENBY",
+            "F|PRICKETT"
+          ]
+        },
+        {
+          "team": "B.Swallow & N.Choustikov",
+          "players": [
+            "B|SWALLOW",
+            "N|CHOUSTIKOV"
+          ]
+        },
+        {
+          "team": "A.Phillips & H.Gardner",
+          "players": [
+            "A|PHILLIPS",
+            "H|GARDNER"
+          ]
+        },
+        {
+          "team": "Ab.Bhattacharya & V.Kassardjian",
+          "players": [
+            "A|BHATTACHARYA",
+            "V|KASSARDJIAN"
+          ]
+        },
+        {
+          "team": "V.Ballingal & A.Anderson",
+          "players": [
+            "V|BALLINGAL",
+            "A|ANDERSON"
+          ]
+        },
+        {
+          "team": "A.Vinen & J.Alster",
+          "players": [
+            "A|VINEN",
+            "J|ALSTER"
+          ]
+        },
+        {
+          "team": "R.Swallow & B.Bannerman",
+          "players": [
+            "R|SWALLOW",
+            "B|BANNERMAN"
+          ]
+        },
+        {
+          "team": "L.Brock & Sahil Shah",
+          "players": [
+            "L|BROCK",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "A.Cameron-Blackie & E.Gosnell",
+          "players": [
+            "A|CAMERON-BLACKIE",
+            "E|GOSNELL"
+          ]
+        },
+        {
+          "team": "T.Campbell & F.Lebon",
+          "players": [
+            "T|CAMPBELL",
+            "F|LEBON"
+          ]
+        },
+        {
+          "team": "R.Tyler & C.Koksal",
+          "players": [
+            "R|TYLER",
+            "C|KOKSAL"
+          ]
+        },
+        {
+          "team": "W.Thomas & O.Avery",
+          "players": [
+            "W|THOMAS",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -1134,38 +1628,152 @@
       "comp": "Kinnaird",
       "key": "23 K",
       "nq": [
-        "W|SEATH",
-        "O|AVERY",
-        "F|BARON",
-        "E|SMITH",
-        "W|BETTS",
         "A|CONSTANTINE",
-        "C|LUMBARD",
-        "A|TAYLOR",
-        "T|LEACH",
+        "A|DESHMUKH",
+        "A|FIELD",
         "A|KNIGHT",
+        "A|LUMBARD",
+        "A|TAYLOR",
+        "A|VINEN",
+        "B|BRIGGS",
+        "C|COOLEY",
+        "C|GRAVILLE",
+        "C|LUMBARD",
+        "C|MICHAELS",
+        "E|GARFIELD-OSEN",
+        "E|SCOONES",
+        "E|SMITH",
+        "F|BARON",
+        "J|GREENHOUSE",
+        "K|HIRD",
         "M|CHINERY",
+        "N|CHOUSTIKOV",
+        "N|TURNBULL",
+        "O|AVERY",
+        "P|HOLLAND",
+        "S|BURNELL",
+        "S|SHAH",
         "S|THATCHER",
         "T|GREGORY",
-        "S|BURNELL",
-        "K|HIRD",
-        "C|COOLEY",
-        "A|FIELD",
+        "T|LEACH",
         "V|GUDIWALA",
-        "W|THOMAS",
-        "P|HOLLAND",
-        "A|LUMBARD",
-        "E|SCOONES",
-        "A|VINEN",
-        "E|GARFIELD-OSEN",
-        "B|BRIGGS",
-        "C|GRAVILLE",
-        "C|MICHAELS",
-        "A|DESHMUKH",
-        "N|TURNBULL",
-        "N|CHOUSTIKOV",
-        "J|GREENHOUSE",
-        "S|SHAH"
+        "W|BETTS",
+        "W|SEATH",
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "W.Seath & O.Avery",
+          "players": [
+            "W|SEATH",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "F.Baron & E.Smith",
+          "players": [
+            "F|BARON",
+            "E|SMITH"
+          ]
+        },
+        {
+          "team": "W.Betts & A.Constantine",
+          "players": [
+            "W|BETTS",
+            "A|CONSTANTINE"
+          ]
+        },
+        {
+          "team": "C.Lumbard & A.Taylor",
+          "players": [
+            "C|LUMBARD",
+            "A|TAYLOR"
+          ]
+        },
+        {
+          "team": "T.Leach & A.Knight",
+          "players": [
+            "T|LEACH",
+            "A|KNIGHT"
+          ]
+        },
+        {
+          "team": "M.Chinery & S.Thatcher",
+          "players": [
+            "M|CHINERY",
+            "S|THATCHER"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "A.Field & V.Gudiwala",
+          "players": [
+            "A|FIELD",
+            "V|GUDIWALA"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "A.Vinen & E.Garfield-Osen",
+          "players": [
+            "A|VINEN",
+            "E|GARFIELD-OSEN"
+          ]
+        },
+        {
+          "team": "B.Briggs & C.Graville",
+          "players": [
+            "B|BRIGGS",
+            "C|GRAVILLE"
+          ]
+        },
+        {
+          "team": "C.Michaels & A.Deshmukh",
+          "players": [
+            "C|MICHAELS",
+            "A|DESHMUKH"
+          ]
+        },
+        {
+          "team": "N.Turnbull & N.Choustikov",
+          "players": [
+            "N|TURNBULL",
+            "N|CHOUSTIKOV"
+          ]
+        },
+        {
+          "team": "J.Greenhouse & Saajan Shah",
+          "players": [
+            "J|GREENHOUSE",
+            "S|SHAH"
+          ]
+        }
       ],
       "matches": [
         {
@@ -1416,42 +2024,170 @@
       "comp": "Northern",
       "key": "23 N",
       "nq": [
-        "N|CHOUSTIKOV",
-        "N|TURNBULL",
+        "A|AGARWAL",
+        "A|ANOOP",
+        "A|CAMERON-BLACKIE",
+        "A|O",
+        "A|TAYLOR",
+        "B|MERRETT",
+        "C|MH",
+        "C|O",
+        "E|HABERSHON",
+        "E|I",
+        "E|S",
+        "E|SCOONES",
         "E|SMITH",
         "F|O",
-        "H|WEBSTER",
-        "G|S",
-        "W|THOMAS",
-        "P|HOLLAND",
-        "G|WISEMAN",
-        "C|MH",
-        "M|HUGHES",
-        "M|QUINN",
-        "A|ANOOP",
-        "A|O",
-        "T|WHITEHEAD",
-        "T|STUBBS",
         "G|HUGHES",
+        "G|S",
+        "G|WISEMAN",
+        "H|WEBSTER",
+        "J|CREWS",
         "J|S",
         "M|CHINERY",
-        "A|CAMERON-BLACKIE",
-        "M|TSIOUPINI",
-        "S|O",
-        "B|MERRETT",
-        "E|SCOONES",
-        "W|WOODS",
-        "E|I",
-        "C|O",
+        "M|HUGHES",
+        "M|QUINN",
         "M|TAVRA",
-        "T|GREGORY",
+        "M|TSIOUPINI",
+        "N|CHOUSTIKOV",
+        "N|TURNBULL",
+        "P|HOLLAND",
         "S|BURNELL",
-        "A|AGARWAL",
+        "S|O",
+        "T|GREGORY",
         "T|O",
-        "J|CREWS",
-        "E|S",
-        "E|HABERSHON",
-        "A|TAYLOR"
+        "T|STUBBS",
+        "T|WHITEHEAD",
+        "W|THOMAS",
+        "W|WOODS"
+      ],
+      "nqTeams": [
+        {
+          "team": "N.Choustikov & N.Turnbull",
+          "players": [
+            "N|CHOUSTIKOV",
+            "N|TURNBULL"
+          ]
+        },
+        {
+          "team": "E.Smith & F.Baron (O)",
+          "players": [
+            "E|SMITH",
+            "F|O"
+          ]
+        },
+        {
+          "team": "H.Webster & G.Bradshaw (S)",
+          "players": [
+            "H|WEBSTER",
+            "G|S"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        },
+        {
+          "team": "G.Wiseman & C.Graville (MH)",
+          "players": [
+            "G|WISEMAN",
+            "C|MH"
+          ]
+        },
+        {
+          "team": "M.Hughes & M.Quinn",
+          "players": [
+            "M|HUGHES",
+            "M|QUINN"
+          ]
+        },
+        {
+          "team": "A.Anoop & A.Lewis (O)",
+          "players": [
+            "A|ANOOP",
+            "A|O"
+          ]
+        },
+        {
+          "team": "T.Whitehead & T.Stubbs",
+          "players": [
+            "T|WHITEHEAD",
+            "T|STUBBS"
+          ]
+        },
+        {
+          "team": "G.Hughes & J.Home (S)",
+          "players": [
+            "G|HUGHES",
+            "J|S"
+          ]
+        },
+        {
+          "team": "M.Chinery & A.Cameron-Blackie",
+          "players": [
+            "M|CHINERY",
+            "A|CAMERON-BLACKIE"
+          ]
+        },
+        {
+          "team": "M.Tsioupini & S.Shetty (O)",
+          "players": [
+            "M|TSIOUPINI",
+            "S|O"
+          ]
+        },
+        {
+          "team": "B.Merrett & E.Scoones",
+          "players": [
+            "B|MERRETT",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "W.Woods & E.Caldwell (I)",
+          "players": [
+            "W|WOODS",
+            "E|I"
+          ]
+        },
+        {
+          "team": "C.McMichael (O) & M.Tavra",
+          "players": [
+            "C|O",
+            "M|TAVRA"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        },
+        {
+          "team": "A.Agarwal & T.Arjaria (O)",
+          "players": [
+            "A|AGARWAL",
+            "T|O"
+          ]
+        },
+        {
+          "team": "J.Crews & E.Clark (S)",
+          "players": [
+            "J|CREWS",
+            "E|S"
+          ]
+        },
+        {
+          "team": "E.Habershon & A.Taylor",
+          "players": [
+            "E|HABERSHON",
+            "A|TAYLOR"
+          ]
+        }
       ],
       "matches": [
         {
@@ -1574,40 +2310,161 @@
       "comp": "London",
       "key": "22 L",
       "nq": [
-        "F|PRICKETT",
-        "O|DENBY",
-        "J|PRIOR",
-        "G|WISEMAN",
-        "S|GORE",
-        "M|GORE",
-        "R|SWALLOW",
-        "N|HIGGINS",
-        "A|RENNIE",
-        "L|VANHAESEBROECK",
-        "M|TAVRA",
-        "D|ROBSON",
-        "E|TAYLOR",
-        "A|TAYLOR",
         "A|BHATTACHARYA",
-        "E|SCOONES",
-        "K|HIRD",
+        "A|RENNIE",
+        "A|TAYLOR",
+        "B|SWALLOW",
         "C|COOLEY",
-        "G|NSENGA",
-        "T|FARMER",
-        "W|SEATH",
-        "O|AVERY",
-        "R|TYLER",
-        "C|KOKSAL",
-        "S|BURNELL",
-        "T|GREGORY",
         "C|GRAVILLE",
-        "E|SMITH",
-        "J|MARKS",
-        "S|SHAH",
+        "C|KOKSAL",
         "C|STONE",
+        "D|ROBSON",
+        "E|SCOONES",
+        "E|SMITH",
+        "E|TAYLOR",
+        "F|PRICKETT",
+        "G|NSENGA",
         "G|STANHOPE",
+        "G|WISEMAN",
+        "J|MARKS",
+        "J|PRIOR",
+        "K|HIRD",
+        "L|VANHAESEBROECK",
+        "M|GORE",
+        "M|TAVRA",
         "N|CHOUSTIKOV",
-        "B|SWALLOW"
+        "N|HIGGINS",
+        "O|AVERY",
+        "O|DENBY",
+        "R|SWALLOW",
+        "R|TYLER",
+        "S|BURNELL",
+        "S|GORE",
+        "S|SHAH",
+        "T|FARMER",
+        "T|GREGORY",
+        "W|SEATH"
+      ],
+      "nqTeams": [
+        {
+          "team": "F.Prickett & O.Denby",
+          "players": [
+            "F|PRICKETT",
+            "O|DENBY"
+          ]
+        },
+        {
+          "team": "J.Prior & G.Wiseman",
+          "players": [
+            "J|PRIOR",
+            "G|WISEMAN"
+          ]
+        },
+        {
+          "team": "S.Gore & M.Gore",
+          "players": [
+            "S|GORE",
+            "M|GORE"
+          ]
+        },
+        {
+          "team": "R.Swallow & N.Higgins",
+          "players": [
+            "R|SWALLOW",
+            "N|HIGGINS"
+          ]
+        },
+        {
+          "team": "A.Rennie & L.Vanhaesebroeck",
+          "players": [
+            "A|RENNIE",
+            "L|VANHAESEBROECK"
+          ]
+        },
+        {
+          "team": "M.Tavra & D.Robson",
+          "players": [
+            "M|TAVRA",
+            "D|ROBSON"
+          ]
+        },
+        {
+          "team": "E.Taylor & A.Taylor",
+          "players": [
+            "E|TAYLOR",
+            "A|TAYLOR"
+          ]
+        },
+        {
+          "team": "Ab.Bhattacharya & E.Scoones",
+          "players": [
+            "A|BHATTACHARYA",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "G.Nsenga & T.Farmer",
+          "players": [
+            "G|NSENGA",
+            "T|FARMER"
+          ]
+        },
+        {
+          "team": "W.Seath & O.Avery",
+          "players": [
+            "W|SEATH",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "R.Tyler & C.Koksal",
+          "players": [
+            "R|TYLER",
+            "C|KOKSAL"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "C.Graville & E.Smith",
+          "players": [
+            "C|GRAVILLE",
+            "E|SMITH"
+          ]
+        },
+        {
+          "team": "J.Marks & Sahil Shah",
+          "players": [
+            "J|MARKS",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "C.Stone & G.Stanhope",
+          "players": [
+            "C|STONE",
+            "G|STANHOPE"
+          ]
+        },
+        {
+          "team": "N.Choustikov & B.Swallow",
+          "players": [
+            "N|CHOUSTIKOV",
+            "B|SWALLOW"
+          ]
+        }
       ],
       "matches": [
         {
@@ -1730,26 +2587,98 @@
       "comp": "Kinnaird",
       "key": "22 K",
       "nq": [
-        "M|CHINERY",
-        "S|THATCHER",
-        "N|CHOUSTIKOV",
-        "E|EVANS",
         "A|WHITE",
-        "R|UNIACKE",
-        "W|THOMAS",
-        "P|HOLLAND",
-        "E|SCOONES",
-        "C|LUMBARD",
-        "K|HIRD",
         "C|COOLEY",
+        "C|LUMBARD",
         "C|STONE",
-        "J|ARTIS",
-        "F|BARON",
-        "E|SMITH",
         "D|REDMOND",
+        "E|EVANS",
         "E|GARFIELD-OSEN",
+        "E|SCOONES",
+        "E|SMITH",
+        "F|BARON",
+        "J|ARTIS",
+        "K|HIRD",
+        "M|CHINERY",
+        "N|CHOUSTIKOV",
+        "O|AVERY",
+        "P|HOLLAND",
+        "R|UNIACKE",
+        "S|THATCHER",
         "W|SEATH",
-        "O|AVERY"
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "M.Chinery & S.Thatcher",
+          "players": [
+            "M|CHINERY",
+            "S|THATCHER"
+          ]
+        },
+        {
+          "team": "N.Choustikov & E.Evans",
+          "players": [
+            "N|CHOUSTIKOV",
+            "E|EVANS"
+          ]
+        },
+        {
+          "team": "A.White & R.Uniacke",
+          "players": [
+            "A|WHITE",
+            "R|UNIACKE"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        },
+        {
+          "team": "E.Scoones & C.Lumbard",
+          "players": [
+            "E|SCOONES",
+            "C|LUMBARD"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "C.Stone & J.Artis",
+          "players": [
+            "C|STONE",
+            "J|ARTIS"
+          ]
+        },
+        {
+          "team": "F.Baron & E.Smith",
+          "players": [
+            "F|BARON",
+            "E|SMITH"
+          ]
+        },
+        {
+          "team": "D.Redmond & E.Garfield-Osen",
+          "players": [
+            "D|REDMOND",
+            "E|GARFIELD-OSEN"
+          ]
+        },
+        {
+          "team": "W.Seath & O.Avery",
+          "players": [
+            "W|SEATH",
+            "O|AVERY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -2000,36 +2929,143 @@
       "comp": "Northern",
       "key": "22 N",
       "nq": [
-        "O|DENBY",
-        "L|VANHAESEBROECK",
-        "G|WISEMAN",
-        "T|FARMER",
+        "A|ABRAHAMS",
+        "A|BHATTACHARYA",
         "A|CLARK",
+        "A|MORRIS",
+        "B|ANWAR",
+        "C|COOLEY",
+        "C|JONES",
+        "C|STONE",
+        "E|CLARK",
+        "E|CLUTTON",
+        "E|EVANS",
+        "E|SCOONES",
+        "G|BRADSHAW",
+        "G|HUGHES",
+        "G|WISEMAN",
+        "H|WEBSTER",
+        "J|AINSLIE",
+        "J|CREWS",
+        "J|KYNASTON",
+        "K|HIRD",
+        "L|VANHAESEBROECK",
         "M|BALY",
         "M|YATES",
-        "S|SIMMONS",
-        "A|BHATTACHARYA",
-        "E|EVANS",
-        "E|CLUTTON",
-        "W|TATE",
-        "G|HUGHES",
-        "G|BRADSHAW",
-        "J|AINSLIE",
         "N|ARGYLE",
-        "K|HIRD",
-        "C|COOLEY",
-        "C|STONE",
         "N|SHEPARD",
+        "O|DENBY",
         "S|MOTALA-EVANS",
-        "E|CLARK",
-        "A|ABRAHAMS",
-        "E|SCOONES",
-        "B|ANWAR",
-        "J|KYNASTON",
-        "A|MORRIS",
-        "C|JONES",
-        "J|CREWS",
-        "H|WEBSTER"
+        "S|SIMMONS",
+        "T|FARMER",
+        "W|TATE"
+      ],
+      "nqTeams": [
+        {
+          "team": "O.Denby & L.Vanhaesebroeck",
+          "players": [
+            "O|DENBY",
+            "L|VANHAESEBROECK"
+          ]
+        },
+        {
+          "team": "G.Wiseman & T.Farmer",
+          "players": [
+            "G|WISEMAN",
+            "T|FARMER"
+          ]
+        },
+        {
+          "team": "A.Clark & M.Baly",
+          "players": [
+            "A|CLARK",
+            "M|BALY"
+          ]
+        },
+        {
+          "team": "M.Yates & S.Simmons",
+          "players": [
+            "M|YATES",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "Ab.Bhattacharya & E.Evans",
+          "players": [
+            "A|BHATTACHARYA",
+            "E|EVANS"
+          ]
+        },
+        {
+          "team": "E.Clutton & W.Tate",
+          "players": [
+            "E|CLUTTON",
+            "W|TATE"
+          ]
+        },
+        {
+          "team": "G.Hughes & G.Bradshaw",
+          "players": [
+            "G|HUGHES",
+            "G|BRADSHAW"
+          ]
+        },
+        {
+          "team": "J.Ainslie & N.Argyle",
+          "players": [
+            "J|AINSLIE",
+            "N|ARGYLE"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "C.Stone & N.Shepard",
+          "players": [
+            "C|STONE",
+            "N|SHEPARD"
+          ]
+        },
+        {
+          "team": "S.Motala-Evans & E.Clark",
+          "players": [
+            "S|MOTALA-EVANS",
+            "E|CLARK"
+          ]
+        },
+        {
+          "team": "A.Abrahams & E.Scoones",
+          "players": [
+            "A|ABRAHAMS",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "B.Anwar & J.Kynaston",
+          "players": [
+            "B|ANWAR",
+            "J|KYNASTON"
+          ]
+        },
+        {
+          "team": "A.Morris & C.Jones",
+          "players": [
+            "A|MORRIS",
+            "C|JONES"
+          ]
+        },
+        {
+          "team": "J.Crews & H.Webster",
+          "players": [
+            "J|CREWS",
+            "H|WEBSTER"
+          ]
+        }
       ],
       "matches": [
         {
@@ -2152,26 +3188,98 @@
       "comp": "London",
       "key": "21 L",
       "nq": [
-        "H|DEQUETTEVILLE",
+        "A|SHAH",
+        "C|BLACKABY",
+        "C|COOLEY",
         "C|KOKSAL",
-        "R|TYLER",
+        "E|SCOONES",
+        "H|DEQUETTEVILLE",
+        "I|JOCHIM",
+        "J|MARKS",
+        "K|HIRD",
         "M|DESOUZAGIRAO",
+        "M|TAVRA",
+        "N|CHOUSTIKOV",
+        "O|HALLAM",
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "R|TYLER",
         "S|BURNELL",
         "T|GREGORY",
-        "N|CHOUSTIKOV",
-        "M|TAVRA",
-        "J|MARKS",
-        "C|BLACKABY",
-        "A|SHAH",
-        "V|GUDIWALA",
-        "K|HIRD",
-        "C|COOLEY",
-        "I|JOCHIM",
-        "P|SATHIYAMOORTHY",
-        "O|HALLAM",
         "T|LETHBRIDGE",
-        "R|MORGAN",
-        "E|SCOONES"
+        "V|GUDIWALA"
+      ],
+      "nqTeams": [
+        {
+          "team": "H.de Quetteville & C.Koksal",
+          "players": [
+            "H|DEQUETTEVILLE",
+            "C|KOKSAL"
+          ]
+        },
+        {
+          "team": "R.Tyler & M.de Souza Girao",
+          "players": [
+            "R|TYLER",
+            "M|DESOUZAGIRAO"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "N.Choustikov & M.Tavra",
+          "players": [
+            "N|CHOUSTIKOV",
+            "M|TAVRA"
+          ]
+        },
+        {
+          "team": "J.Marks & C.Blackaby",
+          "players": [
+            "J|MARKS",
+            "C|BLACKABY"
+          ]
+        },
+        {
+          "team": "A.Shah & V.Gudiwala",
+          "players": [
+            "A|SHAH",
+            "V|GUDIWALA"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "I.Jochim & P.Sathiyamoorthy",
+          "players": [
+            "I|JOCHIM",
+            "P|SATHIYAMOORTHY"
+          ]
+        },
+        {
+          "team": "O.Hallam & T.Lethbridge",
+          "players": [
+            "O|HALLAM",
+            "T|LETHBRIDGE"
+          ]
+        },
+        {
+          "team": "R Morgan & E.Scoones",
+          "players": [
+            "R|MORGAN",
+            "E|SCOONES"
+          ]
+        }
       ],
       "matches": [
         {
@@ -2295,21 +3403,79 @@
       "key": "21 K",
       "nq": [
         "A|THEODOSSI",
-        "C|DAVEY",
-        "N|CHOUSTIKOV",
-        "S|THATCHER",
-        "N|ARGYLE",
-        "J|AINSLIE",
-        "K|HIRD",
+        "B|MERRETT",
         "C|COOLEY",
-        "T|GREGORY",
-        "S|BURNELL",
+        "C|DAVEY",
+        "C|KOKSAL",
         "D|REDMOND",
         "E|OSEN",
-        "M|CHINERY",
         "E|SCOONES",
-        "C|KOKSAL",
-        "B|MERRETT"
+        "J|AINSLIE",
+        "K|HIRD",
+        "M|CHINERY",
+        "N|ARGYLE",
+        "N|CHOUSTIKOV",
+        "S|BURNELL",
+        "S|THATCHER",
+        "T|GREGORY"
+      ],
+      "nqTeams": [
+        {
+          "team": "A.Theodossi & C.Davey",
+          "players": [
+            "A|THEODOSSI",
+            "C|DAVEY"
+          ]
+        },
+        {
+          "team": "N.Choustikov & S.Thatcher",
+          "players": [
+            "N|CHOUSTIKOV",
+            "S|THATCHER"
+          ]
+        },
+        {
+          "team": "N.Argyle & J.Ainslie",
+          "players": [
+            "N|ARGYLE",
+            "J|AINSLIE"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        },
+        {
+          "team": "D.Redmond & E.Osen",
+          "players": [
+            "D|REDMOND",
+            "E|OSEN"
+          ]
+        },
+        {
+          "team": "M.Chinery & E.Scoones",
+          "players": [
+            "M|CHINERY",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "C.Koksal & B.Merrett",
+          "players": [
+            "C|KOKSAL",
+            "B|MERRETT"
+          ]
+        }
       ],
       "matches": [
         {
@@ -2560,32 +3726,125 @@
       "comp": "Kinnaird",
       "key": "20 K",
       "nq": [
+        "A|CAMERON-BLACKIE",
         "A|KNIGHT",
+        "A|LUMBARD",
+        "A|SHAH",
         "C|LUMBARD",
-        "S|BURNELL",
-        "T|GREGORY",
+        "D|REDMOND",
+        "E|SCOONES",
+        "G|WISEMAN",
+        "I|ADEBEKUN",
+        "M|CHINERY",
+        "M|TAVRA",
         "N|CHOUSTIKOV",
         "O|AVERY",
-        "W|SEATH",
         "P|HALL",
-        "R|MORGAN",
-        "A|CAMERON-BLACKIE",
-        "A|SHAH",
-        "V|GUDIWALA",
-        "W|THOMAS",
-        "M|TAVRA",
         "P|ROPER",
-        "W|HOWARD",
-        "D|REDMOND",
-        "G|WISEMAN",
+        "R|MORGAN",
         "R|THOROGOOD",
-        "M|CHINERY",
-        "Y|BLEUNVEN",
+        "S|BURNELL",
         "T|BYRNE",
-        "E|SCOONES",
-        "A|LUMBARD",
-        "I|ADEBEKUN",
-        "V|PRASHRA"
+        "T|GREGORY",
+        "V|GUDIWALA",
+        "V|PRASHRA",
+        "W|HOWARD",
+        "W|SEATH",
+        "W|THOMAS",
+        "Y|BLEUNVEN"
+      ],
+      "nqTeams": [
+        {
+          "team": "A.Knight & C.Lumbard",
+          "players": [
+            "A|KNIGHT",
+            "C|LUMBARD"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "N.Choustikov & O.Avery",
+          "players": [
+            "N|CHOUSTIKOV",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "W.Seath & P.Hall",
+          "players": [
+            "W|SEATH",
+            "P|HALL"
+          ]
+        },
+        {
+          "team": "R.Morgan & A.Cameron-Blackie",
+          "players": [
+            "R|MORGAN",
+            "A|CAMERON-BLACKIE"
+          ]
+        },
+        {
+          "team": "A.Shah & V.Gudiwala",
+          "players": [
+            "A|SHAH",
+            "V|GUDIWALA"
+          ]
+        },
+        {
+          "team": "W.Thomas & M.Tavra",
+          "players": [
+            "W|THOMAS",
+            "M|TAVRA"
+          ]
+        },
+        {
+          "team": "P.Roper & W.Howard",
+          "players": [
+            "P|ROPER",
+            "W|HOWARD"
+          ]
+        },
+        {
+          "team": "D.Redmond & G.Wiseman",
+          "players": [
+            "D|REDMOND",
+            "G|WISEMAN"
+          ]
+        },
+        {
+          "team": "R.Thorogood & M.Chinery",
+          "players": [
+            "R|THOROGOOD",
+            "M|CHINERY"
+          ]
+        },
+        {
+          "team": "Y.Bleunven & T.Byrne",
+          "players": [
+            "Y|BLEUNVEN",
+            "T|BYRNE"
+          ]
+        },
+        {
+          "team": "E.Scoones & A.Lumbard",
+          "players": [
+            "E|SCOONES",
+            "A|LUMBARD"
+          ]
+        },
+        {
+          "team": "I.Adebekun & V.Prashra",
+          "players": [
+            "I|ADEBEKUN",
+            "V|PRASHRA"
+          ]
+        }
       ],
       "matches": [
         {
@@ -2836,50 +4095,206 @@
       "comp": "Northern",
       "key": "20 N",
       "nq": [
-        "P|CLARK",
-        "M|BEVANS",
-        "T|GREGORY",
-        "S|BURNELL",
+        "A|ABRAHAMS",
+        "A|LUMBARD",
         "A|MORRIS",
-        "C|JONES",
-        "I|UJOODIA",
-        "I|ADEBEKUN",
-        "P|SATHIYAMOORTHY",
-        "I|JOCHIM",
-        "G|WISEMAN",
-        "J|PRIOR",
-        "R|MACDONALD-O'BRIEN",
-        "D|TAYLOR-WEST",
-        "R|MORGAN",
         "A|TANSEY",
         "A|TAYLOR",
-        "J|REYNOLDS",
-        "E|EVANS",
-        "M|VANWYK",
-        "K|HIRD",
-        "C|COOLEY",
-        "M|MAINWARING",
         "B|WARE",
-        "A|ABRAHAMS",
-        "T|MCCAHON",
+        "C|COOLEY",
+        "C|JONES",
         "C|LUMBARD",
-        "H|ASQUITH",
+        "D|REDMOND",
+        "D|SCHOFIELD",
+        "D|TAYLOR-WEST",
+        "E|EVANS",
+        "E|OSEN",
+        "E|SCOONES",
         "F|MCDONALD-BROWN",
         "G|POOK",
+        "G|WISEMAN",
+        "H|ASQUITH",
+        "I|ADEBEKUN",
+        "I|JOCHIM",
+        "I|UJOODIA",
         "I|WEAVER",
-        "M|JOHNSON",
-        "M|CHIBBER",
-        "V|PRASHRA",
-        "D|SCHOFIELD",
-        "J|FRASER-ANDREWS",
-        "D|REDMOND",
-        "E|OSEN",
-        "Y|BLEUNVEN",
-        "T|BYRNE",
-        "A|LUMBARD",
-        "E|SCOONES",
         "J|AINSLIE",
-        "N|ARGYLE"
+        "J|FRASER-ANDREWS",
+        "J|PRIOR",
+        "J|REYNOLDS",
+        "K|HIRD",
+        "M|BEVANS",
+        "M|CHIBBER",
+        "M|JOHNSON",
+        "M|MAINWARING",
+        "M|VANWYK",
+        "N|ARGYLE",
+        "P|CLARK",
+        "P|SATHIYAMOORTHY",
+        "R|MACDONALD-O'BRIEN",
+        "R|MORGAN",
+        "S|BURNELL",
+        "T|BYRNE",
+        "T|GREGORY",
+        "T|MCCAHON",
+        "V|PRASHRA",
+        "Y|BLEUNVEN"
+      ],
+      "nqTeams": [
+        {
+          "team": "P.Clark & M.Bevans",
+          "players": [
+            "P|CLARK",
+            "M|BEVANS"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        },
+        {
+          "team": "A.Morris & C.Jones",
+          "players": [
+            "A|MORRIS",
+            "C|JONES"
+          ]
+        },
+        {
+          "team": "I.Ujoodia & I.Adebekun",
+          "players": [
+            "I|UJOODIA",
+            "I|ADEBEKUN"
+          ]
+        },
+        {
+          "team": "P.Sathiyamoorthy & I.Jochim",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "I|JOCHIM"
+          ]
+        },
+        {
+          "team": "G.Wiseman & J.Prior",
+          "players": [
+            "G|WISEMAN",
+            "J|PRIOR"
+          ]
+        },
+        {
+          "team": "R.Macdonald-O'Brien & D.Taylor-West",
+          "players": [
+            "R|MACDONALD-O'BRIEN",
+            "D|TAYLOR-WEST"
+          ]
+        },
+        {
+          "team": "R.Morgan & A.Tansey",
+          "players": [
+            "R|MORGAN",
+            "A|TANSEY"
+          ]
+        },
+        {
+          "team": "A.Taylor & J.Reynolds",
+          "players": [
+            "A|TAYLOR",
+            "J|REYNOLDS"
+          ]
+        },
+        {
+          "team": "E.Evans & M.Van Wyk",
+          "players": [
+            "E|EVANS",
+            "M|VANWYK"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "M.Mainwaring & B.Ware",
+          "players": [
+            "M|MAINWARING",
+            "B|WARE"
+          ]
+        },
+        {
+          "team": "A.Abrahams & T.McCahon",
+          "players": [
+            "A|ABRAHAMS",
+            "T|MCCAHON"
+          ]
+        },
+        {
+          "team": "C.Lumbard & H.Asquith",
+          "players": [
+            "C|LUMBARD",
+            "H|ASQUITH"
+          ]
+        },
+        {
+          "team": "F.McDonald-Brown & G.Pook",
+          "players": [
+            "F|MCDONALD-BROWN",
+            "G|POOK"
+          ]
+        },
+        {
+          "team": "I.Weaver & M.Johnson",
+          "players": [
+            "I|WEAVER",
+            "M|JOHNSON"
+          ]
+        },
+        {
+          "team": "M.Chibber & V.Prashra",
+          "players": [
+            "M|CHIBBER",
+            "V|PRASHRA"
+          ]
+        },
+        {
+          "team": "D.Schofield & J.Fraser-Andrews",
+          "players": [
+            "D|SCHOFIELD",
+            "J|FRASER-ANDREWS"
+          ]
+        },
+        {
+          "team": "D.Redmond & E.Osen",
+          "players": [
+            "D|REDMOND",
+            "E|OSEN"
+          ]
+        },
+        {
+          "team": "Y.Bleunven & T.Byrne",
+          "players": [
+            "Y|BLEUNVEN",
+            "T|BYRNE"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "J.Ainslie & N.Argyle",
+          "players": [
+            "J|AINSLIE",
+            "N|ARGYLE"
+          ]
+        }
       ],
       "matches": [
         {
@@ -3002,38 +4417,152 @@
       "comp": "London",
       "key": "19 L",
       "nq": [
-        "F|PRICKETT",
-        "N|SHEPARD",
-        "M|CHINERY",
-        "S|GORE",
-        "V|GUDIWALA",
-        "A|SHAH",
-        "C|HUGHES",
-        "T|WALTERS",
-        "G|WILLIAMS",
-        "H|BLOFIELD",
-        "R|MORGAN",
-        "C|BLACKABY",
-        "Y|BLEUNVEN",
-        "T|BYRNE",
-        "H|ASQUITH",
-        "M|ASQUITH",
-        "P|ASHWORTH",
-        "J|BARLEY",
-        "C|LUMBARD",
-        "K|HIRD",
-        "I|ADEBEKUN",
-        "V|PRASHRA",
-        "T|MCCAHON",
         "A|ABRAHAMS",
-        "C|KOKSAL",
-        "B|MERRETT",
-        "P|SATHIYAMOORTHY",
-        "I|JOCHIM",
         "A|LUMBARD",
+        "A|SHAH",
+        "B|MERRETT",
+        "C|BLACKABY",
+        "C|HUGHES",
+        "C|KOKSAL",
+        "C|LUMBARD",
         "E|SCOONES",
+        "F|PRICKETT",
+        "G|WILLIAMS",
+        "H|ASQUITH",
+        "H|BLOFIELD",
+        "I|ADEBEKUN",
+        "I|JOCHIM",
+        "J|BARLEY",
+        "K|HIRD",
+        "M|ASQUITH",
+        "M|CHINERY",
         "M|DESOUZAGIRAO",
-        "M|TAVRA"
+        "M|TAVRA",
+        "N|SHEPARD",
+        "P|ASHWORTH",
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "S|GORE",
+        "T|BYRNE",
+        "T|MCCAHON",
+        "T|WALTERS",
+        "V|GUDIWALA",
+        "V|PRASHRA",
+        "Y|BLEUNVEN"
+      ],
+      "nqTeams": [
+        {
+          "team": "F.Prickett & N.Shepard",
+          "players": [
+            "F|PRICKETT",
+            "N|SHEPARD"
+          ]
+        },
+        {
+          "team": "M.Chinery & S.Gore",
+          "players": [
+            "M|CHINERY",
+            "S|GORE"
+          ]
+        },
+        {
+          "team": "V.Gudiwala & A.Shah",
+          "players": [
+            "V|GUDIWALA",
+            "A|SHAH"
+          ]
+        },
+        {
+          "team": "C.Hughes & T Walters",
+          "players": [
+            "C|HUGHES",
+            "T|WALTERS"
+          ]
+        },
+        {
+          "team": "Guy.Williams & H.Blofield",
+          "players": [
+            "G|WILLIAMS",
+            "H|BLOFIELD"
+          ]
+        },
+        {
+          "team": "R.Morgan & C.Blackaby",
+          "players": [
+            "R|MORGAN",
+            "C|BLACKABY"
+          ]
+        },
+        {
+          "team": "Y.Bleunven & T.Byrne",
+          "players": [
+            "Y|BLEUNVEN",
+            "T|BYRNE"
+          ]
+        },
+        {
+          "team": "H.Asquith & M.Asquith",
+          "players": [
+            "H|ASQUITH",
+            "M|ASQUITH"
+          ]
+        },
+        {
+          "team": "P.Ashworth & J.Barley",
+          "players": [
+            "P|ASHWORTH",
+            "J|BARLEY"
+          ]
+        },
+        {
+          "team": "C.Lumbard & K.Hird",
+          "players": [
+            "C|LUMBARD",
+            "K|HIRD"
+          ]
+        },
+        {
+          "team": "I.Adebekun & V.Prashra",
+          "players": [
+            "I|ADEBEKUN",
+            "V|PRASHRA"
+          ]
+        },
+        {
+          "team": "T.McCahon & A.Abrahams",
+          "players": [
+            "T|MCCAHON",
+            "A|ABRAHAMS"
+          ]
+        },
+        {
+          "team": "C.Koksal & B.Merrett",
+          "players": [
+            "C|KOKSAL",
+            "B|MERRETT"
+          ]
+        },
+        {
+          "team": "P.Sathiyamoorthy & I.Jochim",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "I|JOCHIM"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "M.de Souza Girao & M.Tavra",
+          "players": [
+            "M|DESOUZAGIRAO",
+            "M|TAVRA"
+          ]
+        }
       ],
       "matches": [
         {
@@ -3156,22 +4685,80 @@
       "comp": "Kinnaird",
       "key": "19 K",
       "nq": [
-        "P|SATHIYAMOORTHY",
-        "G|WISEMAN",
-        "W|SEATH",
-        "O|AVERY",
-        "K|HIRD",
+        "B|DOVGYY",
         "C|COOLEY",
-        "S|BURNELL",
-        "T|GREGORY",
+        "C|LUMBARD",
         "D|MEW",
         "E|SCOONES",
-        "B|DOVGYY",
-        "M|TAVRA",
-        "R|THOROGOOD",
+        "G|WISEMAN",
+        "K|HIRD",
         "M|CHINERY",
-        "C|LUMBARD",
-        "R|MORGAN"
+        "M|TAVRA",
+        "O|AVERY",
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "R|THOROGOOD",
+        "S|BURNELL",
+        "T|GREGORY",
+        "W|SEATH"
+      ],
+      "nqTeams": [
+        {
+          "team": "P.Sathiyamoorthy & G.Wiseman",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "G|WISEMAN"
+          ]
+        },
+        {
+          "team": "W.Seath & O.Avery",
+          "players": [
+            "W|SEATH",
+            "O|AVERY"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "D.Mew & E.Scoones",
+          "players": [
+            "D|MEW",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "B.Dovgyy & M.Tavra",
+          "players": [
+            "B|DOVGYY",
+            "M|TAVRA"
+          ]
+        },
+        {
+          "team": "R.Thorogood & M.Chinery",
+          "players": [
+            "R|THOROGOOD",
+            "M|CHINERY"
+          ]
+        },
+        {
+          "team": "C.Lumbard & R.Morgan",
+          "players": [
+            "C|LUMBARD",
+            "R|MORGAN"
+          ]
+        }
       ],
       "matches": [
         {
@@ -3422,42 +5009,170 @@
       "comp": "Northern",
       "key": "19 N",
       "nq": [
-        "J|KYNASTON",
-        "J|HINWOOD",
-        "I|WEAVER",
-        "T|COTTERELL",
-        "C|LUMBARD",
-        "R|MORGAN",
-        "Y|BLEUNVEN",
-        "T|BYRNE",
-        "W|SISSONS",
-        "D|HUMES",
         "A|ABRAHAMS",
-        "A|TAYLOR",
-        "A|LUMBARD",
-        "E|SCOONES",
-        "S|BURNELL",
-        "T|GREGORY",
-        "P|SATHIYAMOORTHY",
-        "I|JOCHIM",
-        "K|HIRD",
-        "C|COOLEY",
-        "N|TURNBULL",
-        "H|ASQUITH",
-        "G|MCLOUGHLIN",
-        "A|LEGEAIS",
-        "H|YOUNG",
-        "C|KOKSAL",
-        "G|WILLIAMS",
-        "M|HUGHES",
-        "T|MCCAHON",
-        "J|RAVI",
-        "A|MORRIS",
-        "E|EVANS",
         "A|GARRETT",
+        "A|LEGEAIS",
+        "A|LUMBARD",
+        "A|MORRIS",
+        "A|TAYLOR",
         "B|HULME",
+        "C|COOLEY",
+        "C|KOKSAL",
+        "C|LUMBARD",
+        "D|HUMES",
+        "E|EVANS",
+        "E|SCOONES",
+        "G|MCLOUGHLIN",
+        "G|WILLIAMS",
+        "H|ASQUITH",
+        "H|YOUNG",
+        "I|JOCHIM",
+        "I|WEAVER",
+        "J|HINWOOD",
+        "J|KYNASTON",
+        "J|RAVI",
+        "K|HIRD",
+        "M|HUGHES",
+        "M|VANWYK",
+        "N|TURNBULL",
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "S|BURNELL",
+        "T|BYRNE",
         "T|CASTLING",
-        "M|VANWYK"
+        "T|COTTERELL",
+        "T|GREGORY",
+        "T|MCCAHON",
+        "W|SISSONS",
+        "Y|BLEUNVEN"
+      ],
+      "nqTeams": [
+        {
+          "team": "J.Kynaston & J.Hinwood",
+          "players": [
+            "J|KYNASTON",
+            "J|HINWOOD"
+          ]
+        },
+        {
+          "team": "I.Weaver & T.Cotterell",
+          "players": [
+            "I|WEAVER",
+            "T|COTTERELL"
+          ]
+        },
+        {
+          "team": "C.Lumbard & R.Morgan",
+          "players": [
+            "C|LUMBARD",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "Y.Bleunven & T.Byrne",
+          "players": [
+            "Y|BLEUNVEN",
+            "T|BYRNE"
+          ]
+        },
+        {
+          "team": "W.Sissons & D.Humes",
+          "players": [
+            "W|SISSONS",
+            "D|HUMES"
+          ]
+        },
+        {
+          "team": "A.Abrahams & A.Taylor",
+          "players": [
+            "A|ABRAHAMS",
+            "A|TAYLOR"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "P.Sathiyamoorthy & I.Jochim",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "I|JOCHIM"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "N.Turnbull & H.Asquith",
+          "players": [
+            "N|TURNBULL",
+            "H|ASQUITH"
+          ]
+        },
+        {
+          "team": "G.Mcloughlin & A.Legeais",
+          "players": [
+            "G|MCLOUGHLIN",
+            "A|LEGEAIS"
+          ]
+        },
+        {
+          "team": "H.Young & C.Koksal",
+          "players": [
+            "H|YOUNG",
+            "C|KOKSAL"
+          ]
+        },
+        {
+          "team": "Grant Williams & M.Hughes",
+          "players": [
+            "G|WILLIAMS",
+            "M|HUGHES"
+          ]
+        },
+        {
+          "team": "T.McCahon & J.Ravi",
+          "players": [
+            "T|MCCAHON",
+            "J|RAVI"
+          ]
+        },
+        {
+          "team": "A.Morris & E.Evans",
+          "players": [
+            "A|MORRIS",
+            "E|EVANS"
+          ]
+        },
+        {
+          "team": "A.Garrett & B.Hulme",
+          "players": [
+            "A|GARRETT",
+            "B|HULME"
+          ]
+        },
+        {
+          "team": "T.Castling & M.Van Wyk",
+          "players": [
+            "T|CASTLING",
+            "M|VANWYK"
+          ]
+        }
       ],
       "matches": [
         {
@@ -3580,38 +5295,152 @@
       "comp": "London",
       "key": "18 L",
       "nq": [
-        "A|RENNIE",
-        "C|PLUMMER",
-        "C|LUMBARD",
-        "R|MORGAN",
-        "N|CAPLIN",
-        "H|GIBSON-LEITAO",
-        "K|HIRD",
-        "C|COOLEY",
-        "A|TAYLOR",
-        "M|BEARD",
         "A|ABRAHAMS",
-        "E|HABERSHON",
-        "H|YOUNG",
-        "C|KOKSAL",
-        "M|LEWIN",
-        "S|SHAH",
-        "A|LUMBARD",
-        "E|SCOONES",
-        "C|HUGHES",
-        "H|LEWIS",
-        "S|WELTI",
-        "T|WELTI",
-        "M|TAVRA",
         "A|BHATTACHARYA",
-        "P|SATHIYAMOORTHY",
-        "S|KUNDU",
+        "A|LUMBARD",
+        "A|RENNIE",
+        "A|TAYLOR",
         "B|BANNERMAN",
-        "T|CAMPBELL",
-        "J|RAVI",
+        "C|COOLEY",
+        "C|HUGHES",
+        "C|KOKSAL",
+        "C|LUMBARD",
+        "C|PLUMMER",
+        "E|HABERSHON",
+        "E|SCOONES",
+        "H|GIBSON-LEITAO",
+        "H|LEWIS",
         "H|RAVI",
+        "H|YOUNG",
+        "J|BLACK",
+        "J|RAVI",
+        "K|HIRD",
+        "M|BEARD",
+        "M|LEWIN",
+        "M|TAVRA",
+        "N|CAPLIN",
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "S|KUNDU",
+        "S|SHAH",
+        "S|WELTI",
+        "T|CAMPBELL",
         "T|MCCAHON",
-        "J|BLACK"
+        "T|WELTI"
+      ],
+      "nqTeams": [
+        {
+          "team": "A.Rennie & C.Plummer",
+          "players": [
+            "A|RENNIE",
+            "C|PLUMMER"
+          ]
+        },
+        {
+          "team": "C.Lumbard & R.Morgan",
+          "players": [
+            "C|LUMBARD",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "N.Caplin & H.Gibson-Leitao",
+          "players": [
+            "N|CAPLIN",
+            "H|GIBSON-LEITAO"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "A.Taylor & M.Beard",
+          "players": [
+            "A|TAYLOR",
+            "M|BEARD"
+          ]
+        },
+        {
+          "team": "A.Abrahams & E.Habershon",
+          "players": [
+            "A|ABRAHAMS",
+            "E|HABERSHON"
+          ]
+        },
+        {
+          "team": "H.Young & C.Koksal",
+          "players": [
+            "H|YOUNG",
+            "C|KOKSAL"
+          ]
+        },
+        {
+          "team": "M.Lewin & Sahil Shah",
+          "players": [
+            "M|LEWIN",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "C.Hughes & H.Lewis",
+          "players": [
+            "C|HUGHES",
+            "H|LEWIS"
+          ]
+        },
+        {
+          "team": "S.Welti & T.Welti",
+          "players": [
+            "S|WELTI",
+            "T|WELTI"
+          ]
+        },
+        {
+          "team": "M.Tavra & Ab.Bhattacharya",
+          "players": [
+            "M|TAVRA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "P.Sathiyamoorthy & S.Kundu",
+          "players": [
+            "P|SATHIYAMOORTHY",
+            "S|KUNDU"
+          ]
+        },
+        {
+          "team": "B.Bannerman & T.Campbell",
+          "players": [
+            "B|BANNERMAN",
+            "T|CAMPBELL"
+          ]
+        },
+        {
+          "team": "J.Ravi & H.Ravi",
+          "players": [
+            "J|RAVI",
+            "H|RAVI"
+          ]
+        },
+        {
+          "team": "T.McCahon & J.Black",
+          "players": [
+            "T|MCCAHON",
+            "J|BLACK"
+          ]
+        }
       ],
       "matches": [
         {
@@ -3734,34 +5563,133 @@
       "comp": "Kinnaird",
       "key": "18 K",
       "nq": [
-        "K|HIRD",
-        "C|COOLEY",
-        "T|MCCAHON",
-        "J|RAVI",
-        "T|BARKER",
-        "J|PRIOR",
-        "R|MORGAN",
-        "C|BALLINGALL",
-        "A|KNIGHT",
         "A|ABRAHAMS",
-        "M|SCURR",
-        "T|BETTS",
-        "P|THOMPSON",
-        "S|CASS",
-        "T|THURNHAM",
-        "S|SHAH",
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "T|GREGORY",
-        "S|BURNELL",
-        "D|COOPER",
-        "W|THOMAS",
+        "A|KNIGHT",
         "A|LUMBARD",
-        "E|SCOONES",
-        "N|GILL",
-        "S|CHAPMAN",
+        "C|BALLINGALL",
+        "C|COOLEY",
         "C|PLUMMER",
-        "I|KIDD"
+        "D|COOPER",
+        "E|SCOONES",
+        "I|KIDD",
+        "J|PRIOR",
+        "J|RAVI",
+        "K|HIRD",
+        "M|SCURR",
+        "N|GILL",
+        "P|THOMPSON",
+        "R|MORGAN",
+        "S|BURNELL",
+        "S|CASS",
+        "S|CHAPMAN",
+        "S|SHAH",
+        "T|BARKER",
+        "T|BETTS",
+        "T|GREGORY",
+        "T|MCCAHON",
+        "T|THURNHAM",
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "T.McCahon & J.Ravi",
+          "players": [
+            "T|MCCAHON",
+            "J|RAVI"
+          ]
+        },
+        {
+          "team": "T.Barker & J.Prior",
+          "players": [
+            "T|BARKER",
+            "J|PRIOR"
+          ]
+        },
+        {
+          "team": "R.Morgan & C.Ballingall",
+          "players": [
+            "R|MORGAN",
+            "C|BALLINGALL"
+          ]
+        },
+        {
+          "team": "A.Knight & A.Abrahams",
+          "players": [
+            "A|KNIGHT",
+            "A|ABRAHAMS"
+          ]
+        },
+        {
+          "team": "M.Scurr & T.Betts",
+          "players": [
+            "M|SCURR",
+            "T|BETTS"
+          ]
+        },
+        {
+          "team": "P.Thompson & S.Cass",
+          "players": [
+            "P|THOMPSON",
+            "S|CASS"
+          ]
+        },
+        {
+          "team": "T.Thurnham & Sahil Shah",
+          "players": [
+            "T|THURNHAM",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "Ab.Bhattacharya & Ar.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        },
+        {
+          "team": "D.Cooper & W.Thomas",
+          "players": [
+            "D|COOPER",
+            "W|THOMAS"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "N.Gill & S.Chapman",
+          "players": [
+            "N|GILL",
+            "S|CHAPMAN"
+          ]
+        },
+        {
+          "team": "C.Plummer & I.Kidd",
+          "players": [
+            "C|PLUMMER",
+            "I|KIDD"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4013,37 +5941,150 @@
       "key": "18 N",
       "nq": [
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "T|CASTLING",
-        "M|VANWYK",
-        "S|GUPTA",
-        "M|LI",
-        "N|BUNYAN",
-        "T|STUBBS",
+        "A|LUMBARD",
+        "B|BRUNSKILL",
+        "C|BALLINGALL",
+        "C|COOLEY",
         "D|REDMOND",
         "E|OSEN",
-        "C|BALLINGALL",
-        "R|MORGAN",
-        "S|SONGTHAMMAKUL",
-        "J|ZAZA",
-        "G|MCLOUGHLIN",
-        "K|KINWOOD",
-        "G|GARRETT",
-        "N|NG",
-        "B|BRUNSKILL",
-        "S|SCHOFIELD",
-        "A|LUMBARD",
         "E|SCOONES",
+        "G|GARRETT",
+        "G|MCLOUGHLIN",
         "H|WINTOUR",
-        "P|SATHIYAMOORTHY",
-        "T|BROMLEY-DAVENPORT",
-        "W|SISSONS",
+        "I|WEAVER",
+        "J|ZAZA",
+        "K|HIRD",
+        "K|KINWOOD",
         "K|KYNASTON",
         "L|LEGEAIS",
-        "C|COOLEY",
-        "K|HIRD",
+        "M|LI",
+        "M|VANWYK",
+        "N|BUNYAN",
+        "N|NG",
         "P|BOUGHTON",
-        "I|WEAVER"
+        "P|SATHIYAMOORTHY",
+        "R|MORGAN",
+        "S|GUPTA",
+        "S|SCHOFIELD",
+        "S|SONGTHAMMAKUL",
+        "T|BROMLEY-DAVENPORT",
+        "T|CASTLING",
+        "T|STUBBS",
+        "W|SISSONS"
+      ],
+      "nqTeams": [
+        {
+          "team": "Ab.Bhattacharya & Ar.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "T.Castling & M.van Wyk",
+          "players": [
+            "T|CASTLING",
+            "M|VANWYK"
+          ]
+        },
+        {
+          "team": "S.Gupta & M.Li",
+          "players": [
+            "S|GUPTA",
+            "M|LI"
+          ]
+        },
+        {
+          "team": "N.Bunyan & T.Stubbs",
+          "players": [
+            "N|BUNYAN",
+            "T|STUBBS"
+          ]
+        },
+        {
+          "team": "D.Redmond & E.Osen",
+          "players": [
+            "D|REDMOND",
+            "E|OSEN"
+          ]
+        },
+        {
+          "team": "C.Ballingall & R.Morgan",
+          "players": [
+            "C|BALLINGALL",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "Songthammakul & J Zaza",
+          "players": [
+            "S|SONGTHAMMAKUL",
+            "J|ZAZA"
+          ]
+        },
+        {
+          "team": "G.Mcloughlin & Kinwood",
+          "players": [
+            "G|MCLOUGHLIN",
+            "K|KINWOOD"
+          ]
+        },
+        {
+          "team": "G.Garrett & Ng",
+          "players": [
+            "G|GARRETT",
+            "N|NG"
+          ]
+        },
+        {
+          "team": "Brunskill & Schofield",
+          "players": [
+            "B|BRUNSKILL",
+            "S|SCHOFIELD"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "H.Wintour & P.Sathiyamoorthy",
+          "players": [
+            "H|WINTOUR",
+            "P|SATHIYAMOORTHY"
+          ]
+        },
+        {
+          "team": "T.Bromley-Davenport & W.Sissons",
+          "players": [
+            "T|BROMLEY-DAVENPORT",
+            "W|SISSONS"
+          ]
+        },
+        {
+          "team": "Kynaston & Legeais",
+          "players": [
+            "K|KYNASTON",
+            "L|LEGEAIS"
+          ]
+        },
+        {
+          "team": "C.Cooley & K.Hird",
+          "players": [
+            "C|COOLEY",
+            "K|HIRD"
+          ]
+        },
+        {
+          "team": "P.Boughton & I.Weaver",
+          "players": [
+            "P|BOUGHTON",
+            "I|WEAVER"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4166,30 +6207,116 @@
       "comp": "London",
       "key": "17 L",
       "nq": [
-        "H|RAVI",
-        "J|RAVI",
-        "H|GIBSON-LEITAO",
-        "I|KIDD",
-        "R|MORGAN",
-        "C|BALLINGALL",
-        "V|BHIMJIYANI",
-        "S|TAILOR",
-        "K|HIRD",
-        "R|PERRIE",
-        "B|DOVGYY",
-        "S|KELLY",
-        "R|TYLER",
-        "N|SHAW",
+        "A|ABRAHAMS",
         "A|ASLAM-BASKEYFIELD",
-        "S|MCLOUGHLIN",
         "A|LUMBARD",
-        "E|SCOONES",
         "A|RENNIE",
+        "B|DOVGYY",
+        "C|BALLINGALL",
+        "E|SCOONES",
+        "H|GIBSON-LEITAO",
+        "H|RAVI",
+        "I|KIDD",
+        "J|RAVI",
+        "K|HIRD",
+        "N|SHAW",
         "O|SANDER",
+        "R|MORGAN",
+        "R|PERRIE",
+        "R|TYLER",
         "S|BURNELL",
-        "T|GREGORY",
+        "S|KELLY",
+        "S|MCLOUGHLIN",
         "S|SHAH",
-        "A|ABRAHAMS"
+        "S|TAILOR",
+        "T|GREGORY",
+        "V|BHIMJIYANI"
+      ],
+      "nqTeams": [
+        {
+          "team": "H.Ravi & J.Ravi",
+          "players": [
+            "H|RAVI",
+            "J|RAVI"
+          ]
+        },
+        {
+          "team": "H.Gibson-Leitao & I.Kidd",
+          "players": [
+            "H|GIBSON-LEITAO",
+            "I|KIDD"
+          ]
+        },
+        {
+          "team": "R Morgan & C.Ballingall",
+          "players": [
+            "R|MORGAN",
+            "C|BALLINGALL"
+          ]
+        },
+        {
+          "team": "V.Bhimjiyani & S.Tailor",
+          "players": [
+            "V|BHIMJIYANI",
+            "S|TAILOR"
+          ]
+        },
+        {
+          "team": "K.Hird & R.Perrie",
+          "players": [
+            "K|HIRD",
+            "R|PERRIE"
+          ]
+        },
+        {
+          "team": "B.Dovgyy & S.Kelly",
+          "players": [
+            "B|DOVGYY",
+            "S|KELLY"
+          ]
+        },
+        {
+          "team": "R.Tyler & N.Shaw",
+          "players": [
+            "R|TYLER",
+            "N|SHAW"
+          ]
+        },
+        {
+          "team": "A.Aslam-Baskeyfield & S.McLoughlin",
+          "players": [
+            "A|ASLAM-BASKEYFIELD",
+            "S|MCLOUGHLIN"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "A.Rennie & O.Sander",
+          "players": [
+            "A|RENNIE",
+            "O|SANDER"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "Sahil Shah & A.Abrahams",
+          "players": [
+            "S|SHAH",
+            "A|ABRAHAMS"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4312,22 +6439,80 @@
       "comp": "Kinnaird",
       "key": "17 K",
       "nq": [
-        "B|WANG",
-        "H|RAVI",
         "A|ABRAHAMS",
-        "G|LINFIELD",
-        "C|BALLINGALL",
-        "R|MORGAN",
-        "K|HIRD",
-        "C|COOLEY",
-        "J|STALEY",
-        "S|CASS",
-        "J|PRIOR",
-        "J|MOORE",
-        "N|GILL",
         "A|NICE",
-        "T|GREGORY",
-        "S|BURNELL"
+        "B|WANG",
+        "C|BALLINGALL",
+        "C|COOLEY",
+        "G|LINFIELD",
+        "H|RAVI",
+        "J|MOORE",
+        "J|PRIOR",
+        "J|STALEY",
+        "K|HIRD",
+        "N|GILL",
+        "R|MORGAN",
+        "S|BURNELL",
+        "S|CASS",
+        "T|GREGORY"
+      ],
+      "nqTeams": [
+        {
+          "team": "B.Wang & H.Ravi",
+          "players": [
+            "B|WANG",
+            "H|RAVI"
+          ]
+        },
+        {
+          "team": "A.Abrahams & G.Linfield",
+          "players": [
+            "A|ABRAHAMS",
+            "G|LINFIELD"
+          ]
+        },
+        {
+          "team": "C.Ballingall & R.Morgan",
+          "players": [
+            "C|BALLINGALL",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "J.Staley & S.Cass",
+          "players": [
+            "J|STALEY",
+            "S|CASS"
+          ]
+        },
+        {
+          "team": "J.Prior & J.Moore",
+          "players": [
+            "J|PRIOR",
+            "J|MOORE"
+          ]
+        },
+        {
+          "team": "N.Gill & A.Nice",
+          "players": [
+            "N|GILL",
+            "A|NICE"
+          ]
+        },
+        {
+          "team": "T.Gregory & S.Burnell",
+          "players": [
+            "T|GREGORY",
+            "S|BURNELL"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4578,44 +6763,179 @@
       "comp": "Northern",
       "key": "17 N",
       "nq": [
-        "T|BROMLEY-DAVENPORT",
-        "M|MORRIS",
-        "H|THISTLETHWAYTE",
-        "F|WATT",
-        "C|BALLINGALL",
-        "R|MORGAN",
+        "A|ASLAM-BASKEYFIELD",
         "C|AUSTIN",
-        "S|SIMMONS",
-        "R|ORCHARD",
-        "M|MATTINSON",
-        "V|SHETTY",
+        "C|BALLINGALL",
+        "C|LYONS",
         "C|PLEWS",
-        "T|GALLAGHER",
+        "F|WATT",
+        "G|GARRETT",
+        "G|THOMASON",
+        "H|HARDMAN",
+        "H|HINWOOD",
+        "H|LEWIS",
+        "H|THISTLETHWAYTE",
+        "J|JEBB",
+        "J|LAWRENCE",
+        "J|ZAZA",
         "K|NWUBA",
+        "K|WALTON",
+        "L|LAMPRIERE-JOHNSTON",
+        "L|LINDSAY",
+        "M|MATTINSON",
+        "M|MORRIS",
+        "M|PUGH",
+        "N|BUNYAN",
+        "N|TURNBULL",
+        "R|MORGAN",
+        "R|ORCHARD",
+        "S|BALAJI",
+        "S|BURNELL",
+        "S|MCLOUGHLIN",
+        "S|SIMMONS",
         "S|SONGTHAMMAKUL",
         "S|STAPLETON",
-        "L|LINDSAY",
-        "L|LAMPRIERE-JOHNSTON",
-        "H|HARDMAN",
-        "C|LYONS",
-        "S|BURNELL",
-        "T|GREGORY",
-        "M|PUGH",
-        "K|WALTON",
-        "G|GARRETT",
-        "J|ZAZA",
-        "S|MCLOUGHLIN",
-        "A|ASLAM-BASKEYFIELD",
-        "N|TURNBULL",
-        "S|BALAJI",
-        "N|BUNYAN",
-        "J|LAWRENCE",
-        "W|CAREW",
         "S|UJOODIA",
-        "H|HINWOOD",
-        "J|JEBB",
-        "G|THOMASON",
-        "H|LEWIS"
+        "T|BROMLEY-DAVENPORT",
+        "T|GALLAGHER",
+        "T|GREGORY",
+        "V|SHETTY",
+        "W|CAREW"
+      ],
+      "nqTeams": [
+        {
+          "team": "T.Bromley-Davenport & M.Morris",
+          "players": [
+            "T|BROMLEY-DAVENPORT",
+            "M|MORRIS"
+          ]
+        },
+        {
+          "team": "H.Thistlethwayte & F.Watt",
+          "players": [
+            "H|THISTLETHWAYTE",
+            "F|WATT"
+          ]
+        },
+        {
+          "team": "C.Ballingall & R.Morgan",
+          "players": [
+            "C|BALLINGALL",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "C.Austin & S.Simmons",
+          "players": [
+            "C|AUSTIN",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "R Orchard & Mattinson",
+          "players": [
+            "R|ORCHARD",
+            "M|MATTINSON"
+          ]
+        },
+        {
+          "team": "V.Shetty & C.Plews",
+          "players": [
+            "V|SHETTY",
+            "C|PLEWS"
+          ]
+        },
+        {
+          "team": "T.Gallagher & K.Nwuba",
+          "players": [
+            "T|GALLAGHER",
+            "K|NWUBA"
+          ]
+        },
+        {
+          "team": "Songthammakul & Stapleton",
+          "players": [
+            "S|SONGTHAMMAKUL",
+            "S|STAPLETON"
+          ]
+        },
+        {
+          "team": "Lindsay & Lampriere-Johnston",
+          "players": [
+            "L|LINDSAY",
+            "L|LAMPRIERE-JOHNSTON"
+          ]
+        },
+        {
+          "team": "H.Hardman & C.Lyons",
+          "players": [
+            "H|HARDMAN",
+            "C|LYONS"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "M.Pugh & K.Walton",
+          "players": [
+            "M|PUGH",
+            "K|WALTON"
+          ]
+        },
+        {
+          "team": "G.Garrett & J.Zaza",
+          "players": [
+            "G|GARRETT",
+            "J|ZAZA"
+          ]
+        },
+        {
+          "team": "S.McLoughlin & A.Aslam-Baskeyfield",
+          "players": [
+            "S|MCLOUGHLIN",
+            "A|ASLAM-BASKEYFIELD"
+          ]
+        },
+        {
+          "team": "N.Turnbull & Su.Balaji",
+          "players": [
+            "N|TURNBULL",
+            "S|BALAJI"
+          ]
+        },
+        {
+          "team": "N.Bunyan & J.Lawrence",
+          "players": [
+            "N|BUNYAN",
+            "J|LAWRENCE"
+          ]
+        },
+        {
+          "team": "W.Carew & S.Ujoodia",
+          "players": [
+            "W|CAREW",
+            "S|UJOODIA"
+          ]
+        },
+        {
+          "team": "Hinwood & Jebb",
+          "players": [
+            "H|HINWOOD",
+            "J|JEBB"
+          ]
+        },
+        {
+          "team": "G.Thomason & H.Lewis",
+          "players": [
+            "G|THOMASON",
+            "H|LEWIS"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4738,24 +7058,89 @@
       "comp": "London",
       "key": "16 L",
       "nq": [
-        "O|HALLAM",
-        "T|LETHBRIDGE",
-        "R|WILSON",
-        "N|TURNBULL",
-        "R|MORGAN",
-        "E|SCOONES",
-        "O|SANDER",
-        "C|PLUMMER",
-        "K|HIRD",
         "C|COOLEY",
         "C|HUGHES",
-        "T|WELTI",
-        "S|BURNELL",
-        "T|GREGORY",
-        "W|BETTS",
-        "T|BETTS",
+        "C|PLUMMER",
+        "E|SCOONES",
+        "J|HUTCHESON",
         "J|PATEL",
-        "J|HUTCHESON"
+        "K|HIRD",
+        "N|TURNBULL",
+        "O|HALLAM",
+        "O|SANDER",
+        "R|MORGAN",
+        "R|WILSON",
+        "S|BURNELL",
+        "T|BETTS",
+        "T|GREGORY",
+        "T|LETHBRIDGE",
+        "T|WELTI",
+        "W|BETTS"
+      ],
+      "nqTeams": [
+        {
+          "team": "O.Hallam & T.Lethbridge",
+          "players": [
+            "O|HALLAM",
+            "T|LETHBRIDGE"
+          ]
+        },
+        {
+          "team": "R.Wilson & N.Turnbull",
+          "players": [
+            "R|WILSON",
+            "N|TURNBULL"
+          ]
+        },
+        {
+          "team": "R.Morgan & E.Scoones",
+          "players": [
+            "R|MORGAN",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "O.Sander & C.Plummer",
+          "players": [
+            "O|SANDER",
+            "C|PLUMMER"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "C.Hughes & T.Welti",
+          "players": [
+            "C|HUGHES",
+            "T|WELTI"
+          ]
+        },
+        {
+          "team": "S.Burnell & T.Gregory",
+          "players": [
+            "S|BURNELL",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "W.Betts & T.Betts",
+          "players": [
+            "W|BETTS",
+            "T|BETTS"
+          ]
+        },
+        {
+          "team": "J.Patel & J.Hutcheson",
+          "players": [
+            "J|PATEL",
+            "J|HUTCHESON"
+          ]
+        }
       ],
       "matches": [
         {
@@ -4878,32 +7263,125 @@
       "comp": "Kinnaird",
       "key": "16 K",
       "nq": [
-        "C|AUSTIN",
-        "S|SIMMONS",
-        "G|HOSKINS",
-        "C|RENNIE",
-        "B|MERRETT",
-        "J|PARHAM",
-        "K|HIRD",
-        "C|COOLEY",
-        "K|WALTON",
-        "J|RAVI",
-        "S|YICK",
-        "I|SALIM",
         "A|STEWART",
-        "S|BALAJI",
-        "W|BETTS",
-        "T|BETTS",
+        "A|WELLESLEY",
+        "B|HARRISON",
+        "B|MERRETT",
+        "C|AUSTIN",
+        "C|COOLEY",
+        "C|RENNIE",
+        "C|STOCKS",
+        "C|WHEELER",
+        "G|HOSKINS",
+        "I|SALIM",
+        "J|PARHAM",
+        "J|PRIOR",
+        "J|RAVI",
+        "K|HIRD",
+        "K|WALTON",
         "M|ROWSE",
         "O|ROWSE",
-        "B|HARRISON",
-        "A|WELLESLEY",
         "R|MORGAN",
-        "C|WHEELER",
-        "C|STOCKS",
-        "J|PRIOR",
+        "S|BALAJI",
+        "S|SIMMONS",
         "S|WELTI",
-        "T|KIRKBY"
+        "S|YICK",
+        "T|BETTS",
+        "T|KIRKBY",
+        "W|BETTS"
+      ],
+      "nqTeams": [
+        {
+          "team": "C.Austin & S.Simmons",
+          "players": [
+            "C|AUSTIN",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "G.Hoskins & C.Rennie",
+          "players": [
+            "G|HOSKINS",
+            "C|RENNIE"
+          ]
+        },
+        {
+          "team": "B.Merrett & J.Parham",
+          "players": [
+            "B|MERRETT",
+            "J|PARHAM"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "K.Walton & J.Ravi",
+          "players": [
+            "K|WALTON",
+            "J|RAVI"
+          ]
+        },
+        {
+          "team": "S.Yick & I.Salim",
+          "players": [
+            "S|YICK",
+            "I|SALIM"
+          ]
+        },
+        {
+          "team": "A.Stewart & Su.Balaji",
+          "players": [
+            "A|STEWART",
+            "S|BALAJI"
+          ]
+        },
+        {
+          "team": "W.Betts & T.Betts",
+          "players": [
+            "W|BETTS",
+            "T|BETTS"
+          ]
+        },
+        {
+          "team": "M.Rowse & O.Rowse",
+          "players": [
+            "M|ROWSE",
+            "O|ROWSE"
+          ]
+        },
+        {
+          "team": "B.Harrison & A.Wellesley",
+          "players": [
+            "B|HARRISON",
+            "A|WELLESLEY"
+          ]
+        },
+        {
+          "team": "R.Morgan & C.Wheeler",
+          "players": [
+            "R|MORGAN",
+            "C|WHEELER"
+          ]
+        },
+        {
+          "team": "C.Stocks & J.Prior",
+          "players": [
+            "C|STOCKS",
+            "J|PRIOR"
+          ]
+        },
+        {
+          "team": "S.Welti & T.Kirkby",
+          "players": [
+            "S|WELTI",
+            "T|KIRKBY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5154,16 +7632,53 @@
       "comp": "Northern",
       "key": "16 N",
       "nq": [
-        "K|NWUBA",
-        "M|PUGH",
-        "W|WHITE",
-        "S|COTTY",
         "C|HUGHES",
-        "T|WELTI",
-        "M|YATES",
-        "L|LLOYD-JONES",
         "D|MEW",
-        "R|TYLER"
+        "K|NWUBA",
+        "L|LLOYD-JONES",
+        "M|PUGH",
+        "M|YATES",
+        "R|TYLER",
+        "S|COTTY",
+        "T|WELTI",
+        "W|WHITE"
+      ],
+      "nqTeams": [
+        {
+          "team": "K.Nwuba & M.Pugh",
+          "players": [
+            "K|NWUBA",
+            "M|PUGH"
+          ]
+        },
+        {
+          "team": "White & S.Cotty",
+          "players": [
+            "W|WHITE",
+            "S|COTTY"
+          ]
+        },
+        {
+          "team": "C.Hughes & T.Welti",
+          "players": [
+            "C|HUGHES",
+            "T|WELTI"
+          ]
+        },
+        {
+          "team": "M.Yates & L.Lloyd-Jones",
+          "players": [
+            "M|YATES",
+            "L|LLOYD-JONES"
+          ]
+        },
+        {
+          "team": "D.Mew & R.Tyler",
+          "players": [
+            "D|MEW",
+            "R|TYLER"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5286,26 +7801,98 @@
       "comp": "London",
       "key": "15 L",
       "nq": [
-        "S|TAILOR",
-        "J|PATEL",
-        "T|GREGORY",
-        "T|FLETCHER",
-        "K|HIRD",
-        "C|COOLEY",
-        "S|YICK",
-        "I|SALIM",
+        "A|JOYCE",
         "B|DOVGYY",
+        "C|COOLEY",
+        "C|NICHOLLS",
         "C|WHEELER",
         "D|FOSTER",
-        "A|JOYCE",
+        "I|SALIM",
         "J|FLOWERS",
-        "S|WELTI",
-        "N|TURNBULL",
-        "W|REID",
         "J|ONEILL",
-        "C|NICHOLLS",
+        "J|PATEL",
+        "K|HIRD",
         "L|LOW",
-        "P|PRAKASH"
+        "N|TURNBULL",
+        "P|PRAKASH",
+        "S|TAILOR",
+        "S|WELTI",
+        "S|YICK",
+        "T|FLETCHER",
+        "T|GREGORY",
+        "W|REID"
+      ],
+      "nqTeams": [
+        {
+          "team": "S.Tailor & J.Patel",
+          "players": [
+            "S|TAILOR",
+            "J|PATEL"
+          ]
+        },
+        {
+          "team": "T.Gregory & T.Fletcher",
+          "players": [
+            "T|GREGORY",
+            "T|FLETCHER"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "S.Yick & I.Salim",
+          "players": [
+            "S|YICK",
+            "I|SALIM"
+          ]
+        },
+        {
+          "team": "B.Dovgyy & C.Wheeler",
+          "players": [
+            "B|DOVGYY",
+            "C|WHEELER"
+          ]
+        },
+        {
+          "team": "D.Foster & A.Joyce",
+          "players": [
+            "D|FOSTER",
+            "A|JOYCE"
+          ]
+        },
+        {
+          "team": "J.Flowers & S.Welti",
+          "players": [
+            "J|FLOWERS",
+            "S|WELTI"
+          ]
+        },
+        {
+          "team": "N.Turnbull & W.Reid",
+          "players": [
+            "N|TURNBULL",
+            "W|REID"
+          ]
+        },
+        {
+          "team": "J.O’Neill & C.Nicholls",
+          "players": [
+            "J|ONEILL",
+            "C|NICHOLLS"
+          ]
+        },
+        {
+          "team": "Low & Prakash",
+          "players": [
+            "L|LOW",
+            "P|PRAKASH"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5428,30 +8015,116 @@
       "comp": "Kinnaird",
       "key": "15 K",
       "nq": [
-        "T|FLETCHER",
-        "T|GREGORY",
-        "K|HIRD",
-        "C|COOLEY",
-        "M|CAPSTICK-DALE",
-        "J|CAPSTICK-DALE",
-        "J|RAVI",
-        "M|PUGH",
-        "C|RENNIE",
-        "A|RENNIE",
-        "B|JONES",
         "A|MORRIS",
-        "D|LIGHT",
-        "M|HOLDSWORTH",
+        "A|RENNIE",
+        "A|TAYLOR",
         "B|DOVGYY",
-        "S|KELLY",
-        "J|STALEY",
-        "R|MORGAN",
-        "O|LIGHT",
-        "J|HOPKINS",
-        "T|GALLAGHER",
-        "K|NWUBA",
+        "B|JONES",
+        "C|COOLEY",
+        "C|RENNIE",
+        "D|LIGHT",
         "G|CHAPMAN",
-        "A|TAYLOR"
+        "J|CAPSTICK-DALE",
+        "J|HOPKINS",
+        "J|RAVI",
+        "J|STALEY",
+        "K|HIRD",
+        "K|NWUBA",
+        "M|CAPSTICK-DALE",
+        "M|HOLDSWORTH",
+        "M|PUGH",
+        "O|LIGHT",
+        "R|MORGAN",
+        "S|KELLY",
+        "T|FLETCHER",
+        "T|GALLAGHER",
+        "T|GREGORY"
+      ],
+      "nqTeams": [
+        {
+          "team": "T.Fletcher & T.Gregory",
+          "players": [
+            "T|FLETCHER",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "M.Capstick-Dale & J.Capstick-Dale",
+          "players": [
+            "M|CAPSTICK-DALE",
+            "J|CAPSTICK-DALE"
+          ]
+        },
+        {
+          "team": "J.Ravi & M.Pugh",
+          "players": [
+            "J|RAVI",
+            "M|PUGH"
+          ]
+        },
+        {
+          "team": "C.Rennie & A.Rennie",
+          "players": [
+            "C|RENNIE",
+            "A|RENNIE"
+          ]
+        },
+        {
+          "team": "B.Jones & A.Morris",
+          "players": [
+            "B|JONES",
+            "A|MORRIS"
+          ]
+        },
+        {
+          "team": "D.Light & M.Holdsworth",
+          "players": [
+            "D|LIGHT",
+            "M|HOLDSWORTH"
+          ]
+        },
+        {
+          "team": "B.Dovgyy & S.Kelly",
+          "players": [
+            "B|DOVGYY",
+            "S|KELLY"
+          ]
+        },
+        {
+          "team": "J.Staley & R.Morgan",
+          "players": [
+            "J|STALEY",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "O.Light & J.Hopkins",
+          "players": [
+            "O|LIGHT",
+            "J|HOPKINS"
+          ]
+        },
+        {
+          "team": "T.Gallagher & K.Nwuba",
+          "players": [
+            "T|GALLAGHER",
+            "K|NWUBA"
+          ]
+        },
+        {
+          "team": "G.Chapman & A.Taylor",
+          "players": [
+            "G|CHAPMAN",
+            "A|TAYLOR"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5702,26 +8375,98 @@
       "comp": "Northern",
       "key": "15 N",
       "nq": [
-        "G|HOSKINS",
-        "S|YICK",
-        "J|HUMES",
-        "F|ADAIR",
-        "R|MORGAN",
-        "K|HIRD",
-        "T|WELD",
-        "T|KIRKBY",
-        "F|FOX",
-        "L|LLOYD-JONES",
-        "G|LEWIS",
-        "T|BREESE",
-        "H|FLOWERS",
-        "M|HULSE",
-        "T|GALLAGHER",
-        "K|NWUBA",
-        "J|CAPSTICK-DALE",
         "A|WELLESLEY",
-        "W|WHITE",
-        "S|COTTY"
+        "F|ADAIR",
+        "F|FOX",
+        "G|HOSKINS",
+        "G|LEWIS",
+        "H|FLOWERS",
+        "J|CAPSTICK-DALE",
+        "J|HUMES",
+        "K|HIRD",
+        "K|NWUBA",
+        "L|LLOYD-JONES",
+        "M|HULSE",
+        "R|MORGAN",
+        "S|COTTY",
+        "S|YICK",
+        "T|BREESE",
+        "T|GALLAGHER",
+        "T|KIRKBY",
+        "T|WELD",
+        "W|WHITE"
+      ],
+      "nqTeams": [
+        {
+          "team": "G.Hoskins & S.Yick",
+          "players": [
+            "G|HOSKINS",
+            "S|YICK"
+          ]
+        },
+        {
+          "team": "J.Humes & F.Adair",
+          "players": [
+            "J|HUMES",
+            "F|ADAIR"
+          ]
+        },
+        {
+          "team": "R.Morgan & K.Hird",
+          "players": [
+            "R|MORGAN",
+            "K|HIRD"
+          ]
+        },
+        {
+          "team": "T.Weld & T.Kirkby",
+          "players": [
+            "T|WELD",
+            "T|KIRKBY"
+          ]
+        },
+        {
+          "team": "Fox & L.Lloyd-Jones",
+          "players": [
+            "F|FOX",
+            "L|LLOYD-JONES"
+          ]
+        },
+        {
+          "team": "G.Lewis & T.Breese",
+          "players": [
+            "G|LEWIS",
+            "T|BREESE"
+          ]
+        },
+        {
+          "team": "H.Flowers & M.Hulse",
+          "players": [
+            "H|FLOWERS",
+            "M|HULSE"
+          ]
+        },
+        {
+          "team": "T.Gallagher & K.Nwuba",
+          "players": [
+            "T|GALLAGHER",
+            "K|NWUBA"
+          ]
+        },
+        {
+          "team": "J.Capstick-Dale & A.Wellesley",
+          "players": [
+            "J|CAPSTICK-DALE",
+            "A|WELLESLEY"
+          ]
+        },
+        {
+          "team": "White & S.Cotty",
+          "players": [
+            "W|WHITE",
+            "S|COTTY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5844,26 +8589,98 @@
       "comp": "London",
       "key": "14 L",
       "nq": [
-        "C|AUSTIN",
-        "S|SIMMONS",
-        "T|GALLAGHER",
-        "K|NWUBA",
-        "T|BARKER",
-        "R|HOULDEN",
-        "T|FLETCHER",
-        "T|GREGORY",
+        "A|CONSTANTINE",
+        "A|RATTAN",
         "A|RENNIE",
-        "C|RENNIE",
-        "K|WALTON",
-        "M|PUGH",
-        "K|HIRD",
+        "C|AUSTIN",
         "C|COOLEY",
+        "C|RENNIE",
         "D|REDMOND",
         "J|PRIOR",
-        "N|CAPLIN",
-        "A|CONSTANTINE",
         "J|WELLER",
-        "A|RATTAN"
+        "K|HIRD",
+        "K|NWUBA",
+        "K|WALTON",
+        "M|PUGH",
+        "N|CAPLIN",
+        "R|HOULDEN",
+        "S|SIMMONS",
+        "T|BARKER",
+        "T|FLETCHER",
+        "T|GALLAGHER",
+        "T|GREGORY"
+      ],
+      "nqTeams": [
+        {
+          "team": "C.Austin & S.Simmons",
+          "players": [
+            "C|AUSTIN",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "T.Gallagher & K.Nwuba",
+          "players": [
+            "T|GALLAGHER",
+            "K|NWUBA"
+          ]
+        },
+        {
+          "team": "T.Barker & R.Houlden",
+          "players": [
+            "T|BARKER",
+            "R|HOULDEN"
+          ]
+        },
+        {
+          "team": "Tom Fletcher & T.Gregory",
+          "players": [
+            "T|FLETCHER",
+            "T|GREGORY"
+          ]
+        },
+        {
+          "team": "A.Rennie & C.Rennie",
+          "players": [
+            "A|RENNIE",
+            "C|RENNIE"
+          ]
+        },
+        {
+          "team": "K.Walton & M.Pugh",
+          "players": [
+            "K|WALTON",
+            "M|PUGH"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "D.Redmond & J.Prior",
+          "players": [
+            "D|REDMOND",
+            "J|PRIOR"
+          ]
+        },
+        {
+          "team": "N.Caplin & A.Constantine",
+          "players": [
+            "N|CAPLIN",
+            "A|CONSTANTINE"
+          ]
+        },
+        {
+          "team": "J.Weller & A.Rattan",
+          "players": [
+            "J|WELLER",
+            "A|RATTAN"
+          ]
+        }
       ],
       "matches": [
         {
@@ -5986,34 +8803,133 @@
       "comp": "Kinnaird",
       "key": "14 K",
       "nq": [
-        "A|RENNIE",
-        "C|RENNIE",
-        "T|GALLAGHER",
-        "K|NWUBA",
-        "C|HUGHES",
-        "T|WELT",
-        "I|MORGAN",
-        "A|NICE",
-        "F|COLQUHOUN",
-        "H|CAMPBELL",
-        "J|PATEL",
-        "S|TAILOR",
-        "N|BUNYAN",
-        "H|TURNBULL",
-        "D|ROBSON",
-        "M|BROOKES",
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "R|MALIK",
         "A|MORRIS",
-        "K|HIRD",
+        "A|NICE",
+        "A|RENNIE",
+        "A|YUSAF",
         "C|COOLEY",
         "C|FAIRBANKS-SMITH",
-        "M|ASQUITH",
-        "S|CHAPMAN",
-        "A|YUSAF",
+        "C|HUGHES",
+        "C|RENNIE",
+        "D|ROBSON",
+        "F|COLQUHOUN",
+        "H|CAMPBELL",
+        "H|TURNBULL",
+        "I|MORGAN",
         "J|BLACK",
-        "R|HOULDEN"
+        "J|PATEL",
+        "K|HIRD",
+        "K|NWUBA",
+        "M|ASQUITH",
+        "M|BROOKES",
+        "N|BUNYAN",
+        "R|HOULDEN",
+        "R|MALIK",
+        "S|CHAPMAN",
+        "S|TAILOR",
+        "T|GALLAGHER",
+        "T|WELT"
+      ],
+      "nqTeams": [
+        {
+          "team": "A.Rennie & C.Rennie",
+          "players": [
+            "A|RENNIE",
+            "C|RENNIE"
+          ]
+        },
+        {
+          "team": "T.Gallagher & K.Nwuba",
+          "players": [
+            "T|GALLAGHER",
+            "K|NWUBA"
+          ]
+        },
+        {
+          "team": "C.Hughes & T.Welt",
+          "players": [
+            "C|HUGHES",
+            "T|WELT"
+          ]
+        },
+        {
+          "team": "i R.Morgan & A.Nice",
+          "players": [
+            "I|MORGAN",
+            "A|NICE"
+          ]
+        },
+        {
+          "team": "F.Colquhoun & H.Campbell",
+          "players": [
+            "F|COLQUHOUN",
+            "H|CAMPBELL"
+          ]
+        },
+        {
+          "team": "J.Patel & S.Tailor",
+          "players": [
+            "J|PATEL",
+            "S|TAILOR"
+          ]
+        },
+        {
+          "team": "N.Bunyan & H.Turnbull",
+          "players": [
+            "N|BUNYAN",
+            "H|TURNBULL"
+          ]
+        },
+        {
+          "team": "D.Robson & M.Brookes",
+          "players": [
+            "D|ROBSON",
+            "M|BROOKES"
+          ]
+        },
+        {
+          "team": "Ar.Bhattacharya & Ab.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "R.Malik & A.Morris",
+          "players": [
+            "R|MALIK",
+            "A|MORRIS"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        },
+        {
+          "team": "C.Fairbanks-Smith & M.Asquith",
+          "players": [
+            "C|FAIRBANKS-SMITH",
+            "M|ASQUITH"
+          ]
+        },
+        {
+          "team": "S.Chapman & A.Yusaf",
+          "players": [
+            "S|CHAPMAN",
+            "A|YUSAF"
+          ]
+        },
+        {
+          "team": "J.Black & R.Houlden",
+          "players": [
+            "J|BLACK",
+            "R|HOULDEN"
+          ]
+        }
       ],
       "matches": [
         {
@@ -6264,38 +9180,151 @@
       "comp": "Northern",
       "key": "14 N",
       "nq": [
-        "T|FLETCHER",
-        "T|FLETCHER",
-        "S|YICK",
-        "N|PEARCE",
-        "T|COTTERELL",
-        "S|GANAPATHI",
-        "M|YATES",
-        "A|MITCHELL",
-        "H|LEWIS",
-        "S|WELTI",
-        "N|BUNYAN",
         "A|BHATTACHARYA",
-        "A|PATTEN",
-        "C|LYLE",
-        "B|CHRISTIE",
-        "C|CHRISTIE",
-        "I|WAGLAND",
-        "S|CHRISTOPHER",
-        "A|RENNIE",
-        "C|RENNIE",
-        "C|HUGHES",
-        "T|WELTI",
-        "H|FLOWERS",
-        "M|HULSE",
-        "C|AUSTIN",
-        "S|SIMMONS",
-        "T|BREESE",
-        "G|PANAYI",
+        "A|MITCHELL",
         "A|MORRIS",
-        "R|MALIK",
+        "A|PATTEN",
+        "A|RENNIE",
+        "B|CHRISTIE",
+        "C|AUSTIN",
+        "C|CHRISTIE",
+        "C|HUGHES",
+        "C|LYLE",
+        "C|RENNIE",
+        "G|PANAYI",
+        "H|FLOWERS",
+        "H|LEWIS",
+        "I|WAGLAND",
         "J|HOLROYD",
+        "M|HULSE",
+        "M|YATES",
+        "N|BUNYAN",
+        "N|PEARCE",
+        "R|MALIK",
+        "S|CHRISTOPHER",
+        "S|GANAPATHI",
+        "S|SIMMONS",
+        "S|WELTI",
+        "S|YICK",
+        "T|BREESE",
+        "T|COTTERELL",
+        "T|FLETCHER",
+        "T|WELTI",
         "W|WARBURG"
+      ],
+      "nqTeams": [
+        {
+          "team": "Tom Fletcher & Tim Fletcher",
+          "players": [
+            "T|FLETCHER",
+            "T|FLETCHER"
+          ]
+        },
+        {
+          "team": "S.Yick & N.Pearce",
+          "players": [
+            "S|YICK",
+            "N|PEARCE"
+          ]
+        },
+        {
+          "team": "T.Cotterell & S.Ganapathi",
+          "players": [
+            "T|COTTERELL",
+            "S|GANAPATHI"
+          ]
+        },
+        {
+          "team": "M.Yates & A.Mitchell",
+          "players": [
+            "M|YATES",
+            "A|MITCHELL"
+          ]
+        },
+        {
+          "team": "H Lewis & S Welti",
+          "players": [
+            "H|LEWIS",
+            "S|WELTI"
+          ]
+        },
+        {
+          "team": "N.Bunyan & Ab.Bhattacharya",
+          "players": [
+            "N|BUNYAN",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "A.Patten & C.Lyle",
+          "players": [
+            "A|PATTEN",
+            "C|LYLE"
+          ]
+        },
+        {
+          "team": "B.Christie & C.Christie",
+          "players": [
+            "B|CHRISTIE",
+            "C|CHRISTIE"
+          ]
+        },
+        {
+          "team": "I.Wagland & S.Christopher",
+          "players": [
+            "I|WAGLAND",
+            "S|CHRISTOPHER"
+          ]
+        },
+        {
+          "team": "A.Rennie & C.Rennie",
+          "players": [
+            "A|RENNIE",
+            "C|RENNIE"
+          ]
+        },
+        {
+          "team": "C.Hughes & T.Welti",
+          "players": [
+            "C|HUGHES",
+            "T|WELTI"
+          ]
+        },
+        {
+          "team": "H.Flowers & M.Hulse",
+          "players": [
+            "H|FLOWERS",
+            "M|HULSE"
+          ]
+        },
+        {
+          "team": "C.Austin & S.Simmons",
+          "players": [
+            "C|AUSTIN",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "T.Breese & G.Panayi",
+          "players": [
+            "T|BREESE",
+            "G|PANAYI"
+          ]
+        },
+        {
+          "team": "A.Morris & R.Malik",
+          "players": [
+            "A|MORRIS",
+            "R|MALIK"
+          ]
+        },
+        {
+          "team": "J.Holroyd & Warburg",
+          "players": [
+            "J|HOLROYD",
+            "W|WARBURG"
+          ]
+        }
       ],
       "matches": [
         {
@@ -6418,22 +9447,79 @@
       "comp": "London",
       "key": "13 L",
       "nq": [
-        "J|LAWRENCE",
-        "N|BUNYAN",
-        "M|WINTLE",
-        "A|TANSEY",
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "A|TAYLOR",
-        "R|MALIK",
-        "V|BHIMJIYANI",
-        "J|LEFORT",
-        "M|MOSTAFAVI",
-        "M|CHANRAI",
         "A|RENNIE",
+        "A|TANSEY",
+        "A|TAYLOR",
+        "C|COOLEY",
         "D|PATEL",
+        "J|LAWRENCE",
+        "J|LEFORT",
         "K|HIRD",
-        "C|COOLEY"
+        "M|CHANRAI",
+        "M|MOSTAFAVI",
+        "M|WINTLE",
+        "N|BUNYAN",
+        "R|MALIK",
+        "V|BHIMJIYANI"
+      ],
+      "nqTeams": [
+        {
+          "team": "J.Lawrence & N.Bunyan",
+          "players": [
+            "J|LAWRENCE",
+            "N|BUNYAN"
+          ]
+        },
+        {
+          "team": "M.Wintle & A.Tansey",
+          "players": [
+            "M|WINTLE",
+            "A|TANSEY"
+          ]
+        },
+        {
+          "team": "Ab.Bhattacharya & Ar.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "A.Taylor & R.Malik",
+          "players": [
+            "A|TAYLOR",
+            "R|MALIK"
+          ]
+        },
+        {
+          "team": "V.Bhimjiyani & J.Lefort",
+          "players": [
+            "V|BHIMJIYANI",
+            "J|LEFORT"
+          ]
+        },
+        {
+          "team": "M.Mostafavi & M.Chanrai",
+          "players": [
+            "M|MOSTAFAVI",
+            "M|CHANRAI"
+          ]
+        },
+        {
+          "team": "A.Rennie & D.Patel",
+          "players": [
+            "A|RENNIE",
+            "D|PATEL"
+          ]
+        },
+        {
+          "team": "K.Hird & C.Cooley",
+          "players": [
+            "K|HIRD",
+            "C|COOLEY"
+          ]
+        }
       ],
       "matches": [
         {
@@ -6556,38 +9642,152 @@
       "comp": "Kinnaird",
       "key": "13 K",
       "nq": [
-        "D|ROBSON",
-        "J|RAVI",
-        "C|SHAWCROSS",
-        "J|HUTTER",
-        "M|DESOUZAGIRAO",
-        "D|STEPHENS",
-        "N|BUNYAN",
-        "N|COX",
-        "I|WAGLAND",
-        "S|CHRISTOPHER",
-        "P|BOUGHTON",
-        "S|WOOLFRIES",
-        "M|SKJOTT",
-        "J|SAUNDERS",
-        "F|IMRIE",
-        "A|POOLE",
-        "T|STUBBS",
-        "S|CLARK",
-        "J|ALSTER",
-        "R|HOULDEN",
-        "A|MORRIS",
-        "B|JONES",
-        "H|TURNBULL",
-        "R|PATTISON",
-        "W|BETTS",
-        "D|REDMOND",
-        "P|WORTH",
-        "R|WORTH",
         "A|CRAWFORD",
-        "S|PATEL",
+        "A|MORRIS",
+        "A|POOLE",
+        "B|JONES",
+        "C|SHAWCROSS",
+        "D|ARWAS",
+        "D|REDMOND",
+        "D|ROBSON",
+        "D|STEPHENS",
+        "F|IMRIE",
+        "H|TURNBULL",
+        "I|WAGLAND",
+        "J|ALSTER",
+        "J|HUTTER",
+        "J|RAVI",
+        "J|SAUNDERS",
+        "M|DESOUZAGIRAO",
+        "M|SKJOTT",
+        "N|BUNYAN",
         "N|CAPLIN",
-        "D|ARWAS"
+        "N|COX",
+        "P|BOUGHTON",
+        "P|WORTH",
+        "R|HOULDEN",
+        "R|PATTISON",
+        "R|WORTH",
+        "S|CHRISTOPHER",
+        "S|CLARK",
+        "S|PATEL",
+        "S|WOOLFRIES",
+        "T|STUBBS",
+        "W|BETTS"
+      ],
+      "nqTeams": [
+        {
+          "team": "D.Robson & J.Ravi",
+          "players": [
+            "D|ROBSON",
+            "J|RAVI"
+          ]
+        },
+        {
+          "team": "C.Shawcross & J.Hutter",
+          "players": [
+            "C|SHAWCROSS",
+            "J|HUTTER"
+          ]
+        },
+        {
+          "team": "M.de Souza Girao & D.Stephens",
+          "players": [
+            "M|DESOUZAGIRAO",
+            "D|STEPHENS"
+          ]
+        },
+        {
+          "team": "N.Bunyan & N.Cox",
+          "players": [
+            "N|BUNYAN",
+            "N|COX"
+          ]
+        },
+        {
+          "team": "I.Wagland & S.Christopher",
+          "players": [
+            "I|WAGLAND",
+            "S|CHRISTOPHER"
+          ]
+        },
+        {
+          "team": "P.Boughton & S.Woolfries",
+          "players": [
+            "P|BOUGHTON",
+            "S|WOOLFRIES"
+          ]
+        },
+        {
+          "team": "M.Skjott & J.Saunders",
+          "players": [
+            "M|SKJOTT",
+            "J|SAUNDERS"
+          ]
+        },
+        {
+          "team": "F.Imrie & A.Poole",
+          "players": [
+            "F|IMRIE",
+            "A|POOLE"
+          ]
+        },
+        {
+          "team": "T.Stubbs & S.Clark",
+          "players": [
+            "T|STUBBS",
+            "S|CLARK"
+          ]
+        },
+        {
+          "team": "J.Alster & R.Houlden",
+          "players": [
+            "J|ALSTER",
+            "R|HOULDEN"
+          ]
+        },
+        {
+          "team": "A.Morris & B.Jones",
+          "players": [
+            "A|MORRIS",
+            "B|JONES"
+          ]
+        },
+        {
+          "team": "H.Turnbull & R.Pattison",
+          "players": [
+            "H|TURNBULL",
+            "R|PATTISON"
+          ]
+        },
+        {
+          "team": "W.Betts & D.Redmond",
+          "players": [
+            "W|BETTS",
+            "D|REDMOND"
+          ]
+        },
+        {
+          "team": "P.Worth & R.Worth",
+          "players": [
+            "P|WORTH",
+            "R|WORTH"
+          ]
+        },
+        {
+          "team": "A.Crawford & S.Patel",
+          "players": [
+            "A|CRAWFORD",
+            "S|PATEL"
+          ]
+        },
+        {
+          "team": "N.Caplin & D.Arwas",
+          "players": [
+            "N|CAPLIN",
+            "D|ARWAS"
+          ]
+        }
       ],
       "matches": [
         {
@@ -6838,42 +10038,169 @@
       "comp": "Northern",
       "key": "13 N",
       "nq": [
-        "C|SELF",
-        "S|KUNDU",
-        "H|FLOWERS",
-        "G|LEWIS",
+        "A|BHATTACHARYA",
         "A|MORRIS",
-        "J|DORAN",
-        "M|PRITCHARD",
-        "T|HUSSELBEE",
+        "B|HART",
+        "C|AUSTIN",
+        "C|MELLOR",
+        "C|SELF",
+        "D|LEACH",
+        "F|ADAIR",
+        "F|EARLAM",
+        "G|LEWIS",
+        "G|PANAYI",
         "G|WILLIAMS",
         "H|BLOFIELD",
-        "T|FLETCHER",
-        "T|FLETCHER",
         "H|BROMLEY-DAVENPORT",
-        "S|STYLES",
-        "C|MELLOR",
-        "R|MALIK",
-        "W|WHITE",
-        "P|PEEL",
-        "M|YATES",
-        "B|HART",
-        "D|LEACH",
-        "W|GIBBONS",
-        "T|BREESE",
-        "G|PANAYI",
-        "R|WILSON",
-        "A|BHATTACHARYA",
-        "T|WELTI",
-        "S|WELTI",
-        "Q|QUIRK",
-        "M|HULSE",
-        "C|AUSTIN",
-        "S|SIMMONS",
-        "P|PHILLIPS",
+        "H|FLOWERS",
         "H|HENDERSON",
-        "F|ADAIR",
-        "F|EARLAM"
+        "J|DORAN",
+        "M|HULSE",
+        "M|PRITCHARD",
+        "M|YATES",
+        "P|PEEL",
+        "P|PHILLIPS",
+        "Q|QUIRK",
+        "R|MALIK",
+        "R|WILSON",
+        "S|KUNDU",
+        "S|SIMMONS",
+        "S|STYLES",
+        "S|WELTI",
+        "T|BREESE",
+        "T|FLETCHER",
+        "T|HUSSELBEE",
+        "T|WELTI",
+        "W|GIBBONS",
+        "W|WHITE"
+      ],
+      "nqTeams": [
+        {
+          "team": "C.Self & S.Kundu",
+          "players": [
+            "C|SELF",
+            "S|KUNDU"
+          ]
+        },
+        {
+          "team": "H.Flowers & G.Lewis",
+          "players": [
+            "H|FLOWERS",
+            "G|LEWIS"
+          ]
+        },
+        {
+          "team": "A.Morris & J.Doran",
+          "players": [
+            "A|MORRIS",
+            "J|DORAN"
+          ]
+        },
+        {
+          "team": "M.Pritchard & T.Husselbee",
+          "players": [
+            "M|PRITCHARD",
+            "T|HUSSELBEE"
+          ]
+        },
+        {
+          "team": "Guy Williams & H.Blofield",
+          "players": [
+            "G|WILLIAMS",
+            "H|BLOFIELD"
+          ]
+        },
+        {
+          "team": "Tom Fletcher & Tim Fletcher",
+          "players": [
+            "T|FLETCHER",
+            "T|FLETCHER"
+          ]
+        },
+        {
+          "team": "H.Bromley-Davenport & Styles",
+          "players": [
+            "H|BROMLEY-DAVENPORT",
+            "S|STYLES"
+          ]
+        },
+        {
+          "team": "C.Mellor & R.Malik",
+          "players": [
+            "C|MELLOR",
+            "R|MALIK"
+          ]
+        },
+        {
+          "team": "White & Peel",
+          "players": [
+            "W|WHITE",
+            "P|PEEL"
+          ]
+        },
+        {
+          "team": "M.Yates & B.Hart",
+          "players": [
+            "M|YATES",
+            "B|HART"
+          ]
+        },
+        {
+          "team": "D.Leach & W.Gibbons",
+          "players": [
+            "D|LEACH",
+            "W|GIBBONS"
+          ]
+        },
+        {
+          "team": "T.Breese & G.Panayi",
+          "players": [
+            "T|BREESE",
+            "G|PANAYI"
+          ]
+        },
+        {
+          "team": "R.Wilson & Ab.Bhattacharya",
+          "players": [
+            "R|WILSON",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "T.Welti & S.Welti",
+          "players": [
+            "T|WELTI",
+            "S|WELTI"
+          ]
+        },
+        {
+          "team": "Quirk & M.Hulse",
+          "players": [
+            "Q|QUIRK",
+            "M|HULSE"
+          ]
+        },
+        {
+          "team": "C.Austin & S.Simmons",
+          "players": [
+            "C|AUSTIN",
+            "S|SIMMONS"
+          ]
+        },
+        {
+          "team": "Phillips & Henderson",
+          "players": [
+            "P|PHILLIPS",
+            "H|HENDERSON"
+          ]
+        },
+        {
+          "team": "F.Adair & F.Earlam",
+          "players": [
+            "F|ADAIR",
+            "F|EARLAM"
+          ]
+        }
       ],
       "matches": [
         {
@@ -6996,36 +10323,141 @@
       "comp": "London",
       "key": "12 L",
       "nq": [
-        "V|BHIMJIYANI",
-        "S|TAILOR",
-        "R|HOULDEN",
-        "F|TOMLINSON",
-        "R|PATTISON",
-        "S|WARREN-THOMAS",
-        "C|CHOKSI",
-        "S|SHAH",
-        "J|HUTCHESON",
-        "O|SANDER",
-        "S|WILLIAMS",
         "A|CRAWFORD",
-        "I|MITCHELL",
-        "R|MORGAN",
-        "M|SKJOTT",
-        "J|SAUNDERS",
         "A|TANSEY",
-        "M|WINTLE",
-        "S|SHAH",
-        "S|SHAH",
-        "J|ALSTER",
-        "L|NELSON-JONES",
-        "N|BUNYAN",
-        "R|WILSON",
-        "J|LAWRENCE",
-        "D|REDMOND",
-        "D|PATEL",
-        "N|PATEL",
+        "C|CHOKSI",
         "C|COOLEY",
-        "K|HIRD"
+        "D|PATEL",
+        "D|REDMOND",
+        "F|TOMLINSON",
+        "I|MITCHELL",
+        "J|ALSTER",
+        "J|HUTCHESON",
+        "J|LAWRENCE",
+        "J|SAUNDERS",
+        "K|HIRD",
+        "L|NELSON-JONES",
+        "M|SKJOTT",
+        "M|WINTLE",
+        "N|BUNYAN",
+        "N|PATEL",
+        "O|SANDER",
+        "R|HOULDEN",
+        "R|MORGAN",
+        "R|PATTISON",
+        "R|WILSON",
+        "S|SHAH",
+        "S|TAILOR",
+        "S|WARREN-THOMAS",
+        "S|WILLIAMS",
+        "V|BHIMJIYANI"
+      ],
+      "nqTeams": [
+        {
+          "team": "V.Bhimjiyani & S.Tailor",
+          "players": [
+            "V|BHIMJIYANI",
+            "S|TAILOR"
+          ]
+        },
+        {
+          "team": "R.Houlden & F.Tomlinson",
+          "players": [
+            "R|HOULDEN",
+            "F|TOMLINSON"
+          ]
+        },
+        {
+          "team": "R.Pattison & S.Warren-Thomas",
+          "players": [
+            "R|PATTISON",
+            "S|WARREN-THOMAS"
+          ]
+        },
+        {
+          "team": "Choksi & Shah",
+          "players": [
+            "C|CHOKSI",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "J.Hutcheson & O.Sander",
+          "players": [
+            "J|HUTCHESON",
+            "O|SANDER"
+          ]
+        },
+        {
+          "team": "S.Williams & A.Crawford",
+          "players": [
+            "S|WILLIAMS",
+            "A|CRAWFORD"
+          ]
+        },
+        {
+          "team": "I.Mitchell & R.Morgan",
+          "players": [
+            "I|MITCHELL",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "M.Skjott & J.Saunders",
+          "players": [
+            "M|SKJOTT",
+            "J|SAUNDERS"
+          ]
+        },
+        {
+          "team": "A.Tansey & M.Wintle",
+          "players": [
+            "A|TANSEY",
+            "M|WINTLE"
+          ]
+        },
+        {
+          "team": "Shah & Shah",
+          "players": [
+            "S|SHAH",
+            "S|SHAH"
+          ]
+        },
+        {
+          "team": "J.Alster & L.Nelson-Jones",
+          "players": [
+            "J|ALSTER",
+            "L|NELSON-JONES"
+          ]
+        },
+        {
+          "team": "N.Bunyan & R.Wilson",
+          "players": [
+            "N|BUNYAN",
+            "R|WILSON"
+          ]
+        },
+        {
+          "team": "J.Lawrence & D.Redmond",
+          "players": [
+            "J|LAWRENCE",
+            "D|REDMOND"
+          ]
+        },
+        {
+          "team": "D.Patel & N.Patel",
+          "players": [
+            "D|PATEL",
+            "N|PATEL"
+          ]
+        },
+        {
+          "team": "C.Cooley & K.Hird",
+          "players": [
+            "C|COOLEY",
+            "K|HIRD"
+          ]
+        }
       ],
       "matches": [
         {
@@ -7149,37 +10581,150 @@
       "key": "12 K",
       "nq": [
         "A|BHATTACHARYA",
-        "A|BHATTACHARYA",
-        "P|LYNDON",
-        "I|MITCHELL",
-        "E|CHRISTIE",
-        "H|BROMLEY-DAVENPORT",
-        "P|BOUGHTON",
-        "S|WOOLFRIES",
-        "J|TUGWELL",
-        "M|ASQUITH",
-        "A|TAYLOR",
-        "W|SKJOTT",
-        "J|LAWRENCE",
-        "M|GOLDMAN",
-        "A|PEEL",
-        "C|WHITE",
         "A|KNIGHT",
-        "J|HEPBURN",
-        "N|COX",
-        "H|TURNBULL",
-        "S|MOORE",
+        "A|PEEL",
         "A|ROWLES",
-        "W|BETTS",
-        "T|BETTS",
-        "K|HIRD",
-        "R|MORGAN",
-        "T|BARKER",
-        "H|RAVI",
+        "A|TAYLOR",
         "C|JONES",
-        "J|FLOWERS",
+        "C|WHITE",
+        "E|CHRISTIE",
         "H|BLOFIELD",
-        "H|FLOWERS"
+        "H|BROMLEY-DAVENPORT",
+        "H|FLOWERS",
+        "H|RAVI",
+        "H|TURNBULL",
+        "I|MITCHELL",
+        "J|FLOWERS",
+        "J|HEPBURN",
+        "J|LAWRENCE",
+        "J|TUGWELL",
+        "K|HIRD",
+        "M|ASQUITH",
+        "M|GOLDMAN",
+        "N|COX",
+        "P|BOUGHTON",
+        "P|LYNDON",
+        "R|MORGAN",
+        "S|MOORE",
+        "S|WOOLFRIES",
+        "T|BARKER",
+        "T|BETTS",
+        "W|BETTS",
+        "W|SKJOTT"
+      ],
+      "nqTeams": [
+        {
+          "team": "Ar.Bhattacharya & Ab.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        },
+        {
+          "team": "P.Lyndon & I.Mitchell",
+          "players": [
+            "P|LYNDON",
+            "I|MITCHELL"
+          ]
+        },
+        {
+          "team": "E.Christie & H.Bromley-Davenport",
+          "players": [
+            "E|CHRISTIE",
+            "H|BROMLEY-DAVENPORT"
+          ]
+        },
+        {
+          "team": "P.Boughton & S.Woolfries",
+          "players": [
+            "P|BOUGHTON",
+            "S|WOOLFRIES"
+          ]
+        },
+        {
+          "team": "J.Tugwell & M.Asquith",
+          "players": [
+            "J|TUGWELL",
+            "M|ASQUITH"
+          ]
+        },
+        {
+          "team": "A.Taylor & W.Skjott",
+          "players": [
+            "A|TAYLOR",
+            "W|SKJOTT"
+          ]
+        },
+        {
+          "team": "J.Lawrence & M.Goldman",
+          "players": [
+            "J|LAWRENCE",
+            "M|GOLDMAN"
+          ]
+        },
+        {
+          "team": "A.Peel & C.White",
+          "players": [
+            "A|PEEL",
+            "C|WHITE"
+          ]
+        },
+        {
+          "team": "A.Knight & J.Hepburn",
+          "players": [
+            "A|KNIGHT",
+            "J|HEPBURN"
+          ]
+        },
+        {
+          "team": "N.Cox & H.Turnbull",
+          "players": [
+            "N|COX",
+            "H|TURNBULL"
+          ]
+        },
+        {
+          "team": "S.Moore & A.Rowles",
+          "players": [
+            "S|MOORE",
+            "A|ROWLES"
+          ]
+        },
+        {
+          "team": "W.Betts & T.Betts",
+          "players": [
+            "W|BETTS",
+            "T|BETTS"
+          ]
+        },
+        {
+          "team": "K.Hird & R.Morgan",
+          "players": [
+            "K|HIRD",
+            "R|MORGAN"
+          ]
+        },
+        {
+          "team": "T.Barker & H.Ravi",
+          "players": [
+            "T|BARKER",
+            "H|RAVI"
+          ]
+        },
+        {
+          "team": "C.Jones & J.Flowers",
+          "players": [
+            "C|JONES",
+            "J|FLOWERS"
+          ]
+        },
+        {
+          "team": "H.Blofield & H.Flowers",
+          "players": [
+            "H|BLOFIELD",
+            "H|FLOWERS"
+          ]
+        }
       ],
       "matches": [
         {
@@ -7430,38 +10975,151 @@
       "comp": "Northern",
       "key": "12 N",
       "nq": [
-        "J|TSE",
-        "R|SALMON",
-        "E|CHRISTIE",
-        "H|BROMLEY-DAVENPORT",
-        "S|STYLES",
-        "C|CROFT",
-        "J|LAWRENCE",
-        "D|REDMOND",
-        "C|SELF",
-        "S|KUNDU",
-        "G|WILLIAMS",
-        "M|RIMINI",
-        "C|JONES",
-        "R|MUCKLOW",
-        "B|BUNTING",
         "A|MORRIS",
+        "B|BUNTING",
+        "C|CROFT",
+        "C|JONES",
+        "C|SELF",
+        "D|REDMOND",
+        "E|CHRISTIE",
         "G|WILLIAMS",
-        "S|WELTI",
-        "P|WORTH",
-        "R|WORTH",
-        "N|BUNYAN",
-        "R|WILSON",
         "H|BLOFIELD",
-        "W|WHITE",
-        "T|BARKER",
+        "H|BROMLEY-DAVENPORT",
         "H|RAVI",
+        "J|LAWRENCE",
+        "J|TSE",
+        "M|PRITCHARD",
+        "M|RIMINI",
+        "N|BUNYAN",
+        "P|BOUGHTON",
+        "P|WORTH",
+        "R|MUCKLOW",
         "R|RICHARDS",
+        "R|SALMON",
+        "R|WILSON",
+        "R|WORTH",
+        "S|KUNDU",
         "S|SANSOM",
         "S|SIMMONS",
-        "M|PRITCHARD",
-        "P|BOUGHTON",
-        "T|STUBBS"
+        "S|STYLES",
+        "S|WELTI",
+        "T|BARKER",
+        "T|STUBBS",
+        "W|WHITE"
+      ],
+      "nqTeams": [
+        {
+          "team": "J.Tse & R.Salmon",
+          "players": [
+            "J|TSE",
+            "R|SALMON"
+          ]
+        },
+        {
+          "team": "E.Christie & H.Bromley-Davenport",
+          "players": [
+            "E|CHRISTIE",
+            "H|BROMLEY-DAVENPORT"
+          ]
+        },
+        {
+          "team": "Styles & Croft",
+          "players": [
+            "S|STYLES",
+            "C|CROFT"
+          ]
+        },
+        {
+          "team": "J.Lawrence & D.Redmond",
+          "players": [
+            "J|LAWRENCE",
+            "D|REDMOND"
+          ]
+        },
+        {
+          "team": "C.Self & S.Kundu",
+          "players": [
+            "C|SELF",
+            "S|KUNDU"
+          ]
+        },
+        {
+          "team": "Grant Williams & M.Rimini",
+          "players": [
+            "G|WILLIAMS",
+            "M|RIMINI"
+          ]
+        },
+        {
+          "team": "C.Jones & R.Mucklow",
+          "players": [
+            "C|JONES",
+            "R|MUCKLOW"
+          ]
+        },
+        {
+          "team": "Bunting & A.Morris",
+          "players": [
+            "B|BUNTING",
+            "A|MORRIS"
+          ]
+        },
+        {
+          "team": "Guy Williams & S.Welti",
+          "players": [
+            "G|WILLIAMS",
+            "S|WELTI"
+          ]
+        },
+        {
+          "team": "P.Worth & R.Worth",
+          "players": [
+            "P|WORTH",
+            "R|WORTH"
+          ]
+        },
+        {
+          "team": "N.Bunyan & R.Wilson",
+          "players": [
+            "N|BUNYAN",
+            "R|WILSON"
+          ]
+        },
+        {
+          "team": "H.Blofield & White",
+          "players": [
+            "H|BLOFIELD",
+            "W|WHITE"
+          ]
+        },
+        {
+          "team": "T.Barker & H.Ravi",
+          "players": [
+            "T|BARKER",
+            "H|RAVI"
+          ]
+        },
+        {
+          "team": "Richards & Sansom",
+          "players": [
+            "R|RICHARDS",
+            "S|SANSOM"
+          ]
+        },
+        {
+          "team": "S.Simmons & M.Pritchard",
+          "players": [
+            "S|SIMMONS",
+            "M|PRITCHARD"
+          ]
+        },
+        {
+          "team": "P.Boughton & T.Stubbs",
+          "players": [
+            "P|BOUGHTON",
+            "T|STUBBS"
+          ]
+        }
       ],
       "matches": [
         {
@@ -7584,22 +11242,80 @@
       "comp": "London",
       "key": "11 L",
       "nq": [
-        "J|LAWRENCE",
-        "M|GOLDMAN",
-        "T|BARKER",
         "A|CAMERON-BLACKIE",
         "A|CONSTANTINE",
-        "S|EGLUND-NEWBY",
-        "R|MORGAN",
-        "A|NICE",
-        "J|MARKS",
-        "P|NICHOLS",
-        "N|BUNYAN",
-        "I|MITCHELL",
-        "H|TURNBULL",
         "A|KNIGHT",
+        "A|NICE",
+        "H|TURNBULL",
+        "I|MITCHELL",
+        "J|LAWRENCE",
+        "J|MARKS",
+        "M|CHANRAI",
+        "M|GOLDMAN",
         "M|MOSTAFAVI",
-        "M|CHANRAI"
+        "N|BUNYAN",
+        "P|NICHOLS",
+        "R|MORGAN",
+        "S|EGLUND-NEWBY",
+        "T|BARKER"
+      ],
+      "nqTeams": [
+        {
+          "team": "J.Lawrence & M.Goldman",
+          "players": [
+            "J|LAWRENCE",
+            "M|GOLDMAN"
+          ]
+        },
+        {
+          "team": "T.Barker & A.Cameron-Blackie",
+          "players": [
+            "T|BARKER",
+            "A|CAMERON-BLACKIE"
+          ]
+        },
+        {
+          "team": "A.Constantine & S.Eglund-Newby",
+          "players": [
+            "A|CONSTANTINE",
+            "S|EGLUND-NEWBY"
+          ]
+        },
+        {
+          "team": "R.Morgan & A.Nice",
+          "players": [
+            "R|MORGAN",
+            "A|NICE"
+          ]
+        },
+        {
+          "team": "J.Marks & P.Nichols",
+          "players": [
+            "J|MARKS",
+            "P|NICHOLS"
+          ]
+        },
+        {
+          "team": "N.Bunyan & I.Mitchell",
+          "players": [
+            "N|BUNYAN",
+            "I|MITCHELL"
+          ]
+        },
+        {
+          "team": "H.Turnbull & A.Knight",
+          "players": [
+            "H|TURNBULL",
+            "A|KNIGHT"
+          ]
+        },
+        {
+          "team": "M.Mostafavi & M.Chanrai",
+          "players": [
+            "M|MOSTAFAVI",
+            "M|CHANRAI"
+          ]
+        }
       ],
       "matches": [
         {
@@ -7722,8 +11438,16 @@
       "comp": "London",
       "key": "25 L",
       "nq": [
-        "A|BHATTACHARYA",
         "A|BHATTACHARYA"
+      ],
+      "nqTeams": [
+        {
+          "team": "Ar.Bhattacharya & Ab.Bhattacharya",
+          "players": [
+            "A|BHATTACHARYA",
+            "A|BHATTACHARYA"
+          ]
+        }
       ],
       "matches": [
         {
