@@ -265,6 +265,23 @@
                   const l = Array.isArray(m.losers) ? m.losers : [];
                   return w.includes(playerKey) || l.includes(playerKey);
                 });
+                  // Prefer showing the actual team (player & partner) from match lines
+                  if (matches.length > 0) {
+                    const first = matches[0];
+                    const wTeam = (first.winnerTeam || "").toString();
+                    const lTeam = (first.loserTeam || "").toString();
+                    if (wTeam.toUpperCase().includes(playerKey)) playerTeam = wTeam;
+                    else if (lTeam.toUpperCase().includes(playerKey)) playerTeam = lTeam;
+                  } else {
+                    // If Non-Qualifier, show team from nqTeams (player & partner)
+                    const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
+                    if (inNQ) {
+                      const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+                      const hit = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
+                      if (hit && hit.team) playerTeam = hit.team;
+                    }
+                  }
+
 
                 if (matches.length === 0) {
                   body += `<div class="match">No match lines found for this player in this tournament.</div>`;
