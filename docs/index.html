@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Eton Fives Rankings</title>
+
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:24px}
+header{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap}
+h1{margin:0}
+.meta{font-size:14px;color:#555;min-height:20px}
+.actions a{border:1px solid #ccc;border-radius:10px;padding:10px 12px;text-decoration:none;color:#111}
+.table-wrap{border:1px solid #ddd;border-radius:14px;overflow:auto}
+table{border-collapse:separate;border-spacing:0}
+th,td{padding:6px 10px;border-bottom:1px solid #eee;white-space:nowrap}
+thead th{background:#fafafa;position:sticky;top:0;z-index:5;cursor:pointer}
+.result-cell{text-align:center;font-weight:600}
+.res-W{background:#c6efce}
+.res-F{background:#d9e1f2}
+.res-SF{background:#fff2cc}
+.res-QF{background:#fce4d6}
+.res-L16{background:#fde9d9}
+.res-NQ{background:#f8cbad}
+.res-P{background:#e7e6e6}
+
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:22px;width:min(720px,100%);max-height:80vh;overflow:auto}
+.modal-head{padding:18px;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+.modal-body{padding:18px}
+.card{border:1px solid #eee;border-radius:18px;padding:14px;margin-bottom:12px;background:#fafafa}
+.round{font-size:22px;font-weight:800;margin-top:16px}
+.match{border:1px solid #eee;border-radius:14px;padding:12px;margin-top:10px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;margin-right:6px}
+.pill-won{background:#c6efce}
+.pill-lost{background:#f8cbad}
+</style>
+</head>
+
+<body>
+<header>
+  <div>
+    <h1>Eton Fives Rankings</h1>
+    <div id="status" class="meta">Loading…</div>
+  </div>
+  <div class="actions">
+    <a href="./downloads/rankings_latest.xlsx">Download XLSX</a>
+    <a href="./downloads/rankings_latest.csv">Download CSV</a>
+    <a href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml">Submit results</a>
+  </div>
+</header>
+
+<div class="table-wrap">
+<table id="rankings">
+  <thead><tr id="thead"></tr></thead>
+  <tbody></tbody>
+</table>
+</div>
+
+<div class="modal-backdrop" id="backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <div id="modalTitle" style="font-size:26px;font-weight:800"></div>
+        <div id="modalSubtitle" style="color:#666"></div>
+      </div>
+      <button onclick="closeModal()">Close</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const statusEl = document.getElementById("status");
+const thead = document.getElementById("thead");
+const tbody = document.querySelector("#rankings tbody");
+
+let matchesIndex=null;
+
+function normalise(s){
+  return s.replace(/\s+/g," ").trim().toUpperCase();
+}
+
+function closeModal(){
+  document.getElementById("backdrop").style.display="none";
+}
+
+function openModal(title,subtitle,html){
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalSubtitle").textContent=subtitle;
+  document.getElementById("modalBody").innerHTML=html;
+  document.getElementById("backdrop").style.display="flex";
+}
+
+async function load(){
+  try{
+    const rankings=await fetch("data/rankings_latest.json").then(r=>r.json());
+    matchesIndex=await fetch("data/matches_latest.json").then(r=>r.json());
+
+    const cols=Object.keys(rankings[0]);
+    cols.forEach(c=>{
+      const th=document.createElement("th");
+      th.textContent=c;
+      thead.appendChild(th);
+    });
+
+    rankings.forEach(row=>{
+      const tr=document.createElement("tr");
+      cols.forEach((c,i)=>{
+        const td=document.createElement("td");
+        const val=row[c]||"";
+        td.textContent=val;
+
+        if(/^\d{2}\s*[A-Z]$/i.test(c)){
+          td.classList.add("result-cell","res-"+val);
+          td.onclick=()=>{
+            const headerText=thead.children[i].innerText;
+            const colKey=matchesIndex.colToKey[normalise(headerText)];
+            const tourn=matchesIndex.tournaments[colKey];
+            if(!tourn) return;
+
+            const player=`${row.Initial}.${row.Surname}`.toUpperCase();
+            let team=player;
+            if(tourn.nqTeams){
+              const t=tourn.nqTeams.find(t=>t.players.includes(player));
+              if(t) team=t.team;
+            }
+
+            let html=`<div class="card"><span class="pill">${val}</span><b>${team}</b></div>`;
+
+            const matches=tourn.matches.filter(m=>m.winners.includes(player)||m.losers.includes(player));
+            ["Last 16","Quarter-Finals","Semi-Finals","Final"].forEach(r=>{
+              const ms=matches.filter(m=>m.round===r);
+              if(!ms.length) return;
+              html+=`<div class="round">${r}</div>`;
+              ms.forEach(m=>{
+                const won=m.winners.includes(player);
+                html+=`
+                  <div class="match">
+                    <span class="pill ${won?"pill-won":"pill-lost"}">${won?"Won":"Lost"}</span>
+                    <b>${won?"beat":"lost to"}</b> ${won?m.loserTeam:m.winnerTeam}<br>
+                    ${m.score}
+                  </div>`;
+              });
+            });
+
+            openModal(
+              `${row.Initial}. ${row.Surname}`,
+              `${tourn.year} ${tourn.tournament} (${val})`,
+              html
+            );
+          };
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    statusEl.textContent="Loaded";
+  }catch(e){
+    statusEl.textContent=e.message;
+  }
+}
+
+load();
+</script>
+</body>
+</html>
