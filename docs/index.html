@@ -215,26 +215,32 @@
           table.querySelectorAll("thead th").forEach(th => th.classList.remove("sorted-asc","sorted-desc"));
         }
 
-        function sortBy(idx){
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          const asc = (sortState.idx === idx) ? !sortState.asc : true;
-          sortState = { idx, asc };
+        function sortBy(idx, forceAsc = null){
+  const rows = Array.from(tbody.querySelectorAll("tr"));
 
-          clearIndicators();
-          const th = table.querySelectorAll("thead th")[idx];
-          th.classList.add(asc ? "sorted-asc" : "sorted-desc");
+  const asc =
+    (forceAsc === true) ? true :
+    (forceAsc === false) ? false :
+    (sortState.idx === idx) ? !sortState.asc : true;
 
-          rows.sort((a,b)=>{
-            const av = (a.children[idx]?.textContent ?? "").trim();
-            const bv = (b.children[idx]?.textContent ?? "").trim();
-            const an = Number(av), bn = Number(bv);
-            const anOk = av !== "" && !Number.isNaN(an);
-            const bnOk = bv !== "" && !Number.isNaN(bn);
-            if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
-            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
-          });
-          rows.forEach(r => tbody.appendChild(r));
-        }
+  sortState = { idx, asc };
+
+  clearIndicators();
+  const th = table.querySelectorAll("thead th")[idx];
+  th.classList.add(asc ? "sorted-asc" : "sorted-desc");
+
+  rows.sort((a,b)=>{
+    const av = (a.children[idx]?.textContent ?? "").trim();
+    const bv = (b.children[idx]?.textContent ?? "").trim();
+    const an = Number(av), bn = Number(bv);
+    const anOk = av !== "" && !Number.isNaN(an);
+    const bnOk = bv !== "" && !Number.isNaN(bn);
+    if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
+    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+
+  rows.forEach(r => tbody.appendChild(r));
+}
 
         table.querySelectorAll("thead th").forEach((th, idx)=>{
           th.addEventListener("click", ()=>sortBy(idx));
@@ -256,7 +262,8 @@
 
         // default sort by Rank ascending (rank 1 at top)
         sortState = { idx: 0, asc: true };
-        sortBy(0);
+        // force Rank ascending on load (rank 1 at top)
+        sortBy(0, true);
       }
 
       (async function main(){
