@@ -185,7 +185,7 @@ def parse_results(tournaments: Dict[str, List[str]]) -> pd.DataFrame:
                     rows.append((tname, "NQ", name.strip()))
 
         # Last 16
-for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
+        for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
             txt = apply_loser_gsub(line)
             for name in txt.split(" & "):
                 rows.append((tname, "L16", name.strip()))
