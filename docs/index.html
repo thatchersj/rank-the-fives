@@ -151,6 +151,13 @@
       function normColKey(s){
         return normWs(s).toUpperCase();
       }
+      function normaliseColumn(colText) {
+        return (colText || "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .toUpperCase();
+      }
+
       function escapeHtml(s){
         return (s ?? "").toString()
           .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
