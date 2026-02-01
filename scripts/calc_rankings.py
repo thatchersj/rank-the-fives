@@ -352,7 +352,20 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     all_df = all_df.merge(players.reset_index().rename(columns={"index": "p"}), on="p", how="left")
 
     m = all_df.merge(dt1[["Tournament", "Initial", "Surname", "Round"]], on=["Tournament", "Initial", "Surname"], how="left")
-    m = ensure_initial_surname(m)
+    # Ensure Initial/Surname are present (never derive from numeric 'p')
+    players_idx = players.reset_index().rename(columns={"index": "p"})
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left")
+    else:
+        # In case merges created suffixed columns, prefer the player lookup values
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left", suffixes=("", "_pl"))
+        if "Initial_pl" in m.columns:
+            m["Initial"] = m["Initial"].fillna(m["Initial_pl"])
+            m["Surname"] = m["Surname"].fillna(m["Surname_pl"])
+            m = m.drop(columns=["Initial_pl", "Surname_pl"])
+    # If still missing (unexpected), try deriving from a true name column
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = ensure_initial_surname(m)
     m["Round"] = m["Round"].fillna("DNS")
 
     m["Comp"] = pd.Categorical(m["Comp"], categories=["Northern", "Kinnaird", "London"], ordered=True)
@@ -365,7 +378,20 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     m = adjust_leading_dns_to_na(m)
 
     # Ensure player identifiers exist before ranking computation
-    m = ensure_initial_surname(m)
+    # Ensure Initial/Surname are present (never derive from numeric 'p')
+    players_idx = players.reset_index().rename(columns={"index": "p"})
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left")
+    else:
+        # In case merges created suffixed columns, prefer the player lookup values
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left", suffixes=("", "_pl"))
+        if "Initial_pl" in m.columns:
+            m["Initial"] = m["Initial"].fillna(m["Initial_pl"])
+            m["Surname"] = m["Surname"].fillna(m["Surname_pl"])
+            m = m.drop(columns=["Initial_pl", "Surname_pl"])
+    # If still missing (unexpected), try deriving from a true name column
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = ensure_initial_surname(m)
     # Fallback: if Initial/Surname were lost, re-attach from player index mapping
     if 'Initial' not in m.columns or 'Surname' not in m.columns:
         _players_map = players.reset_index().rename(columns={'index': 'p'})[['p','Initial','Surname']]
@@ -386,7 +412,20 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     m["YC"] = pd.Categorical(m["Year"].astype(str) + " " + m["Comp"].astype(str), categories=level_order, ordered=True)
     m["RoundDisp"] = m["Round"].replace({"NA": "", "DNS": "P"})
 
-    m = ensure_initial_surname(m)
+    # Ensure Initial/Surname are present (never derive from numeric 'p')
+    players_idx = players.reset_index().rename(columns={"index": "p"})
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left")
+    else:
+        # In case merges created suffixed columns, prefer the player lookup values
+        m = m.merge(players_idx[["p", "Initial", "Surname"]], on="p", how="left", suffixes=("", "_pl"))
+        if "Initial_pl" in m.columns:
+            m["Initial"] = m["Initial"].fillna(m["Initial_pl"])
+            m["Surname"] = m["Surname"].fillna(m["Surname_pl"])
+            m = m.drop(columns=["Initial_pl", "Surname_pl"])
+    # If still missing (unexpected), try deriving from a true name column
+    if "Initial" not in m.columns or "Surname" not in m.columns:
+        m = ensure_initial_surname(m)
 
 
     pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
