@@ -97,6 +97,115 @@ def ensure_initial_surname(df: pd.DataFrame) -> pd.DataFrame:
 
 
 
+
+
+import datetime
+
+
+ROUND_HEADER_RE = re.compile(
+    r"^(non\s*-?\s*qualifiers?|last\s*16|quarter\s*-?\s*finals?|semi\s*-?\s*finals?|final)$",
+    re.I
+)
+
+def parse_non_qualifiers_clean(z: List[str]) -> List[str]:
+    nq_parts: List[str] = []
+    for i, raw in enumerate(z):
+        s = _norm_dash(raw).strip()
+        if re.match(r"^non\s*-?\s*qualifiers?", s, flags=re.I):
+            inline = re.sub(r"^non\s*-?\s*qualifiers?\s*:?", "", s, flags=re.I).strip()
+            if inline:
+                nq_parts.append(inline)
+            j = i + 1
+            while j < len(z):
+                sj = _norm_dash(z[j]).strip()
+                if not sj:
+                    j += 1
+                    continue
+                if ROUND_HEADER_RE.match(sj):
+                    break
+                nq_parts.append(sj)
+                j += 1
+            break
+    if not nq_parts:
+        return []
+    blob = ", ".join([p for p in nq_parts if p])
+    people: List[str] = []
+    for part in [p.strip() for p in blob.split(",") if p.strip()]:
+        for name in [n.strip() for n in part.split(" & ") if n.strip()]:
+            people.append(name)
+    return people
+
+def _name_to_key(name: str) -> str:
+    s = str(name).strip().upper()
+    s = s.replace("DE ", "DE").replace("VAN ", "VAN").replace("SOUZA GIRAO", "SOUZAGIRAO")
+    s = s.replace(" ", ".")
+    if "." in s:
+        initial = re.sub(r"[^A-Z]", "", s.split(".")[0])[:1]
+        surname = re.sub(r"[^A-Z\-\']", "", s.split(".")[-1])
+    else:
+        parts = re.sub(r"\s+", " ", s).split(" ")
+        initial = re.sub(r"[^A-Z]", "", parts[0])[:1] if parts else ""
+        surname = re.sub(r"[^A-Z\-\']", "", parts[-1]) if parts else ""
+    return f"{initial}|{surname}"
+
+MATCH_RE = re.compile(
+    r"^(?P<wteam>[A-Za-z0-9\.\'\- ]+?\s*&\s*[A-Za-z0-9\.\'\- ]+?)\s+(?:bt|beat)\s+(?P<lteam>[A-Za-z0-9\.\'\- ]+?\s*&\s*[A-Za-z0-9\.\'\- ]+?)(?:\s+(?P<score>.*))?$",
+    re.I
+)
+
+def parse_match_line(line: str) -> dict | None:
+    s = _norm_dash(line).strip()
+    m = MATCH_RE.match(s)
+    if not m:
+        return None
+    wteam = re.sub(r"\s+", " ", m.group("wteam").strip())
+    lteam = re.sub(r"\s+", " ", m.group("lteam").strip())
+    score = (m.group("score") or "").strip()
+    winners = [_name_to_key(x.strip()) for x in wteam.split("&")]
+    losers = [_name_to_key(x.strip()) for x in lteam.split("&")]
+    return {"winnerTeam": wteam, "loserTeam": lteam, "score": score, "winners": winners, "losers": losers, "raw": s}
+
+def parse_match_details(tournaments: Dict[str, List[str]]) -> dict:
+    out = {"schema": 1, "generatedAt": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z", "tournaments": {}}
+    for tname, block in tournaments.items():
+        if not block:
+            continue
+        if block[0].strip() == "Not held":
+            continue
+        try:
+            year_str, comp = tname.split(" ", 1)
+            year = int(year_str)
+        except Exception:
+            continue
+        comp_letter = comp.strip()[0].upper()
+        short = f"{year % 100:02d} {comp_letter}"
+        z = clean_block(block)
+        tinfo = {"tournament": tname, "year": year, "comp": comp, "key": short,
+                 "nq": [_name_to_key(n) for n in parse_non_qualifiers_clean(z)], "matches": []}
+        for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
+            pm = parse_match_line(line)
+            if pm:
+                pm["round"]="L16"; pm["roundName"]="Last 16"; tinfo["matches"].append(pm)
+        for line in segment_between(z, r"Quarter[- ]Finals", r"Semi-Finals", 1):
+            pm = parse_match_line(line)
+            if pm:
+                pm["round"]="QF"; pm["roundName"]="Quarter-Finals"; tinfo["matches"].append(pm)
+        for line in segment_between(z, r"Semi-Finals", r"Final$", 1):
+            pm = parse_match_line(line)
+            if pm:
+                pm["round"]="SF"; pm["roundName"]="Semi-Finals"; tinfo["matches"].append(pm)
+        final_line=None
+        for i, s in enumerate(z):
+            if re.search(r"Final$", _norm_dash(s), flags=re.I):
+                if i+1 < len(z):
+                    final_line=z[i+1]
+                break
+        if final_line:
+            pm=parse_match_line(final_line)
+            if pm:
+                pm["round"]="F"; pm["roundName"]="Final"; tinfo["matches"].append(pm)
+        out["tournaments"][short]=tinfo
+    return out
 LOSER_RE = re.compile(r".* (bt|beat) ([A-z.\' -]* & [A-z.\' -]*) .*", flags=re.I)
 WINNER_RE = re.compile(r"([A-z.\' -]* & [A-z.\' -]*) (bt|beat) ([A-z.\' -]* & [A-z.\' -]*) .*", flags=re.I)
 
@@ -129,16 +238,24 @@ def read_tournaments(results_file: Path) -> Dict[str, List[str]]:
 def clean_block(block: List[str]) -> List[str]:
     z = [s.strip() for s in block if s.strip() != ""]
     z = [s.replace(":", "") for s in z]
+    # Normalize unicode dashes/hyphens to '-' (helps with issue-submitted text)
+    z = [s.replace("\u2010", "-").replace("\u2011", "-").replace("\u2012", "-")
+           .replace("\u2013", "-").replace("\u2014", "-").replace("\u2212", "-") for s in z]
     # Insert a space after comma only when comma is between two word characters (matches doRanking.R)
     z = [re.sub(r"(\w),(\w)", r"\1, \2", s) for s in z]
     z = [re.sub(r"\([1-8]\)", "", s) for s in z]
     return [s.strip() for s in z]
 
 
+def _norm_dash(s: str) -> str:
+    return (s or '').replace('\u2010','-').replace('\u2011','-').replace('\u2012','-') \
+        .replace('\u2013','-').replace('\u2014','-').replace('\u2212','-')
+
+
 def segment_between(z: List[str], start_pat: str, end_pat: str | None, start_offset: int = 1) -> List[str]:
     s = None
     for i, line in enumerate(z):
-        if re.search(start_pat, line, flags=re.I):
+        if re.search(start_pat, _norm_dash(line), flags=re.I):
             s = i + start_offset
             break
     if s is None:
@@ -146,7 +263,7 @@ def segment_between(z: List[str], start_pat: str, end_pat: str | None, start_off
     e = len(z)
     if end_pat:
         for j in range(s, len(z)):
-            if re.search(end_pat, z[j], flags=re.I):
+            if re.search(end_pat, _norm_dash(z[j]), flags=re.I):
                 e = j
                 break
     return z[s:e]
@@ -172,19 +289,11 @@ def parse_results(tournaments: Dict[str, List[str]]) -> pd.DataFrame:
 
         z = clean_block(block)
 
-        # Non-qualifiers: only uses the line immediately after the "Non-qualifiers" header (as in doRanking.R)
-        nq_line = None
-        for i, s in enumerate(z):
-            if re.search("Non-qualifiers", s, flags=re.I):
-                if i + 1 < len(z):
-                    nq_line = z[i + 1]
-                break
-        if nq_line:
-            for part in nq_line.split(", "):
-                for name in part.split(" & "):
-                    rows.append((tname, "NQ", name.strip()))
+                # Non-qualifiers
+        for name in parse_non_qualifiers_clean(z):
+            rows.append((tname, "NQ", name.strip()))
 
-        # Last 16
+# Last 16
         for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
             txt = apply_loser_gsub(line)
             for name in txt.split(" & "):
@@ -463,8 +572,15 @@ def main() -> None:
     json_path = args.outdir / "rankings_latest.json"
     json_path.write_text(records_df.to_json(orient="records"), encoding="utf-8")
 
+    # Save match details for click-through UI
+    matches_path = args.outdir / "matches_latest.json"
+    matches = parse_match_details(tournaments)
+    matches_path.write_text(json.dumps(matches, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
     print(f"Wrote {csv_path}")
     print(f"Wrote {json_path}")
+    print(f"Wrote {matches_path}")
 
 
 if __name__ == "__main__":
