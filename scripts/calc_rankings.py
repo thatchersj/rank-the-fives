@@ -22,7 +22,7 @@ import argparse
 import json
 import re
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -135,6 +135,40 @@ def parse_non_qualifiers_clean(z: List[str]) -> List[str]:
             people.append(name)
     return people
 
+def parse_non_qualifiers_pairs_clean(z: List[str]) -> List[Tuple[str, Optional[str], str]]:
+    """Return NQ teams as (player1, player2, team_display). player2 may be None."""
+    nq_parts: List[str] = []
+    for i, raw in enumerate(z):
+        s = _norm_dash(raw).strip()
+        if re.match(r"^non\s*-?\s*qualifiers?", s, flags=re.I):
+            inline = re.sub(r"^non\s*-?\s*qualifiers?\s*:?", "", s, flags=re.I).strip()
+            if inline:
+                nq_parts.append(inline)
+            j = i + 1
+            while j < len(z):
+                sj = _norm_dash(z[j]).strip()
+                if not sj:
+                    j += 1
+                    continue
+                if ROUND_HEADER_RE.match(sj):
+                    break
+                nq_parts.append(sj)
+                j += 1
+            break
+    if not nq_parts:
+        return []
+
+    blob = ", ".join([p for p in nq_parts if p])
+    teams: List[Tuple[str, Optional[str], str]] = []
+    for part in [p.strip() for p in blob.split(",") if p.strip()]:
+        # Prefer '&' pairs, but tolerate single names
+        if " & " in part:
+            a, b = [x.strip() for x in part.split(" & ", 1)]
+            teams.append((a, b, f"{a} & {b}"))
+        else:
+            teams.append((part, None, part))
+    return teams
+
 def _name_to_key(name: str) -> str:
     s = str(name).strip().upper()
     s = s.replace("DE ", "DE").replace("VAN ", "VAN").replace("SOUZA GIRAO", "SOUZAGIRAO")
@@ -180,8 +214,16 @@ def parse_match_details(tournaments: Dict[str, List[str]]) -> dict:
         comp_letter = comp.strip()[0].upper()
         short = f"{year % 100:02d} {comp_letter}"
         z = clean_block(block)
+        nq_teams = []
+        for a, b, team in parse_non_qualifiers_pairs_clean(z):
+            players = [_name_to_key(a)]
+            if b:
+                players.append(_name_to_key(b))
+            nq_teams.append({"team": team, "players": players})
         tinfo = {"tournament": tname, "year": year, "comp": comp, "key": short,
-                 "nq": [_name_to_key(n) for n in parse_non_qualifiers_clean(z)], "matches": []}
+                 "nq": sorted({p for t in nq_teams for p in t.get("players", [])}),
+                 "nqTeams": nq_teams,
+                 "matches": []}
         for line in segment_between(z, "Last 16", r"Quarter[- ]Final", 1):
             pm = parse_match_line(line)
             if pm:
