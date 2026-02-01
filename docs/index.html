@@ -383,8 +383,13 @@
           }
 
           const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
+          const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
+          if (inNQ && hitNQTeam && hitNQTeam.team) {
+            playerTeam = hitNQTeam.team;
+          }
 
-          const matches = (tourn.matches || []).filter(m => {
+const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
             const l = Array.isArray(m.losers) ? m.losers : [];
             return w.includes(playerKey) || l.includes(playerKey);
@@ -402,16 +407,6 @@
           if (!playerTeam) playerTeam = prettyPlayer;
 
           body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(playerTeam)}</b></div>`;
-
-
-          if (inNQ) {
-            const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
-            const hit = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
-            if (hit && hit.team) {
-              body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) with <b>${escapeHtml(hit.team)}</b>.</div>`;
-            } else {
-              body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) for this tournament.</div>`;
-            }
           }
 
           if (matches.length === 0) {
