@@ -11,18 +11,12 @@
     h1 { margin:0; font-size: 24px; }
     .meta { color:#555; font-size: 14px; min-height: 20px; }
     .actions { display:flex; gap:12px; flex-wrap:wrap; }
-    .actions a {
-      appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
-      background:white; cursor:pointer; text-decoration:none; color:#111; font-size:14px;
-    }
+    .actions a { border:1px solid #ccc; border-radius:10px; padding:10px 12px; background:white; text-decoration:none; color:#111; font-size:14px; }
     .actions a:hover { background:#f6f6f6; }
     .note { margin: 12px 0 14px; color:#666; font-size: 14px; line-height:1.4; }
     .small { font-size: 12px; color:#666; margin-top:6px; }
     .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 0 0 12px; }
-    .controls input {
-      appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
-      background:white; font-size:14px; min-width: 220px;
-    }
+    .controls input { border:1px solid #ccc; border-radius:10px; padding:10px 12px; background:white; font-size:14px; min-width: 220px; }
 
     .table-wrap{
       border:1px solid #ddd; border-radius:14px; overflow:auto;
@@ -34,113 +28,53 @@
     table { border-collapse: separate; border-spacing: 0; }
     #rankings{ width: max-content; min-width:100%; background:white; }
     #rankings thead th{
-      background:#fafafa;
-      border-bottom:1px solid #ddd;
-      font-weight:600;
-      white-space: nowrap;
-      padding: 6px 10px;
-      position: sticky; top: 0; z-index: 5;
-      cursor: pointer;
-      user-select: none;
-      touch-action: manipulation;
+      background:#fafafa; border-bottom:1px solid #ddd; font-weight:600; white-space: nowrap;
+      padding: 6px 10px; position: sticky; top: 0; z-index: 5;
+      cursor: pointer; user-select: none; touch-action: manipulation;
     }
-    #rankings td{
-      padding: 6px 10px;
-      border-right:1px solid #eee;
-      border-bottom:1px solid #eee;
-      white-space: nowrap;
-      background:white;
-    }
+    #rankings td{ padding: 6px 10px; border-right:1px solid #eee; border-bottom:1px solid #eee; white-space: nowrap; background:white; }
     #rankings tbody tr:nth-child(even) td{ background:#fcfcfc; }
 
     /* Sticky first 3 columns */
-    #rankings th:nth-child(1), #rankings td:nth-child(1){
-      position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
-      border-right:1px solid #ddd;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      background: inherit;
-    }
-    #rankings th:nth-child(2), #rankings td:nth-child(2){
-      position: sticky; left: 60px; z-index: 6; min-width:60px; max-width:60px;
-      border-right:1px solid #ddd;
-      text-align:center;
-      background: inherit;
-    }
-    #rankings th:nth-child(3), #rankings td:nth-child(3){
-      position: sticky; left: 120px; z-index: 6; min-width:190px; max-width:190px;
-      border-right:1px solid #ddd;
-      font-weight:600;
-      background: inherit;
-    }
-
-    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3),
-    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3){
-      background: white;
-    }
-    #rankings tbody tr:nth-child(even) td:nth-child(1),
-    #rankings tbody tr:nth-child(even) td:nth-child(2),
-    #rankings tbody tr:nth-child(even) td:nth-child(3){
-      background: #fcfcfc;
-    }
+    #rankings th:nth-child(1), #rankings td:nth-child(1){ position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px; border-right:1px solid #ddd; text-align:right; font-variant-numeric: tabular-nums; }
+    #rankings th:nth-child(2), #rankings td:nth-child(2){ position: sticky; left: 60px; z-index: 6; min-width:60px; max-width:60px; border-right:1px solid #ddd; text-align:center; }
+    #rankings th:nth-child(3), #rankings td:nth-child(3){ position: sticky; left: 120px; z-index: 6; min-width:190px; max-width:190px; border-right:1px solid #ddd; font-weight:600; }
 
     .result-cell{ text-align:center; font-weight:600; }
-
-    /* Colour coding (works on mobile because it's inline classes on TD) */
-    .res-W{ background:#c6efce !important; color:#006100 !important; }   /* Winner */
-    .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }   /* Final */
-    .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }  /* Semi */
-    .res-QF{ background:#fce4d6 !important; color:#7f2a00 !important; }  /* Quarter */
-    .res-L16{ background:#fde9d9 !important; color:#7f2a00 !important; } /* Last 16 */
-    .res-NQ{ background:#f8cbad !important; color:#833c0c !important; }  /* Non-qual */
-    .res-P{ background:#e7e6e6 !important; color:#444 !important; }      /* P */
+    .res-W{ background:#c6efce !important; color:#006100 !important; }
+    .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }
+    .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }
+    .res-QF{ background:#fce4d6 !important; color:#7f2a00 !important; }
+    .res-L16{ background:#fde9d9 !important; color:#7f2a00 !important; }
+    .res-NQ{ background:#f8cbad !important; color:#833c0c !important; }
+    .res-P{ background:#e7e6e6 !important; color:#444 !important; }
     .res-UNK{ background:#f2f2f2 !important; color:#555 !important; font-weight:500; }
 
     th.sorted-asc::after { content:" ▲"; font-weight:700; }
     th.sorted-desc::after { content:" ▼"; font-weight:700; }
-  
-    /* Modal for match details */
-    .modal-backdrop{
-      position: fixed; inset: 0; background: rgba(0,0,0,0.45);
-      display:none; align-items:center; justify-content:center;
-      padding: 16px; z-index: 1000;
-    }
-    .modal{
-      width: min(720px, 100%);
-      max-height: min(80vh, 720px);
-      overflow:auto;
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #ddd;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-    .modal header{
-      position: sticky; top: 0; z-index: 2;
-      background: white;
-      padding: 14px 16px;
-      border-bottom: 1px solid #eee;
-      display:flex; gap:12px; align-items:flex-start; justify-content:space-between;
-    }
-    .modal h2{ margin:0; font-size: 18px; }
-    .modal .close{
-      border: 1px solid #ccc; border-radius: 10px; padding: 8px 10px;
-      background: white; cursor: pointer; font-size: 14px;
-    }
-    .modal .content{ padding: 12px 16px 16px; }
-    .match-round{ margin: 14px 0 6px; font-weight: 700; }
-    .match{
-      padding: 10px 12px; border: 1px solid #eee; border-radius: 12px;
-      margin: 8px 0; background: #fafafa;
-    }
-    .match .line{ margin: 4px 0; }
-    .pill{
-      display:inline-block; padding: 2px 8px; border-radius: 999px;
-      border: 1px solid #ddd; background: white; font-size: 12px;
-      margin-right: 8px;
-    }
+
+    /* Modal */
+    .modal-backdrop{ position: fixed; inset: 0; background: rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; padding: 18px; z-index: 50; }
+    .modal{ width: min(720px, 100%); background: white; border-radius: 22px; box-shadow: 0 18px 60px rgba(0,0,0,0.25); overflow: hidden; }
+    .modal-head{ padding: 18px 18px 12px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px; border-bottom: 1px solid #eee; }
+    .modal-title{ font-size: 28px; font-weight: 800; letter-spacing: 0.5px; }
+    .modal-subtitle{ color:#666; margin-top: 2px; }
+    .modal-close{ border:1px solid #ddd; background:white; border-radius: 14px; padding: 10px 14px; cursor:pointer; font-size: 16px; }
+    .modal-body{ padding: 14px 18px 18px; max-height: min(70vh, 720px); overflow:auto; }
+
+    .card{ border:1px solid #eee; border-radius: 18px; padding: 14px; margin: 10px 0; background:#fafafa; }
+    .round{ font-size: 28px; font-weight: 800; margin: 16px 0 6px; }
+    .match{ border:1px solid #eee; border-radius: 18px; padding: 14px; margin: 10px 0; background:white; }
+    .line{ font-size: 22px; line-height:1.25; }
+    .pill{ display:inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid #ddd; background: white; font-size: 12px; margin-right: 8px; }
     .pill-won{ background:#c6efce; border-color:#9ccc9c; color:#0b5a0b; }
     .pill-lost{ background:#f8cbad; border-color:#f3a981; color:#7f2a00; }
 
+    @media (max-width: 500px){
+      .modal-title{ font-size: 22px; }
+      .line{ font-size: 18px; }
+      .round{ font-size: 22px; }
+    }
   </style>
 </head>
 
@@ -153,10 +87,7 @@
     <div class="actions">
       <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
       <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
-      <a
-        href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
-        target="_blank" rel="noopener"
-      >Submit new results</a>
+      <a href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate" target="_blank" rel="noopener">Submit new results</a>
     </div>
   </header>
 
@@ -166,7 +97,7 @@
   </div>
 
   <div class="controls">
-    <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
+    <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)" autocomplete="off" />
     <span class="small" id="count"></span>
   </div>
 
@@ -177,9 +108,20 @@
     </table>
   </div>
 
-  <noscript>
-    <p><b>This page needs JavaScript enabled</b> to load rankings.</p>
-  </noscript>
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <div>
+          <div class="modal-title" id="modalTitle">Match details</div>
+          <div class="modal-subtitle" id="modalSubtitle"></div>
+        </div>
+        <button class="modal-close" id="modalClose">Close</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <noscript><p><b>This page needs JavaScript enabled</b> to load rankings.</p></noscript>
 
   <script>
     (function(){
@@ -190,58 +132,76 @@
       const tbody = document.querySelector("#rankings tbody");
       const table = document.getElementById("rankings");
 
-      function normalizeResult(v) {
-        const s = (v ?? "").toString().trim().toUpperCase();
-        if (!s) return "";
-        return s.replace(/\s+/g, ""); // "L 16" -> "L16"
+      const modalBackdrop = document.getElementById("modalBackdrop");
+      const modalClose = document.getElementById("modalClose");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalSubtitle = document.getElementById("modalSubtitle");
+      const modalBody = document.getElementById("modalBody");
+
+      function escapeHtml(s){
+        return (s ?? "").toString()
+          .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
       }
-      function resultClass(v) {
+
+      // If anything blows up, show it instead of hanging on "Loading…"
+      window.addEventListener("error", (e) => {
+        statusEl.textContent = "JavaScript error: " + (e?.message || "unknown");
+      });
+
+      function normalizeResult(v){
+        const s = (v ?? "").toString().trim().toUpperCase();
+        return s ? s.replace(/\s+/g, "") : "";
+      }
+      function resultClass(v){
         const key = normalizeResult(v);
         if (!key) return null;
         if (["W","F","SF","QF","NQ","L16","P"].includes(key)) return "res-" + key;
         return "res-UNK";
       }
-      function looksLikeResultColumn(colName) {
-        // expected like "13 N" / "13N" / "13 K" etc
+      function looksLikeResultColumn(colName){
         return /^\d{2}\s*[NKL]$/i.test(colName.trim().replace(/\s+/g, " "));
       }
 
-      async function loadData() {
-        // IMPORTANT: relative to the current page URL (works on GH Pages project sites)
-        const url = new URL("data/rankings_latest.json", window.location.href);
+      async function fetchJsonRelative(rel){
+        const url = new URL(rel, window.location.href);
         const res = await fetch(url.toString(), { cache: "no-store" });
         if (!res.ok) throw new Error(`Failed to load ${url} (${res.status} ${res.statusText})`);
-        const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("No data found in rankings_latest.json");
-        return data;
-      }
-
-      async function loadMatches() {
-        const url = new URL("data/matches_latest.json", window.location.href);
-        const res = await fetch(url.toString(), { cache: "no-store" });
-        if (!res.ok) {
-          console.warn("No matches_latest.json", res.status, res.statusText);
-          return null;
-        }
         return await res.json();
       }
 
-      function render(data) {
-        const cols = Object.keys(data[0] || {});
+      function openModal(title, subtitle, bodyHtml){
+        modalTitle.textContent = title;
+        modalSubtitle.textContent = subtitle;
+        modalBody.innerHTML = bodyHtml;
+        modalBackdrop.style.display = "flex";
+        modalBackdrop.setAttribute("aria-hidden","false");
+      }
+      function closeModal(){
+        modalBackdrop.style.display = "none";
+        modalBackdrop.setAttribute("aria-hidden","true");
+      }
+      modalClose.addEventListener("click", closeModal);
+      modalBackdrop.addEventListener("click", (e)=>{ if (e.target === modalBackdrop) closeModal(); });
+
+      let matchIndex = null; // loaded from data/matches_latest.json if available
+
+      function renderTable(rows){
+        const cols = Object.keys(rows[0] || {});
         theadRow.innerHTML = "";
         tbody.innerHTML = "";
 
         cols.forEach(c => {
           const th = document.createElement("th");
           th.textContent = c;
-          th.classList.add("sortable");
           theadRow.appendChild(th);
         });
 
         const resultCols = new Set(cols.filter(looksLikeResultColumn));
 
-        data.forEach(row => {
+        rows.forEach(row => {
           const tr = document.createElement("tr");
+
           cols.forEach(c => {
             const td = document.createElement("td");
             const val = row[c] ?? "";
@@ -251,17 +211,90 @@
               td.classList.add("result-cell");
               const cls = resultClass(val);
               if (cls) td.classList.add(cls);
+
+              td.addEventListener("click", () => {
+                if (!matchIndex) return;
+
+                const initial = (row["Initial"] ?? "").toString().trim();
+                const surname = (row["Surname"] ?? "").toString().trim();
+                const playerKey = `${initial}.${surname}`.toUpperCase();
+
+                const tournKey = matchIndex.colToKey?.[c];
+                const tourn = tournKey ? matchIndex.tournaments?.[tournKey] : null;
+
+                const result = normalizeResult(val) || "UNK";
+                const tournFull = tourn ? `${tourn.year} ${tourn.tournament}` : c;
+
+                // Determine PLAYER & PARTNER for top card:
+                let topTeam = `${initial}.${surname}`;
+                if (tourn) {
+                  const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
+                  const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+                  const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
+                  if (inNQ && hitNQTeam && hitNQTeam.team) topTeam = hitNQTeam.team;
+                }
+
+                let body = `<div class="card"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(topTeam)}</b></div>`;
+
+                if (!tourn) {
+                  body += `<div class="match">No match detail found for this tournament.</div>`;
+                  openModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
+                  return;
+                }
+
+                // Matches for player
+                const matches = (tourn.matches || []).filter(m => {
+                  const w = Array.isArray(m.winners) ? m.winners : [];
+                  const l = Array.isArray(m.losers) ? m.losers : [];
+                  return w.includes(playerKey) || l.includes(playerKey);
+                });
+
+                if (matches.length === 0) {
+                  body += `<div class="match">No match lines found for this player in this tournament.</div>`;
+                  openModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
+                  return;
+                }
+
+                const byRound = {};
+                for (const m of matches) {
+                  const r = m.round || "UNK";
+                  (byRound[r] ||= []).push(m);
+                }
+
+                const roundOrder = ["Last 16","Quarter-Finals","Semi-Finals","Final","UNK"];
+                for (const r of roundOrder) {
+                  const list = byRound[r];
+                  if (!list || !list.length) continue;
+
+                  body += `<div class="round">${escapeHtml(r)}</div>`;
+                  for (const m of list) {
+                    const winners = Array.isArray(m.winners) ? m.winners : [];
+                    const won = winners.includes(playerKey);
+                    const oppTeam = won ? (m.loserTeam || "") : (m.winnerTeam || "");
+                    const score = (m.score || "").toString().trim();
+
+                    body += `<div class="match">`
+                      + `<span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span>`
+                      + `<div class="line"><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(oppTeam)}</div>`
+                      + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
+                      + `</div>`;
+                  }
+                }
+
+                openModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
+              });
             }
+
             tr.appendChild(td);
           });
+
           tbody.appendChild(tr);
         });
 
-        countEl.textContent = `${data.length} players`;
-        return cols;
+        countEl.textContent = `${rows.length} players`;
       }
 
-      function enableSortAndSearch() {
+      function enableSortAndSearch(){
         let sortState = { idx: 0, asc: true };
 
         function clearIndicators(){
@@ -269,31 +302,29 @@
         }
 
         function sortBy(idx, forceAsc = null){
-  const rows = Array.from(tbody.querySelectorAll("tr"));
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const asc =
+            (forceAsc === true) ? true :
+            (forceAsc === false) ? false :
+            (sortState.idx === idx) ? !sortState.asc : true;
 
-  const asc =
-    (forceAsc === true) ? true :
-    (forceAsc === false) ? false :
-    (sortState.idx === idx) ? !sortState.asc : true;
+          sortState = { idx, asc };
+          clearIndicators();
+          const th = table.querySelectorAll("thead th")[idx];
+          th.classList.add(asc ? "sorted-asc" : "sorted-desc");
 
-  sortState = { idx, asc };
+          rows.sort((a,b)=>{
+            const av = (a.children[idx]?.textContent ?? "").trim();
+            const bv = (b.children[idx]?.textContent ?? "").trim();
+            const an = Number(av), bn = Number(bv);
+            const anOk = av !== "" && !Number.isNaN(an);
+            const bnOk = bv !== "" && !Number.isNaN(bn);
+            if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
+            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+          });
 
-  clearIndicators();
-  const th = table.querySelectorAll("thead th")[idx];
-  th.classList.add(asc ? "sorted-asc" : "sorted-desc");
-
-  rows.sort((a,b)=>{
-    const av = (a.children[idx]?.textContent ?? "").trim();
-    const bv = (b.children[idx]?.textContent ?? "").trim();
-    const an = Number(av), bn = Number(bv);
-    const anOk = av !== "" && !Number.isNaN(an);
-    const bnOk = bv !== "" && !Number.isNaN(bn);
-    if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
-    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  rows.forEach(r => tbody.appendChild(r));
-}
+          rows.forEach(r => tbody.appendChild(r));
+        }
 
         table.querySelectorAll("thead th").forEach((th, idx)=>{
           th.addEventListener("click", ()=>sortBy(idx));
@@ -313,172 +344,31 @@
         }
         searchBox.addEventListener("input", filter);
 
-        // default sort by Rank ascending (rank 1 at top)
-        sortState = { idx: 0, asc: true };
-        // force Rank ascending on load (rank 1 at top)
+        // Rank 1 at top on load
         sortBy(0, true);
-      }
-
-      
-      function openMatchModal(title, sub, bodyHtml) {
-        const backdrop = document.getElementById("matchModalBackdrop");
-        const titleEl = document.getElementById("matchModalTitle");
-        const subEl = document.getElementById("matchModalSub");
-        const bodyEl = document.getElementById("matchModalBody");
-        titleEl.textContent = title;
-        subEl.textContent = sub || "";
-        bodyEl.innerHTML = bodyHtml || "";
-        backdrop.style.display = "flex";
-        backdrop.setAttribute("aria-hidden", "false");
-      }
-
-      function closeMatchModal() {
-        const backdrop = document.getElementById("matchModalBackdrop");
-        backdrop.style.display = "none";
-        backdrop.setAttribute("aria-hidden", "true");
-      }
-
-      function escapeHtml(s) {
-        return (s ?? "").toString()
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
-      function attachCellClicks(matchesData) {
-        const table = document.getElementById("rankings");
-        const tbody = table.querySelector("tbody");
-        const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent);
-
-        const roundOrder = ["L16", "QF", "SF", "F"];
-        const roundNames = { L16: "Last 16", QF: "Quarter-Finals", SF: "Semi-Finals", F: "Final" };
-
-        tbody.addEventListener("click", (ev) => {
-          const td = ev.target.closest("td");
-          if (!td) return;
-          const tr = td.parentElement;
-          const tds = Array.from(tr.children);
-          const colIdx = tds.indexOf(td);
-          const colName = (headers[colIdx] || "").trim();
-
-          if (!/^\d{2}\s+[NKL]$/i.test(colName)) return;
-
-          const result = (td.textContent || "").trim();
-          if (!result) return;
-
-          const initial = (tds[1]?.textContent || "").trim().toUpperCase();
-          const surname = (tds[2]?.textContent || "").trim().toUpperCase();
-          const playerKey = `${initial}|${surname}`;
-
-          const tourn = matchesData?.tournaments?.[colName];
-          const tournFull = tourn?.tournament || colName;
-
-          let body = "";
-          if (!tourn) {
-            body = `<div class="match">No match detail found for ${escapeHtml(colName)}.</div>`;
-            openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
-            return;
-          }
-
-          const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
-          const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
-          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
-          if (inNQ && hitNQTeam && hitNQTeam.team) {
-            playerTeam = hitNQTeam.team;
-          }
-
-          const matches = (tourn.matches || []).filter(m => {
-            const w = Array.isArray(m.winners) ? m.winners : [];
-            const l = Array.isArray(m.losers) ? m.losers : [];
-            return w.includes(playerKey) || l.includes(playerKey);
-          });
-
-                    // Determine the player's team (player + partner) for this tournament
-          const prettySurname = (surname || "").slice(0,1) + (surname || "").slice(1).toLowerCase();
-          const prettyPlayer = `${initial}.${prettySurname}`;
-          let playerTeam = null;
-          if (matches.length > 0) {
-            const m0 = matches[0];
-            const won0 = (m0.winners || []).includes(playerKey);
-            playerTeam = won0 ? (m0.winnerTeam || null) : (m0.loserTeam || null);
-          }
-          if (!playerTeam) playerTeam = prettyPlayer;
-
-          body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(playerTeam)}</b></div>`;
-          }
-
-          if (matches.length === 0) {
-            body += `<div class="match">No match lines found for this player in this tournament.</div>`;
-            openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
-            return;
-          }
-
-          const byRound = {};
-          for (const m of matches) {
-            const r = m.round || "UNK";
-            byRound[r] = byRound[r] || [];
-            byRound[r].push(m);
-          }
-
-          for (const r of roundOrder) {
-            const list = byRound[r];
-            if (!list || list.length === 0) continue;
-            body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
-            for (const m of list) {
-              const wTeam = escapeHtml(m.winnerTeam || "");
-              const lTeam = escapeHtml(m.loserTeam || "");
-              const score = escapeHtml(m.score || "");
-              const won = (m.winners || []).includes(playerKey);
-              const side = won ? "Won" : "Lost";
-              body += `<div class="match">` +
-                      `<span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span>` +
-                      `<div class="line"><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
-                      (score ? `<div class="line">${score}</div>` : ``) +
-                      `</div>`;
-            }
-          }
-
-          openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
-        });
-
-        document.getElementById("matchModalClose")?.addEventListener("click", closeMatchModal);
-        document.getElementById("matchModalBackdrop")?.addEventListener("click", (e) => {
-          if (e.target && e.target.id === "matchModalBackdrop") closeMatchModal();
-        });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeMatchModal();
-        });
       }
 
       (async function main(){
         try {
-          const [data, matchesData] = await Promise.all([loadData(), loadMatches()]);
-          render(data);
+          const rankings = await fetchJsonRelative("data/rankings_latest.json");
+          if (!Array.isArray(rankings) || rankings.length === 0) throw new Error("No data found in rankings_latest.json");
+
+          renderTable(rankings);
           enableSortAndSearch();
-          attachCellClicks(matchesData);
+
+          // Match details are optional; don't block page load.
+          try {
+            matchIndex = await fetchJsonRelative("data/matches_latest.json");
+          } catch (e) {
+            matchIndex = null;
+          }
+
           statusEl.textContent = `Loaded • ${new Date().toLocaleString()}`;
         } catch (e) {
-          console.error(e);
           statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";
         }
       })();
     })();
   </script>
-
-  <div class="modal-backdrop" id="matchModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" id="matchModal">
-      <header>
-        <div>
-          <h2 id="matchModalTitle">Match details</h2>
-          <div class="small" id="matchModalSub"></div>
-        </div>
-        <button class="close" id="matchModalClose" type="button">Close</button>
-      </header>
-      <div class="content" id="matchModalBody"></div>
-    </div>
-  </div>
-
 </body>
 </html>
