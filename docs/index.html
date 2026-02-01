@@ -86,14 +86,14 @@
 
     .result-cell{ text-align:center; font-weight:600; }
 
-    /* Colour coding (works on mobile because it's inline classes on TD) */
-    .res-W{ background:#c6efce !important; color:#006100 !important; }   /* Winner */
-    .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }   /* Final */
-    .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }  /* Semi */
-    .res-QF{ background:#fce4d6 !important; color:#7f2a00 !important; }  /* Quarter */
-    .res-L16{ background:#fde9d9 !important; color:#7f2a00 !important; } /* Last 16 */
-    .res-NQ{ background:#f8cbad !important; color:#833c0c !important; }  /* Non-qual */
-    .res-P{ background:#e7e6e6 !important; color:#444 !important; }      /* P */
+    /* Colour coding */
+    .res-W{ background:#c6efce !important; color:#006100 !important; }
+    .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }
+    .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }
+    .res-QF{ background:#fce4d6 !important; color:#7f2a00 !important; }
+    .res-L16{ background:#fde9d9 !important; color:#7f2a00 !important; }
+    .res-NQ{ background:#f8cbad !important; color:#833c0c !important; }
+    .res-P{ background:#e7e6e6 !important; color:#444 !important; }
     .res-UNK{ background:#f2f2f2 !important; color:#555 !important; font-weight:500; }
 
     th.sorted-asc::after { content:" ▲"; font-weight:700; }
@@ -140,7 +140,6 @@
     }
     .pill-won{ background:#c6efce; border-color:#9ccc9c; color:#0b5a0b; }
     .pill-lost{ background:#f8cbad; border-color:#f3a981; color:#7f2a00; }
-
   </style>
 </head>
 
@@ -161,7 +160,7 @@
   </header>
 
   <div class="note">
-    Tap a column header to sort (mobile supported). Search to find a player.
+    Tap a column header to sort. Search to find a player.
     <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>, <b>P</b>.</div>
   </div>
 
@@ -181,6 +180,19 @@
     <p><b>This page needs JavaScript enabled</b> to load rankings.</p>
   </noscript>
 
+  <div class="modal-backdrop" id="matchModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" id="matchModal">
+      <header>
+        <div>
+          <h2 id="matchModalTitle">Match details</h2>
+          <div class="small" id="matchModalSub"></div>
+        </div>
+        <button class="close" id="matchModalClose" type="button">Close</button>
+      </header>
+      <div class="content" id="matchModalBody"></div>
+    </div>
+  </div>
+
   <script>
     (function(){
       const statusEl = document.getElementById("status");
@@ -193,37 +205,38 @@
       function normalizeResult(v) {
         const s = (v ?? "").toString().trim().toUpperCase();
         if (!s) return "";
-        return s.replace(/\s+/g, ""); // "L 16" -> "L16"
+        return s.replace(/\s+/g, "");
       }
+
       function resultClass(v) {
         const key = normalizeResult(v);
         if (!key) return null;
         if (["W","F","SF","QF","NQ","L16","P"].includes(key)) return "res-" + key;
         return "res-UNK";
       }
+
       function looksLikeResultColumn(colName) {
-        // expected like "13 N" / "13N" / "13 K" etc
         return /^\d{2}\s*[NKL]$/i.test(colName.trim().replace(/\s+/g, " "));
       }
 
+      function normColKey(s) {
+        return (s ?? "").toString().trim().replace(/\s+/g, " ");
+      }
+
       async function loadData() {
-        // IMPORTANT: relative to the current page URL (works on GH Pages project sites)
         const url = new URL("data/rankings_latest.json", window.location.href);
         const res = await fetch(url.toString(), { cache: "no-store" });
-        if (!res.ok) throw new Error(`Failed to load ${url} (${res.status} ${res.statusText})`);
-        const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("No data found in rankings_latest.json");
-        return data;
+        if (!res.ok) throw new Error(`Failed to load data`);
+        return await res.json();
       }
 
       async function loadMatches() {
         const url = new URL("data/matches_latest.json", window.location.href);
-        const res = await fetch(url.toString(), { cache: "no-store" });
-        if (!res.ok) {
-          console.warn("No matches_latest.json", res.status, res.statusText);
-          return null;
-        }
-        return await res.json();
+        try {
+          const res = await fetch(url.toString(), { cache: "no-store" });
+          if (!res.ok) return null;
+          return await res.json();
+        } catch (e) { return null; }
       }
 
       function render(data) {
@@ -246,7 +259,6 @@
             const td = document.createElement("td");
             const val = row[c] ?? "";
             td.textContent = val;
-
             if (resultCols.has(c)) {
               td.classList.add("result-cell");
               const cls = resultClass(val);
@@ -269,89 +281,55 @@
         }
 
         function sortBy(idx, forceAsc = null){
-  const rows = Array.from(tbody.querySelectorAll("tr"));
+          const rows = Array.from(tbody.querySelectorAll("tr"));
+          const asc = (forceAsc === true) ? true : (forceAsc === false) ? false : (sortState.idx === idx) ? !sortState.asc : true;
+          sortState = { idx, asc };
+          clearIndicators();
+          const th = table.querySelectorAll("thead th")[idx];
+          if(th) th.classList.add(asc ? "sorted-asc" : "sorted-desc");
 
-  const asc =
-    (forceAsc === true) ? true :
-    (forceAsc === false) ? false :
-    (sortState.idx === idx) ? !sortState.asc : true;
-
-  sortState = { idx, asc };
-
-  clearIndicators();
-  const th = table.querySelectorAll("thead th")[idx];
-  th.classList.add(asc ? "sorted-asc" : "sorted-desc");
-
-  rows.sort((a,b)=>{
-    const av = (a.children[idx]?.textContent ?? "").trim();
-    const bv = (b.children[idx]?.textContent ?? "").trim();
-    const an = Number(av), bn = Number(bv);
-    const anOk = av !== "" && !Number.isNaN(an);
-    const bnOk = bv !== "" && !Number.isNaN(bn);
-    if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
-    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  rows.forEach(r => tbody.appendChild(r));
-}
+          rows.sort((a,b)=>{
+            const av = (a.children[idx]?.textContent ?? "").trim();
+            const bv = (b.children[idx]?.textContent ?? "").trim();
+            const an = Number(av), bn = Number(bv);
+            if (!isNaN(an) && !isNaN(bn) && av !== "" && bv !== "") return asc ? (an - bn) : (bn - an);
+            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+          });
+          rows.forEach(r => tbody.appendChild(r));
+        }
 
         table.querySelectorAll("thead th").forEach((th, idx)=>{
           th.addEventListener("click", ()=>sortBy(idx));
-          th.addEventListener("touchend", (e)=>{ e.preventDefault(); sortBy(idx); }, { passive:false });
         });
 
-        function filter(){
-          const q = (searchBox.value || "").trim().toLowerCase();
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          if (!q) { rows.forEach(r=>r.style.display=""); return; }
-          rows.forEach(r=>{
-            const a = (r.children[0]?.textContent ?? "").toLowerCase();
-            const b = (r.children[1]?.textContent ?? "").toLowerCase();
-            const c = (r.children[2]?.textContent ?? "").toLowerCase();
-            r.style.display = (a.includes(q) || b.includes(q) || c.includes(q)) ? "" : "none";
+        searchBox.addEventListener("input", ()=>{
+          const q = searchBox.value.toLowerCase().trim();
+          Array.from(tbody.querySelectorAll("tr")).forEach(r=>{
+            const text = r.textContent.toLowerCase();
+            r.style.display = text.includes(q) ? "" : "none";
           });
-        }
-        searchBox.addEventListener("input", filter);
+        });
 
-        // default sort by Rank ascending (rank 1 at top)
-        sortState = { idx: 0, asc: true };
-        // force Rank ascending on load (rank 1 at top)
         sortBy(0, true);
       }
 
-      
       function openMatchModal(title, sub, bodyHtml) {
-        const backdrop = document.getElementById("matchModalBackdrop");
-        const titleEl = document.getElementById("matchModalTitle");
-        const subEl = document.getElementById("matchModalSub");
-        const bodyEl = document.getElementById("matchModalBody");
-        titleEl.textContent = title;
-        subEl.textContent = sub || "";
-        bodyEl.innerHTML = bodyHtml || "";
-        backdrop.style.display = "flex";
-        backdrop.setAttribute("aria-hidden", "false");
+        document.getElementById("matchModalTitle").textContent = title;
+        document.getElementById("matchModalSub").textContent = sub || "";
+        document.getElementById("matchModalBody").innerHTML = bodyHtml || "";
+        document.getElementById("matchModalBackdrop").style.display = "flex";
       }
 
       function closeMatchModal() {
-        const backdrop = document.getElementById("matchModalBackdrop");
-        backdrop.style.display = "none";
-        backdrop.setAttribute("aria-hidden", "true");
+        document.getElementById("matchModalBackdrop").style.display = "none";
       }
 
       function escapeHtml(s) {
-        return (s ?? "").toString()
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
+        return (s ?? "").toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
       }
 
       function attachCellClicks(matchesData) {
-        const table = document.getElementById("rankings");
-        const tbody = table.querySelector("tbody");
         const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent);
-
         const roundOrder = ["L16", "QF", "SF", "F"];
         const roundNames = { L16: "Last 16", QF: "Quarter-Finals", SF: "Semi-Finals", F: "Final" };
 
@@ -361,10 +339,9 @@
           const tr = td.parentElement;
           const tds = Array.from(tr.children);
           const colIdx = tds.indexOf(td);
-          const colNameRaw = (headers[colIdx] || "");
-          const colName = colNameRaw.replace(/\s+/g, " ").trim();
+          const colName = (headers[colIdx] || "").trim();
 
-          if (!/^\d{2}\s*[NKL]$/i.test(colName)) return;
+          if (!looksLikeResultColumn(colName)) return;
 
           const result = (td.textContent || "").trim();
           if (!result) return;
@@ -373,11 +350,10 @@
           const surname = (tds[2]?.textContent || "").trim().toUpperCase();
           const playerKey = `${initial}.${surname}`;
 
-          const colKeyRaw = colName;
-          const colKey1 = normColKey(colKeyRaw);
+          const colKey1 = normColKey(colName);
           const colKey2 = colKey1.replace(/\s+/g, "");
-          const tourn = matchesData?.tournaments?.[colKeyRaw] || matchesData?.tournaments?.[colKey1] || matchesData?.tournaments?.[colKey2];
-          const tournFull = (tourn && tourn.year && tourn.tournament) ? `${tourn.year} ${tourn.tournament}` : (tourn?.tournament || colName);
+          const tourn = matchesData?.tournaments?.[colKey1] || matchesData?.tournaments?.[colKey2];
+          const tournFull = (tourn && tourn.year && tourn.tournament) ? `${tourn.year} ${tourn.tournament}` : colName;
 
           let body = "";
           if (!tourn) {
@@ -386,74 +362,43 @@
             return;
           }
 
-          const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
-          const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
-          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
-
           const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
             const l = Array.isArray(m.losers) ? m.losers : [];
             return w.includes(playerKey) || l.includes(playerKey);
           });
 
-                    // Determine the player's team (player + partner) for this tournament
-          const prettySurname = (surname || "").slice(0,1) + (surname || "").slice(1).toLowerCase();
-          const prettyPlayer = `${initial}.${prettySurname}`;
-          let playerTeam = null;
-          if (matches.length > 0) {
-            const m0 = matches[0];
-            const won0 = (m0.winners || []).includes(playerKey);
-            playerTeam = won0 ? (m0.winnerTeam || null) : (m0.loserTeam || null);
-          }
-          if (!playerTeam) playerTeam = prettyPlayer;
-          if (inNQ && hitNQTeam && hitNQTeam.team) playerTeam = hitNQTeam.team;
-
-          body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml(playerTeam)}</b></div>`;
-
-          // (For NQ we show the partner/team in the header card, so no extra NQ message box.)
-          }
-
           if (matches.length === 0) {
-            body += `<div class="match">No match lines found for this player in this tournament.</div>`;
-            openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
-            return;
-          }
+            body += `<div class="match">No match lines found for this player.</div>`;
+          } else {
+            const byRound = {};
+            matches.forEach(m => {
+              const r = m.round || "UNK";
+              if (!byRound[r]) byRound[r] = [];
+              byRound[r].push(m);
+            });
 
-          const byRound = {};
-          for (const m of matches) {
-            const r = m.round || "UNK";
-            byRound[r] = byRound[r] || [];
-            byRound[r].push(m);
+            roundOrder.forEach(r => {
+              if (!byRound[r]) return;
+              body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
+              byRound[r].forEach(m => {
+                const won = (m.winners || []).includes(playerKey);
+                body += `<div class="match">
+                  <span class="pill ${won ? "pill-won" : "pill-lost"}">${won ? "Won" : "Lost"}</span>
+                  <div class="line"><b>${won ? "beat" : "lost to"}</b> ${escapeHtml(won ? m.loserTeam : m.winnerTeam)}</div>
+                  ${m.score ? `<div class="line">${escapeHtml(m.score)}</div>` : ''}
+                </div>`;
+              });
+            });
           }
-
-          for (const r of roundOrder) {
-            const list = byRound[r];
-            if (!list || list.length === 0) continue;
-            body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
-            for (const m of list) {
-              const wTeam = escapeHtml(m.winnerTeam || "");
-              const lTeam = escapeHtml(m.loserTeam || "");
-              const score = escapeHtml(m.score || "");
-              const won = (m.winners || []).includes(playerKey);
-              const side = won ? "Won" : "Lost";
-              body += `<div class="match">` +
-                      `<span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span>` +
-                      `<div class="line"><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
-                      (score ? `<div class="line">${score}</div>` : ``) +
-                      `</div>`;
-            }
-          }
-
           openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
         });
 
         document.getElementById("matchModalClose")?.addEventListener("click", closeMatchModal);
         document.getElementById("matchModalBackdrop")?.addEventListener("click", (e) => {
-          if (e.target && e.target.id === "matchModalBackdrop") closeMatchModal();
+          if (e.target.id === "matchModalBackdrop") closeMatchModal();
         });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeMatchModal();
-        });
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMatchModal(); });
       }
 
       (async function main(){
@@ -462,27 +407,13 @@
           render(data);
           enableSortAndSearch();
           attachCellClicks(matchesData);
-          statusEl.textContent = `Loaded • ${new Date().toLocaleString()}`;
+          statusEl.textContent = `Loaded • ${new Date().toLocaleTimeString()}`;
         } catch (e) {
           console.error(e);
-          statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";
+          statusEl.textContent = "Error loading rankings data.";
         }
       })();
     })();
   </script>
-
-  <div class="modal-backdrop" id="matchModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" id="matchModal">
-      <header>
-        <div>
-          <h2 id="matchModalTitle">Match details</h2>
-          <div class="small" id="matchModalSub"></div>
-        </div>
-        <button class="close" id="matchModalClose" type="button">Close</button>
-      </header>
-      <div class="content" id="matchModalBody"></div>
-    </div>
-  </div>
-
 </body>
 </html>
