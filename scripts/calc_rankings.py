@@ -686,7 +686,7 @@ ELO_SIGMA_NEW = 350.0
 ELO_SIGMA_EST = 120.0
 ELO_SIGMA_MAX = 400.0
 
-ROUND_WT = {"L16": 1.00, "QF": 1.05, "SF": 1.10, "F": 1.15}
+ROUND_WT = {"L16": 1.00, "QF": 1.06, "SF": 1.12, "F": 1.18}
 COMP_ORDER = {"Northern": 0, "Kinnaird": 1, "London": 2}
 
 
@@ -1139,7 +1139,13 @@ def main() -> None:
                     r["Elo"] = None
                     r["EloSigma"] = None
                     r["EloRank"] = None
-            merged.append({"key": key, "label": snap["label"], "records": records})
+            
+            # Re-order snapshot columns to match the latest table ordering
+            ordered_records = []
+            for rr in records:
+                ordered_records.append({c: rr.get(c) for c in keep if c in rr})
+
+            merged.append({"key": key, "label": snap["label"], "records": ordered_records})
 
         snaps_path = args.outdir / "rankings_snapshots.json"
         snaps_path.write_text(json.dumps({"schema": 1, "snapshots": merged}, ensure_ascii=False), encoding="utf-8")
