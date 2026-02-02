@@ -690,7 +690,7 @@ ROUND_WT = {"L16": 1.00, "QF": 1.06, "SF": 1.12, "F": 1.18}
 COMP_ORDER = {"Northern": 0, "Kinnaird": 1, "London": 2}
 
 ELO_FORM_HALFLIFE_YEARS = 1.5  # Form decays toward 0 with this half-life (years)
-ELO_SKILL_SHARE = 0.15        # Fraction of each Elo update that is permanently added to Skill
+ELO_SKILL_SHARE = 0.1        # Fraction of each Elo update that is permanently added to Skill
 
 
 
