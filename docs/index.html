@@ -40,10 +40,12 @@
       white-space: nowrap;
       padding: 6px 10px;
       position: sticky; top: 0; z-index: 5;
-      cursor: pointer;
+      cursor: default;
       user-select: none;
       touch-action: manipulation;
     }
+    #rankings thead th.sortable { cursor: pointer; }
+    #rankings thead th.tournament { cursor: pointer; }
     #rankings td{
       padding: 6px 10px;
       border-right:1px solid #eee;
@@ -234,7 +236,13 @@
         cols.forEach(c => {
           const th = document.createElement("th");
           th.textContent = c;
-          th.classList.add("sortable");
+
+          if (!looksLikeResultColumn(c)) {
+            th.classList.add("sortable");
+          } else {
+            th.classList.add("tournament");
+          }
+
           theadRow.appendChild(th);
         });
 
@@ -258,64 +266,78 @@
         });
 
         countEl.textContent = `${data.length} players`;
-        return cols;
+      }
+
+      function getCellValue(row, idx) {
+        const td = row.children[idx];
+        return td ? td.textContent.trim() : "";
+      }
+
+      function detectType(val) {
+        const n = Number(val);
+        if (!isNaN(n) && val !== "") return "number";
+        return "string";
+      }
+
+      function sortBy(colIdx, asc) {
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        const type = detectType(getCellValue(rows[0], colIdx));
+        rows.sort((a,b) => {
+          const va = getCellValue(a,colIdx);
+          const vb = getCellValue(b,colIdx);
+          if (type === "number") {
+            return asc ? (Number(va)-Number(vb)) : (Number(vb)-Number(va));
+          }
+          return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+        });
+        rows.forEach(r => tbody.appendChild(r));
       }
 
       function enableSortAndSearch() {
-        let sortState = { idx: 0, asc: true };
+        let currentSort = { idx: 0, asc: true };
 
-        function clearIndicators(){
-          table.querySelectorAll("thead th").forEach(th => th.classList.remove("sorted-asc","sorted-desc"));
-        }
+        theadRow.addEventListener("click", (ev) => {
+          const th = ev.target.closest("th");
+          if (!th) return;
+          const idx = Array.from(theadRow.children).indexOf(th);
+          if (idx < 0) return;
 
-        function sortBy(idx, forceAsc = null){
-  const rows = Array.from(tbody.querySelectorAll("tr"));
+          const headerText = (th.textContent || "").trim();
+          const norm = headerText.toString().replace(/\s+/g," ").trim();
+          const isTournament = looksLikeResultColumn(norm);
 
-  const asc =
-    (forceAsc === true) ? true :
-    (forceAsc === false) ? false :
-    (sortState.idx === idx) ? !sortState.asc : true;
+          if (isTournament) {
+            openTournamentDrawFromHeaderText(headerText);
+            return;
+          }
 
-  sortState = { idx, asc };
+          // Normal sortable columns
+          const asc = (currentSort.idx === idx) ? !currentSort.asc : true;
+          currentSort = { idx, asc };
 
-  clearIndicators();
-  const th = table.querySelectorAll("thead th")[idx];
-  th.classList.add(asc ? "sorted-asc" : "sorted-desc");
+          Array.from(theadRow.children).forEach(h => h.classList.remove("sorted-asc","sorted-desc"));
+          th.classList.add(asc ? "sorted-asc" : "sorted-desc");
 
-  rows.sort((a,b)=>{
-    const av = (a.children[idx]?.textContent ?? "").trim();
-    const bv = (b.children[idx]?.textContent ?? "").trim();
-    const an = Number(av), bn = Number(bv);
-    const anOk = av !== "" && !Number.isNaN(an);
-    const bnOk = bv !== "" && !Number.isNaN(bn);
-    if (anOk && bnOk) return asc ? (an - bn) : (bn - an);
-    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
-  });
-
-  rows.forEach(r => tbody.appendChild(r));
-}
-
-        table.querySelectorAll("thead th").forEach((th, idx)=>{
-          th.addEventListener("click", ()=>sortBy(idx));
-          th.addEventListener("touchend", (e)=>{ if(!looksLikeTournamentCol(th.innerText||th.textContent)) { e.preventDefault(); sortBy(idx); } }, { passive:false });
+          sortBy(idx, asc);
         });
 
-        function filter(){
-          const q = (searchBox.value || "").trim().toLowerCase();
+        searchBox.addEventListener("input", () => {
+          const q = searchBox.value.trim().toUpperCase();
           const rows = Array.from(tbody.querySelectorAll("tr"));
-          if (!q) { rows.forEach(r=>r.style.display=""); return; }
-          rows.forEach(r=>{
-            const a = (r.children[0]?.textContent ?? "").toLowerCase();
-            const b = (r.children[1]?.textContent ?? "").toLowerCase();
-            const c = (r.children[2]?.textContent ?? "").toLowerCase();
-            r.style.display = (a.includes(q) || b.includes(q) || c.includes(q)) ? "" : "none";
+          let shown = 0;
+          rows.forEach(tr => {
+            const rank = (tr.children[0]?.textContent || "").toUpperCase();
+            const init = (tr.children[1]?.textContent || "").toUpperCase();
+            const sur = (tr.children[2]?.textContent || "").toUpperCase();
+            const hay = `${rank} ${init} ${sur}`;
+            const ok = !q || hay.includes(q);
+            tr.style.display = ok ? "" : "none";
+            if (ok) shown++;
           });
-        }
-        searchBox.addEventListener("input", filter);
+          countEl.textContent = `${shown} / ${rows.length} players`;
+        });
 
-        // default sort by Rank ascending (rank 1 at top)
-        sortState = { idx: 0, asc: true };
-        // force Rank ascending on load (rank 1 at top)
+        // Default sort by Rank (column 1 at top)
         sortBy(0, true);
       }
 
@@ -338,10 +360,6 @@
         backdrop.setAttribute("aria-hidden", "true");
       }
 
-      function normaliseColumn(s){
-        return (s ?? '').toString().replace(/\s+/g,' ').trim().toUpperCase();
-      }
-
       function escapeHtml(s) {
         return (s ?? "").toString()
           .replace(/&/g, "&amp;")
@@ -352,61 +370,71 @@
       }
 
       
-      function getMatchIndex(){
-        return (typeof matchIndex !== 'undefined' && matchIndex) ? matchIndex
-          : (typeof matchesIndex !== 'undefined' && matchesIndex) ? matchesIndex
-          : (window.matchIndex || window.matchesIndex || null);
+      function normaliseHeader(s){
+        return (s ?? "").toString().replace(/\s+/g," ").trim().toUpperCase();
       }
 
-      function looksLikeTournamentCol(colText){
-        const s = (typeof normaliseColumn === 'function' ? normaliseColumn(colText) : (colText||'').toString().replace(/\s+/g,' ').trim().toUpperCase());
-        return /^\d{2}\s*[A-Z]$/.test(s);
-      }
+      function openTournamentDrawFromHeaderText(headerText){
+        const matchesData = window.__MATCHES_DATA__;
+        if (!matchesData || !matchesData.tournaments) return;
 
-      function openTournamentDraw(colText){
-        const mi = getMatchIndex();
-        if (!mi || !mi.colToKey || !mi.tournaments) return;
+        const norm = normaliseHeader(headerText);
 
-        const norm = (typeof normaliseColumn === 'function') ? normaliseColumn(colText) : (colText||'').toString().replace(/\s+/g,' ').trim().toUpperCase();
-        const key = mi.colToKey[norm] || mi.colToKey[norm.replace(/\s+/g,'')] || mi.colToKey[norm.replace(/\s+/g,' ')];
-        const tourn = key ? mi.tournaments[key] : null;
+        // Prefer direct lookup by header text, then try colToKey mapping if present
+        let tourn =
+          matchesData.tournaments[norm] ||
+          matchesData.tournaments[norm.replace(/\s+/g, "")] ||
+          null;
+
+        if (!tourn && matchesData.colToKey) {
+          const key = matchesData.colToKey[norm] || matchesData.colToKey[norm.replace(/\s+/g, "")];
+          tourn = key ? matchesData.tournaments[key] : null;
+        }
+
         if (!tourn) return;
 
-        const title = `${tourn.year} ${tourn.tournament} Draw`;
-        const subtitle = `Column: ${norm}`;
+        const title = `${tourn.tournament}`;
+        const subtitle = `Draw`;
 
-        const order = ["Last 16","Quarter-Finals","Semi-Finals","Final"];
+        const order = ["L16", "QF", "SF", "F"];
         const byRound = {};
         for (const m of (tourn.matches || [])){
           const r = m.round || "Other";
           (byRound[r] ||= []).push(m);
         }
 
-        let body = '';
+        let body = "";
+        let first = 1;
 
         const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
         if (nqTeams.length){
-          body += `<div class="card"><div style="font-weight:800;font-size:18px;margin-bottom:6px">Non-Qualifiers</div>`;
-          body += `<div style="display:flex;flex-wrap:wrap;gap:8px">`;
+          body += `<div class="match-round">Non-Qualifiers</div>`;
+          body += `<div class="match">`;
           for (const t of nqTeams){
             if (!t.team) continue;
+            if (first === 1){
+               first = 0
+            } else {
+               body += `<br>`;
+            }
             body += `<span class="pill">${escapeHtml(t.team)}</span>`;
           }
-          body += `</div></div>`;
+          body += `</div>`;
         }
 
+          const roundNames = { L16: "Last 16", QF: "Quarter-Finals", SF: "Semi-Finals", F: "Final" };
         for (const r of order){
           const list = byRound[r] || [];
           if (!list.length) continue;
-          body += `<div class="round">${escapeHtml(r)}</div>`;
+          body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || '';
-            const lTeam = m.loserTeam || '';
-            const score = (m.score || '').toString().trim();
-            body += `<div class="match">
-              <div><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>
-              ${score ? `<div>${escapeHtml(score)}</div>` : ''}
-            </div>`;
+            const wTeam = m.winnerTeam || "";
+            const lTeam = m.loserTeam || "";
+            const score = (m.score || "").toString().trim();
+            body += `<div class="match">`
+              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
+              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
+              + `</div>`;
           }
         }
 
@@ -414,34 +442,25 @@
         for (const r of others){
           const list = byRound[r] || [];
           if (!list.length) continue;
-          body += `<div class="round">${escapeHtml(r)}</div>`;
+          body += `<div class="match-round">${escapeHtml(r)}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || '';
-            const lTeam = m.loserTeam || '';
-            const score = (m.score || '').toString().trim();
-            body += `<div class="match">
-              <div><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>
-              ${score ? `<div>${escapeHtml(score)}</div>` : ''}
-            </div>`;
+            const wTeam = m.winnerTeam || "";
+            const lTeam = m.loserTeam || "";
+            const score = (m.score || "").toString().trim();
+            body += `<div class="match">`
+              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
+              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
+              + `</div>`;
           }
         }
 
-        if (!body) body = `<div class="card">No draw data found for this tournament.</div>`;
+        if (!body) body = `<div class="match">No draw data found for this tournament.</div>`;
 
-        if (typeof openModal === 'function') {
-          openModal(title, subtitle, body);
-        } else {
-          const mt = document.getElementById('modalTitle');
-          const ms = document.getElementById('modalSubtitle');
-          const mb = document.getElementById('modalBody');
-          const bd = document.getElementById('modalBackdrop') || document.getElementById('backdrop');
-          if (mt) mt.textContent = title;
-          if (ms) ms.textContent = subtitle;
-          if (mb) mb.innerHTML = body;
-          if (bd) { bd.style.display = 'flex'; bd.setAttribute('aria-hidden','false'); }
-        }
+        // Use the modal that actually exists on the page
+        openMatchModal(title, subtitle, body);
       }
-function attachCellClicks(matchesData) {
+
+      function attachCellClicks(matchesData) {
         const table = document.getElementById("rankings");
         const tbody = table.querySelector("tbody");
         const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent);
@@ -481,14 +500,13 @@ function attachCellClicks(matchesData) {
           const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
           const nqTeamDisplay = (hitNQTeam && hitNQTeam.team) ? hitNQTeam.team : null;
 
-
           const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
             const l = Array.isArray(m.losers) ? m.losers : [];
             return w.includes(playerKey) || l.includes(playerKey);
           });
 
-                    // Determine the player's team (player + partner) for this tournament
+          // Determine the player's team (player + partner) for this tournament
           const prettySurname = (surname || "").slice(0,1) + (surname || "").slice(1).toLowerCase();
           const prettyPlayer = `${initial}.${prettySurname}`;
           let playerTeam = null;
@@ -519,13 +537,10 @@ function attachCellClicks(matchesData) {
             if (!list || list.length === 0) continue;
             body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
             for (const m of list) {
-              const wTeam = escapeHtml(m.winnerTeam || "");
-              const lTeam = escapeHtml(m.loserTeam || "");
               const score = escapeHtml(m.score || "");
               const won = (m.winners || []).includes(playerKey);
-              const side = won ? "Won" : "Lost";
               body += `<div class="match">` +
-                      `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><I>vs</I> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
+                      `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
                       (score ? `<div class="line">${score}</div>` : ``) +
                       `</div>`;
             }
@@ -546,6 +561,7 @@ function attachCellClicks(matchesData) {
       (async function main(){
         try {
           const [data, matchesData] = await Promise.all([loadData(), loadMatches()]);
+          window.__MATCHES_DATA__ = matchesData;
           render(data);
           enableSortAndSearch();
           attachCellClicks(matchesData);
