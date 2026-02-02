@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-02T03:25:51Z",
+  "generatedAt": "2026-02-02T10:44:55Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -16,7 +16,7 @@
         "E|CALDWELL",
         "E|HABERSHON",
         "H|ETHERINGTON",
-        "J|HOPKINS",
+        "JACK|HOPKINS",
         "J|LEVINSON",
         "J|POULARD",
         "J|ROBB",
@@ -100,10 +100,10 @@
           ]
         },
         {
-          "team": "P.Hall & J.Hopkins",
+          "team": "P.Hall & Jack Hopkins",
           "players": [
             "P|HALL",
-            "J|HOPKINS"
+            "JACK|HOPKINS"
           ]
         },
         {
