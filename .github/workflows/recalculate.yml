@@ -8,7 +8,7 @@ on:
 
 jobs:
   recalc:
-    # For issue-triggered runs, only run when the label is exactly 'recalculate'
+    # For issue-triggered runs, only run when the label is exactly 'recalculate'. 
     if: github.event_name != 'issues' || github.event.label.name == 'recalculate'
     runs-on: ubuntu-latest
 
