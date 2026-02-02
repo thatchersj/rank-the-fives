@@ -56,7 +56,7 @@
     }
     #rankings tbody tr:nth-child(even) td{ background:#fcfcfc; }
 
-    /* Sticky first 4 columns */
+    /* Sticky first 5 columns (Rank, EloRank, Elo, Initial, Surname) */
     #rankings th:nth-child(1), #rankings td:nth-child(1){
       position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
       border-right:1px solid #ddd;
@@ -67,29 +67,38 @@
       position: sticky; left: 60px; z-index: 6; min-width:70px; max-width:70px;
       border-right:1px solid #ddd;
       background: inherit;
+      font-variant-numeric: tabular-nums;
       text-align: center;
     }
     #rankings th:nth-child(3), #rankings td:nth-child(3){
-      position: sticky; left: 130px; z-index: 6; min-width:60px; max-width:60px;
+      position: sticky; left: 130px; z-index: 6; min-width:90px; max-width:90px;
       border-right:1px solid #ddd;
       background: inherit;
+      text-align: center;
     }
     #rankings th:nth-child(4), #rankings td:nth-child(4){
-      position: sticky; left: 190px; z-index: 6; min-width:190px; max-width:190px;
+      position: sticky; left: 220px; z-index: 6; min-width:60px; max-width:60px;
+      border-right:1px solid #ddd;
+      background: inherit;
+      text-align: center;
+    }
+    #rankings th:nth-child(5), #rankings td:nth-child(5){
+      position: sticky; left: 280px; z-index: 6; min-width:190px; max-width:190px;
       border-right:1px solid #ddd;
       font-weight:600;
       background: inherit;
       text-align: left;
     }
 
-    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3), #rankings td:nth-child(4),
-    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3), #rankings th:nth-child(4){
+    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3), #rankings td:nth-child(4), #rankings td:nth-child(5),
+    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3), #rankings th:nth-child(4), #rankings th:nth-child(5){
       background: white;
     }
     #rankings tbody tr:nth-child(even) td:nth-child(1),
     #rankings tbody tr:nth-child(even) td:nth-child(2),
     #rankings tbody tr:nth-child(even) td:nth-child(3),
-    #rankings tbody tr:nth-child(even) td:nth-child(4){
+    #rankings tbody tr:nth-child(even) td:nth-child(4),
+    #rankings tbody tr:nth-child(even) td:nth-child(5){
       background: #fcfcfc;
     }
 

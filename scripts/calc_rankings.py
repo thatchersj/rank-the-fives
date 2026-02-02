@@ -1009,13 +1009,53 @@ def main() -> None:
     except Exception as e:
         print("WARNING: Elo V2 generation failed:", e)
 
+
+
+    # Reorder columns for CSV to mirror website ordering (excluding the published Rank column)
+    try:
+        tour_cols = [c for c in out.columns if re.match(r"^\d{2} [NKL]$", str(c))]
+        def _tour_sort_key(c):
+            yy = int(str(c).split(' ')[0])
+            comp = str(c).split(' ')[1]
+            order = {'N':0,'K':1,'L':2}.get(comp, 9)
+            return (yy, order)
+        tour_cols = sorted(tour_cols, key=_tour_sort_key)
+        meta_cols = [c for c in ["POSS","RPA","PC","PC2","Played","MissedLast"] if c in out.columns]
+        elo_cols = [c for c in ["EloRank","Elo","EloSigma"] if c in out.columns]
+        keep = elo_cols + ["Initial","Surname"] + meta_cols + tour_cols
+        # Keep RANK3 as internal numeric rank in CSV (some scripts may rely on it)
+        if "RANK3" in out.columns:
+            keep = ["RANK3"] + keep
+        out = out[keep]
+    except Exception:
+        pass
     # Save CSV (latest)
     csv_path = args.outdir / "rankings_latest.csv"
     out.to_csv(csv_path, index=False)
 
-    # Save JSON (records) for the website. Add a Rank column at the front (RANK3).
+    # Save JSON (records) for the website.
+    # We publish a clean column order so the UI can keep Rank/Elo sticky and the rest scrollable.
     records_df = out.copy()
     records_df.insert(0, "Rank", records_df["RANK3"].astype(int))
+
+    # Choose tournament columns in chronological order
+    tour_cols = [c for c in records_df.columns if re.match(r"^\d{2} [NKL]$", str(c))]
+    def _tour_sort_key(c):
+        yy = int(str(c).split(' ')[0])
+        comp = str(c).split(' ')[1]
+        order = {'N':0,'K':1,'L':2}.get(comp, 9)
+        return (yy, order)
+    tour_cols = sorted(tour_cols, key=_tour_sort_key)
+
+    meta_cols = [c for c in ["POSS","RPA","PC","PC2","Played","MissedLast"] if c in records_df.columns]
+    elo_cols = [c for c in ["EloRank","Elo","EloSigma"] if c in records_df.columns]
+
+    # Final column order
+    keep = ["Rank"] + elo_cols + ["Initial","Surname"] + meta_cols + tour_cols
+
+    # Ensure we keep only those columns (drop internal RANK/RANK2/RANK3 etc)
+    records_df = records_df[keep]
+
     json_path = args.outdir / "rankings_latest.json"
     json_path.write_text(records_df.to_json(orient="records"), encoding="utf-8")
 
