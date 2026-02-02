@@ -297,7 +297,7 @@
 
         table.querySelectorAll("thead th").forEach((th, idx)=>{
           th.addEventListener("click", ()=>sortBy(idx));
-          th.addEventListener("touchend", (e)=>{ e.preventDefault(); sortBy(idx); }, { passive:false });
+          th.addEventListener("touchend", (e)=>{ if(!looksLikeTournamentCol(th.innerText||th.textContent)) { e.preventDefault(); sortBy(idx); } }, { passive:false });
         });
 
         function filter(){
