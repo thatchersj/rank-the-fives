@@ -1190,7 +1190,7 @@ def main() -> None:
 
     # Build official table snapshots from 2019 Northern onwards, and attach Elo fields if available
     try:
-        official_snaps = build_official_snapshots(parsed, start_key="19 N")
+        official_snaps = build_official_snapshots(parsed, start_key="16 K")
         merged = []
         for snap in official_snaps:
             key = snap["key"]

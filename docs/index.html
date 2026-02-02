@@ -143,6 +143,15 @@
     .unc-high{ background:#f8cbad; border-color:#f3a981; color:#7f2a00; }
 
 
+  
+    .eloPanel{ border:1px solid #eee; border-radius:12px; padding:10px 12px; margin: 10px 0 12px; background:#fcfcfc; }
+    .eloRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .muted{ color:#666; font-size:12px; }
+    .peakBtn{ appearance:none; border:1px solid #ccc; background:#fff; border-radius:999px; padding:6px 10px; font-size:12px; cursor:pointer; }
+    .peakBtn:hover{ background:#f6f6f6; }
+    .sparkWrap{ margin-top:8px; }
+    .sparkSvg{ width: 200px; height: 44px; display:block; }
+
   </style>
 </head>
 
@@ -265,6 +274,7 @@ function looksLikeResultColumn(colName) {
       }
 
       function render(data) {
+        window.__CURRENT_RENDER_DATA = data;
         // Build a stable column order:
         // Rank, Elo, Initial, Surname, POSS/RPA/PC/PC2, EloSkill/EloForm, then tournament columns (most recent first)
         const allCols = Object.keys(data[0] || {});
@@ -432,6 +442,30 @@ function looksLikeResultColumn(colName) {
         titleEl.textContent = title;
         subEl.textContent = sub || "";
         bodyEl.innerHTML = bodyHtml || "";
+        // Peak Elo toggle (if present)
+        const peakBtn = bodyEl.querySelector('[data-peak-toggle="1"]');
+        if (peakBtn) {
+          peakBtn.addEventListener('click', () => {
+            const vEl = bodyEl.querySelector('.eloValue');
+            const subEl2 = bodyEl.querySelector('.eloSub');
+            if (!vEl) return;
+            const cur = vEl.getAttribute('data-current');
+            const peak = vEl.getAttribute('data-peak');
+            const peakLabel = vEl.getAttribute('data-peaklabel') || '';
+            const showing = vEl.getAttribute('data-showing') || 'current';
+            if (showing === 'current') {
+              vEl.textContent = peak !== null ? peak : (vEl.textContent || '');
+              vEl.setAttribute('data-showing','peak');
+              peakBtn.textContent = 'Show current';
+              if (subEl2) subEl2.textContent = peakLabel ? `Peak at ${peakLabel}` : 'Peak';
+            } else {
+              vEl.textContent = cur !== null ? cur : (vEl.textContent || '');
+              vEl.setAttribute('data-showing','current');
+              peakBtn.textContent = 'Show peak';
+              if (subEl2) subEl2.textContent = 'Current';
+            }
+          });
+        }
         backdrop.style.display = "flex";
         backdrop.setAttribute("aria-hidden", "false");
       }
@@ -452,6 +486,38 @@ function looksLikeResultColumn(colName) {
       }
 
       
+      
+      function buildSparkline(values, opts){
+        const w = (opts && opts.w) ? opts.w : 200;
+        const h = (opts && opts.h) ? opts.h : 44;
+        const pad = (opts && opts.pad) ? opts.pad : 4;
+        const vals = (Array.isArray(values) ? values : []).map(v => Number(v)).filter(v => Number.isFinite(v));
+        if (vals.length < 2){
+          return `<svg class="sparkSvg" viewBox="0 0 ${w} ${h}" role="img" aria-label="Form sparkline"></svg>`;
+        }
+        const minV = Math.min(...vals);
+        const maxV = Math.max(...vals);
+        const rng = (maxV - minV) || 1;
+        const n = vals.length;
+        const xStep = (w - 2*pad) / (n - 1);
+        const pts = vals.map((v,i)=>{
+          const x = pad + i * xStep;
+          const y = pad + (maxV - v) * ((h - 2*pad) / rng);
+          return `${x.toFixed(2)},${y.toFixed(2)}`;
+        }).join(" ");
+        // Optional 0-baseline if within range
+        let zeroLine = "";
+        if (minV < 0 && maxV > 0){
+          const y0 = pad + (maxV - 0) * ((h - 2*pad) / rng);
+          zeroLine = `<line x1="${pad}" y1="${y0.toFixed(2)}" x2="${(w-pad)}" y2="${y0.toFixed(2)}" stroke="#ddd" stroke-width="1"/>`;
+        }
+        return `<svg class="sparkSvg" viewBox="0 0 ${w} ${h}" role="img" aria-label="Form sparkline">`
+          + zeroLine
+          + `<polyline points="${pts}" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`
+          + `</svg>`;
+      }
+
+
       function normaliseHeader(s){
         return (s ?? "").toString().replace(/\s+/g," ").trim().toUpperCase();
       }
@@ -486,6 +552,7 @@ function looksLikeResultColumn(colName) {
         }
 
         let body = "";
+          body += eloPanelHtml;
         let first = 1;
 
         const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
@@ -569,6 +636,51 @@ function looksLikeResultColumn(colName) {
           const surname = (tds[idxSur]?.textContent || "").trim().toUpperCase();
           const playerKey = `${initial}|${surname}`;
 
+          // --- Elo stats (current vs peak) + Form sparkline ---
+          const idxElo = headers.indexOf('Elo');
+          const idxForm = headers.indexOf('EloForm');
+          const currentElo = (idxElo >= 0) ? Number((tds[idxElo]?.textContent || "").trim()) : NaN;
+          const currentForm = (idxForm >= 0) ? Number((tds[idxForm]?.textContent || "").trim()) : NaN;
+
+          const series = [];
+          const snapsC = Array.isArray(window.__SNAPS_CHRONO) ? window.__SNAPS_CHRONO : [];
+          for (const s of snapsC){
+            const recs = Array.isArray(s.records) ? s.records : [];
+            const r = recs.find(rr => `${(rr.Initial||"").toString().trim().toUpperCase()}|${(rr.Surname||"").toString().trim().toUpperCase()}` === playerKey);
+            if (!r) continue;
+            const e = Number(r.Elo);
+            const f = Number(r.EloForm);
+            if (Number.isFinite(e) || Number.isFinite(f)){
+              series.push({ label: s.label || s.key, key: s.key, elo: e, form: f });
+            }
+          }
+          // Include the currently rendered row (latest or snapshot) as "Current" point if finite
+          if (Number.isFinite(currentElo) || Number.isFinite(currentForm)){
+            series.push({ label: 'Current', key: '__current__', elo: currentElo, form: currentForm });
+          }
+
+          let peakElo = null;
+          let peakLabel = '';
+          for (const pt of series){
+            if (!Number.isFinite(pt.elo)) continue;
+            if (peakElo === null || pt.elo > peakElo){
+              peakElo = pt.elo;
+              peakLabel = pt.label || pt.key || '';
+            }
+          }
+          const curEloText = Number.isFinite(currentElo) ? Math.round(currentElo).toString() : '';
+          const peakEloText = (peakElo !== null && Number.isFinite(peakElo)) ? Math.round(peakElo).toString() : '';
+          const sparkVals = series.filter(p => p.key !== '__current__').map(p => p.form).filter(v => Number.isFinite(Number(v)));
+          const sparkSvg = buildSparkline(sparkVals, {w:200,h:44,pad:4});
+          const eloPanelHtml =
+            `<div class="eloPanel">`
+            + `<div class="eloRow">`
+            + `<div><div class="muted">Elo</div><div><b class="eloValue" data-current="${escapeHtml(curEloText)}" data-peak="${escapeHtml(peakEloText)}" data-peaklabel="${escapeHtml(peakLabel)}" data-showing="current">${escapeHtml(curEloText)}</b> <span class="muted eloSub">Current</span></div></div>`
+            + `<button class="peakBtn" type="button" data-peak-toggle="1">Show peak</button>`
+            + `</div>`
+            + `<div class="sparkWrap"><div class="muted">Form (EloForm)</div>${sparkSvg}</div>`
+            + `</div>`;
+
           const tourn = matchesData?.tournaments?.[colName];
           const tournFull = tourn?.tournament || colName;
 
@@ -648,14 +760,34 @@ function looksLikeResultColumn(colName) {
           window.__MATCHES_DATA__ = matchesData;
 
         const snapshotSelect = document.getElementById('snapshotSelect');
-        const snaps = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
+        const snapsRaw = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
+        function _parseSnapKey(k){
+          const m = /^([0-9]{2})\\s+([NKL])$/i.exec((k||"").trim());
+          if (!m) return null;
+          const yy = parseInt(m[1],10);
+          const year = 2000 + yy;
+          const comp = m[2].toUpperCase();
+          const order = ({N:0,K:1,L:2})[comp] ?? 99;
+          return {year, order};
+        }
+        const snapsChrono = snapsRaw.slice().sort((a,b)=>{
+          const pa=_parseSnapKey(a.key); const pb=_parseSnapKey(b.key);
+          if (!pa && !pb) return 0;
+          if (!pa) return 1;
+          if (!pb) return -1;
+          if (pa.year !== pb.year) return pa.year - pb.year;
+          return pa.order - pb.order;
+        });
+        const snapsDesc = snapsChrono.slice().reverse();
+        // Keep around for modal sparklines / peak Elo stats
+        window.__SNAPS_CHRONO = snapsChrono;
         if (snapshotSelect) {
           snapshotSelect.innerHTML = '';
           const optLatest = document.createElement('option');
           optLatest.value = 'latest';
           optLatest.textContent = 'Latest';
           snapshotSelect.appendChild(optLatest);
-          snaps.forEach(s => {
+          snapsDesc.forEach(s => {
             const opt = document.createElement('option');
             opt.value = s.key;
             opt.textContent = s.label;
@@ -668,7 +800,7 @@ function looksLikeResultColumn(colName) {
               render(loaded.latest);
               statusEl.textContent = 'Showing latest';
             } else {
-              const snap = snaps.find(x => x.key === v);
+              const snap = snapsChrono.find(x => x.key === v);
               if (snap && Array.isArray(snap.records)) {
                 render(snap.records);
                 statusEl.textContent = `As of ${snap.label}`;
