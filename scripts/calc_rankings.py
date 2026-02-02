@@ -182,22 +182,57 @@ def _name_to_key(name: str) -> str:
         surname = re.sub(r"[^A-Z\-\']", "", parts[-1]) if parts else ""
     return f"{initial}|{surname}"
 
-MATCH_RE = re.compile(
-    r"^(?P<wteam>[A-Za-z0-9\.\'\- ]+?\s*&\s*[A-Za-z0-9\.\'\- ]+?)\s+(?:bt|beat)\s+(?P<lteam>[A-Za-z0-9\.\'\- ]+?\s*&\s*[A-Za-z0-9\.\'\- ]+?)(?:\s+(?P<score>.*))?$",
-    re.I
-)
+# Match line parsing
+# We accept a variety of name formats:
+#   R.Houlden & J.Ho beat N.Caplin & H.Young 3-0 (12-4, 12-7, 12-0)
+#   T Dunbar & S Cooley beat J Ho & R Houlden 3-0 (12-1, 12-4, 14-12)
+#   ... and tolerate extra spaces / unicode dashes.
+BEAT_SPLIT_RE = re.compile(r"\s+(?:bt|beat)\s+", re.I)
+SCORE_START_RE = re.compile(r"\s+(?:\d+\s*-\s*\d+|\()")
+
 
 def parse_match_line(line: str) -> dict | None:
     s = _norm_dash(line).strip()
-    m = MATCH_RE.match(s)
-    if not m:
+    s = re.sub(r"\s+", " ", s)
+
+    # Must contain a beat token and a pair separator
+    if "&" not in s or not re.search(r"\b(?:bt|beat)\b", s, flags=re.I):
         return None
-    wteam = re.sub(r"\s+", " ", m.group("wteam").strip())
-    lteam = re.sub(r"\s+", " ", m.group("lteam").strip())
-    score = (m.group("score") or "").strip()
+
+    parts = BEAT_SPLIT_RE.split(s, maxsplit=1)
+    if len(parts) != 2:
+        return None
+
+    wteam = parts[0].strip()
+    right = parts[1].strip()
+
+    # Split loser team from score at the first "3-0" / "2-3" etc.
+    score = ""
+    lteam = right
+    ms = SCORE_START_RE.search(right)
+    if ms:
+        lteam = right[: ms.start()].strip()
+        score = right[ms.start() :].strip()
+
+    # Normalise spacing around ampersand in display strings
+    wteam = re.sub(r"\s*&\s*", " & ", wteam)
+    lteam = re.sub(r"\s*&\s*", " & ", lteam)
+
+    # Basic validation: both teams should look like pairs
+    if " & " not in wteam or " & " not in lteam:
+        return None
+
     winners = [_name_to_key(x.strip()) for x in wteam.split("&")]
     losers = [_name_to_key(x.strip()) for x in lteam.split("&")]
-    return {"winnerTeam": wteam, "loserTeam": lteam, "score": score, "winners": winners, "losers": losers, "raw": s}
+
+    return {
+        "winnerTeam": wteam.strip(),
+        "loserTeam": lteam.strip(),
+        "score": score,
+        "winners": winners,
+        "losers": losers,
+        "raw": s,
+    }
 
 def parse_match_details(tournaments: Dict[str, List[str]]) -> dict:
     out = {"schema": 1, "generatedAt": datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z", "tournaments": {}}
