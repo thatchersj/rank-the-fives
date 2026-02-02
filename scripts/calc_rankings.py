@@ -170,17 +170,44 @@ def parse_non_qualifiers_pairs_clean(z: List[str]) -> List[Tuple[str, Optional[s
     return teams
 
 def _name_to_key(name: str) -> str:
+    """Convert a player name string to the key used throughout the site: INITIAL|SURNAME.
+
+    Rules:
+      - If the name is written as an initial+surname with a dot (e.g. "R.Houlden"),
+        use the single-letter initial.
+      - If the name is written with a full first name (e.g. "Sahil Shah", "Saajan Shah"),
+        preserve the full first-name token as INITIAL (uppercased) so duplicate-initial
+        players remain unambiguous.
+    """
     s = str(name).strip().upper()
-    s = s.replace("DE ", "DE").replace("VAN ", "VAN").replace("SOUZA GIRAO", "SOUZAGIRAO")
-    s = s.replace(" ", ".")
-    if "." in s:
-        initial = re.sub(r"[^A-Z]", "", s.split(".")[0])[:1]
-        surname = re.sub(r"[^A-Z\-\']", "", s.split(".")[-1])
-    else:
-        parts = re.sub(r"\s+", " ", s).split(" ")
-        initial = re.sub(r"[^A-Z]", "", parts[0])[:1] if parts else ""
-        surname = re.sub(r"[^A-Z\-\']", "", parts[-1]) if parts else ""
-    return f"{initial}|{surname}"
+
+    # Common surname normalisations used elsewhere
+    s = s.replace("SOUZA GIRAO", "SOUZAGIRAO")
+    s = re.sub(r"\s+", " ", s)
+
+    # Keep particles attached so they survive tokenisation reasonably
+    s = s.replace("DE ", "DE").replace("VAN ", "VAN")
+
+    # Prefer dot-format parsing when it looks like "X.SURNAME" (no spaces)
+    if "." in s and " " not in s:
+        left, right = s.split(".", 1)
+        ini_token = re.sub(r"[^A-Z]", "", left)
+        initial = ini_token[:1] if ini_token else ""
+        surname = re.sub(r"[^A-Z\-\']", "", right.split(".")[-1])
+        return f"{initial}|{surname}"
+
+    # Space-separated names: preserve full first-name token if present
+    parts = s.split(" ")
+    first = re.sub(r"[^A-Z]", "", parts[0]) if parts else ""
+    last = re.sub(r"[^A-Z\-\']", "", parts[-1]) if parts else ""
+
+    initial = first  # preserve full token (e.g. SAHIL, SAAJAN, GRANT)
+    # If it's actually just a single-letter (e.g. "R Houlden"), that's fine too.
+    if len(initial) > 0 and len(initial) == 1:
+        initial = initial[:1]
+
+    return f"{initial}|{last}"
+
 
 # Match line parsing
 # We accept a variety of name formats:
