@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-02T17:30:47Z",
+  "generatedAt": "2026-02-02T17:48:58Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -2028,23 +2028,23 @@
         "A|AGARWAL",
         "A|ANOOP",
         "A|CAMERON-BLACKIE",
-        "A|O",
+        "A|LEWIS",
         "A|TAYLOR",
         "B|MERRETT",
-        "C|MH",
-        "C|O",
+        "C|GRAVILLE",
+        "C|MCMICHAEL",
+        "E|CALDWELL",
+        "E|CLARK",
         "E|HABERSHON",
-        "E|I",
-        "E|S",
         "E|SCOONES",
         "E|SMITH",
-        "F|O",
+        "F|BARON",
+        "G|BRADSHAW",
         "G|HUGHES",
-        "G|S",
         "G|WISEMAN",
         "H|WEBSTER",
         "J|CREWS",
-        "J|S",
+        "J|HOME",
         "M|CHINERY",
         "M|HUGHES",
         "M|QUINN",
@@ -2054,9 +2054,9 @@
         "N|TURNBULL",
         "P|HOLLAND",
         "S|BURNELL",
-        "S|O",
+        "S|SHETTY",
+        "T|ARJARIA",
         "T|GREGORY",
-        "T|O",
         "T|STUBBS",
         "T|WHITEHEAD",
         "W|THOMAS",
@@ -2071,17 +2071,17 @@
           ]
         },
         {
-          "team": "E.Smith & F.Baron (O)",
+          "team": "E.Smith & F.Baron",
           "players": [
             "E|SMITH",
-            "F|O"
+            "F|BARON"
           ]
         },
         {
-          "team": "H.Webster & G.Bradshaw (S)",
+          "team": "H.Webster & G.Bradshaw",
           "players": [
             "H|WEBSTER",
-            "G|S"
+            "G|BRADSHAW"
           ]
         },
         {
@@ -2092,10 +2092,10 @@
           ]
         },
         {
-          "team": "G.Wiseman & C.Graville (MH)",
+          "team": "G.Wiseman & C.Graville",
           "players": [
             "G|WISEMAN",
-            "C|MH"
+            "C|GRAVILLE"
           ]
         },
         {
@@ -2106,10 +2106,10 @@
           ]
         },
         {
-          "team": "A.Anoop & A.Lewis (O)",
+          "team": "A.Anoop & A.Lewis",
           "players": [
             "A|ANOOP",
-            "A|O"
+            "A|LEWIS"
           ]
         },
         {
@@ -2120,10 +2120,10 @@
           ]
         },
         {
-          "team": "G.Hughes & J.Home (S)",
+          "team": "G.Hughes & J.Home",
           "players": [
             "G|HUGHES",
-            "J|S"
+            "J|HOME"
           ]
         },
         {
@@ -2134,10 +2134,10 @@
           ]
         },
         {
-          "team": "M.Tsioupini & S.Shetty (O)",
+          "team": "M.Tsioupini & S.Shetty",
           "players": [
             "M|TSIOUPINI",
-            "S|O"
+            "S|SHETTY"
           ]
         },
         {
@@ -2148,16 +2148,16 @@
           ]
         },
         {
-          "team": "W.Woods & E.Caldwell (I)",
+          "team": "W.Woods & E.Caldwell",
           "players": [
             "W|WOODS",
-            "E|I"
+            "E|CALDWELL"
           ]
         },
         {
-          "team": "C.McMichael (O) & M.Tavra",
+          "team": "C.McMichael & M.Tavra",
           "players": [
-            "C|O",
+            "C|MCMICHAEL",
             "M|TAVRA"
           ]
         },
@@ -2169,17 +2169,17 @@
           ]
         },
         {
-          "team": "A.Agarwal & T.Arjaria (O)",
+          "team": "A.Agarwal & T.Arjaria",
           "players": [
             "A|AGARWAL",
-            "T|O"
+            "T|ARJARIA"
           ]
         },
         {
-          "team": "J.Crews & E.Clark (S)",
+          "team": "J.Crews & E.Clark",
           "players": [
             "J|CREWS",
-            "E|S"
+            "E|CLARK"
           ]
         },
         {
