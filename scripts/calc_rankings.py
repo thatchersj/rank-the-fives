@@ -480,22 +480,32 @@ def add_name_fields(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-def adjust_leading_dns_to_na(m: pd.DataFrame) -> pd.DataFrame:
-    # Equivalent to:
-    # dtres2[order(Year, Comp),
-    #   Round := ifelse(1:.N < which.min(Round %in% c('DNS','NA') | (LastHeld-Year)>7),
-    #                  ifelse(Round == 'DNS','NA',Round), Round),
-    #   by = .(Initial, Surname)]
-    def _adj(g: pd.DataFrame) -> pd.DataFrame:
-        g = g.sort_values(["Year", "Comp"])
-        valid = (~g["Round"].isin(["DNS", "NA"])) & ((g["LastHeld"] - g["Year"]) <= 7)
-        if valid.any():
-            pos = int(np.where(valid.values)[0][0])
-            idxs = g.index[:pos]
-            g.loc[idxs, "Round"] = g.loc[idxs, "Round"].replace({"DNS": "NA"})
-        return g
 
-    return m.groupby(["Initial", "Surname"], group_keys=False).apply(_adj)
+def adjust_leading_dns_to_na(m: pd.DataFrame) -> pd.DataFrame:
+    """Vectorised equivalent of the original doRanking.R leading-DNS -> NA adjustment.
+
+    For each player, looking in chronological order (Year, Comp), any initial runs of DNS
+    before the player's first "valid" appearance become NA.
+    """
+    if m.empty:
+        return m
+
+    gcols = ["Initial", "Surname"]
+    out = m.copy()
+
+    # Ensure deterministic chronological order
+    out = out.sort_values(gcols + ["Year", "Comp"], ascending=[True, True, True, True]).reset_index(drop=True)
+
+    valid = (~out["Round"].isin(["DNS", "NA"])) & ((out["LastHeld"] - out["Year"]) <= 7)
+    pos = out.groupby(gcols, sort=False).cumcount()
+
+    # First valid position per player (NaN if none)
+    first_valid_pos = pos.where(valid).groupby([out[c] for c in gcols], sort=False).transform("min")
+
+    mask = (out["Round"] == "DNS") & first_valid_pos.notna() & (pos < first_valid_pos)
+    out.loc[mask, "Round"] = "NA"
+
+    return out
 
 
 def compute_rankings(m: pd.DataFrame) -> pd.DataFrame:
@@ -665,6 +675,298 @@ def build_output_table(dt: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+
+
+# ------------------------
+# V2 Elo-style ratings (experimental)
+# ------------------------
+ELO_MU = 1500.0
+ELO_K_BASE = 12.0
+ELO_SIGMA_NEW = 350.0
+ELO_SIGMA_EST = 120.0
+ELO_SIGMA_MAX = 400.0
+
+ROUND_WT = {"L16": 1.00, "QF": 1.05, "SF": 1.10, "F": 1.15}
+COMP_ORDER = {"Northern": 0, "Kinnaird": 1, "London": 2}
+
+
+def _elo_expected(r_you: float, r_opp: float) -> float:
+    return 1.0 / (1.0 + 10 ** ((r_opp - r_you) / 400.0))
+
+
+def _apply_inactivity(state: dict, current_year: int) -> None:
+    last = state.get("last_year")
+    if last is None:
+        state["last_year"] = int(current_year)
+        return
+    gap = int(current_year) - int(last)
+    if gap <= 0:
+        state["last_year"] = int(current_year)
+        return
+    r = float(state["r"])
+    s = float(state["sigma"])
+    for _ in range(gap):
+        # Very gentle mean reversion
+        r = ELO_MU + (r - ELO_MU) * 0.98
+        s = min(ELO_SIGMA_MAX, s + 50.0)
+    state["r"] = r
+    state["sigma"] = s
+    state["last_year"] = int(current_year)
+
+
+def _sigma_after_match(sigma: float) -> float:
+    return max(ELO_SIGMA_EST, float(sigma) * 0.85)
+
+
+def _k_eff(sigma: float) -> float:
+    return ELO_K_BASE * (1.0 + float(sigma) / 300.0)
+
+
+def _retirement_coeff(score: str) -> float:
+    """Coefficient for retirements based on match state.
+
+    Maps progress towards a best-of-5 (first to 3 sets) win to [0.25, 1.0].
+    If parsing fails, return 0.50.
+    """
+    if not score or "ret" not in score.lower():
+        return 1.0
+
+    # Try game score first (e.g. 3-1)
+    m = re.search(r"\b(\d+)\s*-\s*(\d+)\b", score)
+    sets_won = None
+    sets_lost = None
+    if m:
+        try:
+            a = int(m.group(1)); b = int(m.group(2))
+            if 0 <= a <= 5 and 0 <= b <= 5 and (a + b) <= 7:
+                sets_won, sets_lost = a, b
+        except Exception:
+            sets_won = sets_lost = None
+
+    if sets_won is None:
+        # Fall back to counting set scores
+        pairs = re.findall(r"(\d+)\s*-\s*(\d+)", score)
+        if not pairs:
+            return 0.50
+        sw = 0
+        sl = 0
+        for a, b in pairs:
+            try:
+                ai = int(a); bi = int(b)
+            except Exception:
+                continue
+            if ai > bi:
+                sw += 1
+            elif bi > ai:
+                sl += 1
+        sets_won, sets_lost = sw, sl
+
+    target = 3
+    if sets_won >= target:
+        return 1.0
+    progress = max(0.0, min(1.0, sets_won / float(target)))
+    return float(max(0.25, min(1.0, 0.25 + 0.75 * progress)))
+
+
+def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
+    """Compute Elo V2 ratings and per-tournament snapshots.
+
+    Returns:
+      elo_df: Initial, Surname, Elo, EloSigma
+      snapshots: dict keyed by tournament key (e.g. '19 N') with rows incl EloRank
+    """
+    players: dict[str, dict] = {}
+
+    def get_state(pkey: str, year: int):
+        if pkey not in players:
+            ini, sur = pkey.split("|", 1)
+            players[pkey] = {"r": ELO_MU, "sigma": ELO_SIGMA_NEW, "last_year": year, "Initial": ini, "Surname": sur}
+        st = players[pkey]
+        _apply_inactivity(st, year)
+        return st
+
+    def update_pair(win_keys, lose_keys, score: str, round_code: str, year: int):
+        coeff = 1.0
+        sl = (score or "").lower()
+        if re.search(r"\b(w/o|wo|walkover)\b", sl):
+            coeff = 0.25
+        elif "ret" in sl:
+            coeff = _retirement_coeff(score)
+
+        wt = ROUND_WT.get(round_code, 1.0)
+
+        st_w = [get_state(k, year) for k in win_keys]
+        st_l = [get_state(k, year) for k in lose_keys]
+
+        r_w = st_w[0]["r"] + st_w[1]["r"]
+        r_l = st_l[0]["r"] + st_l[1]["r"]
+        sigma_pair = (st_w[0]["sigma"] + st_w[1]["sigma"] + st_l[0]["sigma"] + st_l[1]["sigma"]) / 4.0
+        k_pair = _k_eff(sigma_pair) * wt * coeff
+
+        e = _elo_expected(r_w, r_l)
+        delta = k_pair * (1.0 - e)
+
+        # Passenger counter split
+        # Win: 60% to lower-rated partner
+        rw1, rw2 = st_w[0]["r"], st_w[1]["r"]
+        low_i, high_i = (0, 1) if rw1 <= rw2 else (1, 0)
+        st_w[low_i]["r"] += delta * 0.60
+        st_w[high_i]["r"] += delta * 0.40
+
+        # Loss: 60% penalty to higher-rated partner
+        rl1, rl2 = st_l[0]["r"], st_l[1]["r"]
+        high_i_l, low_i_l = (0, 1) if rl1 >= rl2 else (1, 0)
+        st_l[high_i_l]["r"] -= delta * 0.60
+        st_l[low_i_l]["r"] -= delta * 0.40
+
+        for st in st_w + st_l:
+            st["sigma"] = _sigma_after_match(st["sigma"])
+            st["last_year"] = year
+
+    # chronological tournaments
+    tourn_list = []
+    for tkey, tinfo in matches.get("tournaments", {}).items():
+        try:
+            y = int(tinfo.get("year"))
+        except Exception:
+            continue
+        comp = str(tinfo.get("comp", ""))
+        tourn_list.append((y, COMP_ORDER.get(comp, 99), tkey, tinfo))
+    tourn_list.sort()
+
+    snapshots: dict[str, dict] = {}
+    round_rank = {"L16": 0, "QF": 1, "SF": 2, "F": 3}
+
+    for year, _, tkey, tinfo in tourn_list:
+        ms = list(tinfo.get("matches", []))
+        ms.sort(key=lambda m: round_rank.get(m.get("round"), 99))
+        for m in ms:
+            w = m.get("winners", [])
+            l = m.get("losers", [])
+            if len(w) == 2 and len(l) == 2:
+                update_pair(w, l, m.get("score", ""), m.get("round", ""), year)
+
+        rows = []
+        for pkey, st in players.items():
+            rows.append({
+                "Initial": st.get("Initial", pkey.split("|", 1)[0]),
+                "Surname": st.get("Surname", pkey.split("|", 1)[1]),
+                "Elo": round(float(st["r"])),
+                "EloSigma": float(st["sigma"]),
+            })
+        snap_df = pd.DataFrame(rows)
+        if not snap_df.empty:
+            snap_df = snap_df.sort_values(["Elo", "Surname", "Initial"], ascending=[False, True, True]).reset_index(drop=True)
+            snap_df.insert(0, "EloRank", snap_df.index + 1)
+        snapshots[tkey] = {
+            "key": tkey,
+            "label": str(tinfo.get("tournament", tkey)),
+            "year": int(year),
+            "comp": tinfo.get("comp"),
+            "rows": snap_df.to_dict(orient="records"),
+        }
+
+    # Final df
+    final_rows = []
+    for pkey, st in players.items():
+        final_rows.append({
+            "Initial": st.get("Initial", pkey.split("|", 1)[0]),
+            "Surname": st.get("Surname", pkey.split("|", 1)[1]),
+            "Elo": round(float(st["r"])),
+            "EloSigma": float(st["sigma"]),
+        })
+    elo_df = pd.DataFrame(final_rows)
+    if not elo_df.empty:
+        elo_df = elo_df.sort_values(["Elo", "Surname", "Initial"], ascending=[False, True, True]).reset_index(drop=True)
+    return elo_df, snapshots
+
+
+
+def build_official_snapshots(parsed: pd.DataFrame, start_key: str = "19 N") -> List[dict]:
+    """Generate official ranking-table snapshots efficiently.
+
+    Snapshots are generated after each tournament starting at `start_key` (e.g. '19 N').
+    This mirrors the official table structure (Rank, Initial, Surname, tournament columns, metrics).
+
+    NOTE: This function intentionally reuses a single pre-built Tournament x Player matrix
+    to avoid re-building the Cartesian product for every snapshot.
+    """
+
+    # Build the master Tournament x Player matrix once (as per build_output_table)
+    dt1 = parsed[parsed["Year"] > 2012].copy()
+    dt1["Comp"] = pd.Categorical(dt1["Comp"], categories=["Northern", "Kinnaird", "London"], ordered=True)
+
+    players = dt1[["Initial", "Surname"]].drop_duplicates().reset_index(drop=True)
+    tourns = dt1[["Tournament", "Year", "Comp"]].drop_duplicates()
+
+    all_idx = pd.MultiIndex.from_product([tourns["Tournament"].unique(), range(len(players))], names=["Tournament", "p"])
+    all_df = pd.DataFrame(index=all_idx).reset_index()
+    all_df = all_df.merge(tourns, on="Tournament", how="left")
+    all_df = all_df.merge(players.reset_index().rename(columns={"index": "p"}), on="p", how="left")
+
+    m_base = all_df.merge(
+        dt1[["Tournament", "Initial", "Surname", "Round"]],
+        on=["Tournament", "Initial", "Surname"],
+        how="left",
+    )
+    m_base["Round"] = m_base["Round"].fillna("DNS")
+    m_base["Comp"] = pd.Categorical(m_base["Comp"], categories=["Northern", "Kinnaird", "London"], ordered=True)
+
+    # Order tournaments chronologically in the same way as build_output_table
+    yc_levels = m_base[["Year", "Comp"]].drop_duplicates().sort_values(["Year", "Comp"])
+    level_order = (yc_levels["Year"].astype(str) + " " + yc_levels["Comp"].astype(str)).tolist()
+    short_labels = [s[2:6] for s in level_order]
+
+    if start_key not in short_labels:
+        return []
+    start_idx = short_labels.index(start_key)
+
+    snaps: List[dict] = []
+    # Iterate over snapshots by expanding set of included tournaments
+    for i in range(start_idx, len(short_labels)):
+        allowed = set(short_labels[: i + 1])
+
+        m = m_base.copy()
+        m["YCShort"] = (m["Year"].astype(int) % 100).map(lambda x: f"{x:02d}") + " " + m["Comp"].astype(str).str[0].str.upper()
+        m = m[m["YCShort"].isin(allowed)].copy()
+
+        if m.empty:
+            continue
+
+        # Recompute LastHeld for this snapshot (critical for decay + NA cutoff)
+        m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+
+        # Outside 7-year window: DNS becomes NA
+        m.loc[((m["LastHeld"] - m["Year"]) > 7) & (m["Round"] == "DNS"), "Round"] = "NA"
+
+        # Leading DNS before first appearance become NA (within this snapshot)
+        m = adjust_leading_dns_to_na(m)
+
+        rankings = compute_rankings(m).rename(columns={"CompsPlayed": "Played", "ConsecutiveCompsMissed": "MissedLast"})
+        rankings = rankings[["Initial", "Surname", "RPA", "POSS", "Played", "MissedLast", "PC", "PC2", "RANK", "RANK2", "RANK3"]]
+
+        # Pivot tournament results columns
+        m["YC"] = pd.Categorical(m["Year"].astype(str) + " " + m["Comp"].astype(str), categories=level_order[: i + 1], ordered=True)
+        m["RoundDisp"] = m["Round"].replace({"NA": "", "DNS": "P"})
+
+        pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+        # Rename columns to short form (e.g. '19 N')
+        # categories in YC are level_order[:i+1], so map directly
+        pivot.columns = short_labels[: i + 1]
+        pivot = pivot.reset_index()
+
+        out = pivot.merge(rankings, on=["Initial", "Surname"], how="left").sort_values("RANK3")
+        out2 = out.copy()
+        out2.insert(0, "Rank", out2["RANK3"].astype(int))
+
+        snaps.append({
+            "key": short_labels[i],
+            "label": level_order[i],
+            "records": out2.to_dict(orient="records"),
+        })
+
+    return snaps
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--results", type=Path, required=True)
@@ -695,6 +997,46 @@ def main() -> None:
     matches_path = args.outdir / "matches_latest.json"
     matches = parse_match_details(tournaments)
     matches_path.write_text(json.dumps(matches, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # --- Experimental Elo V2 outputs (does not affect current website) ---
+    try:
+        elo_df, elo_snaps = compute_elo_v2(matches)
+
+        # Latest Elo (player-level)
+        elo_csv = args.outdir / "elo_latest.csv"
+        elo_json = args.outdir / "elo_latest.json"
+        elo_df.to_csv(elo_csv, index=False)
+        elo_json.write_text(elo_df.to_json(orient="records"), encoding="utf-8")
+
+        # Official table snapshots from 2019 Northern onwards (with Elo fields merged in for future UI work)
+        official_snaps = build_official_snapshots(parsed, start_key="19 N")
+        merged = []
+        for snap in official_snaps:
+            key = snap["key"]
+            records = snap["records"]
+            elo_rows = {f"{r['Initial']}|{r['Surname']}": r for r in (elo_snaps.get(key, {}).get("rows", []) or [])}
+            for r in records:
+                pk = f"{r.get('Initial','')}|{r.get('Surname','')}"
+                er = elo_rows.get(pk)
+                if er:
+                    r["Elo"] = er.get("Elo")
+                    r["EloSigma"] = er.get("EloSigma")
+                    r["EloRank"] = er.get("EloRank")
+                else:
+                    r["Elo"] = None
+                    r["EloSigma"] = None
+                    r["EloRank"] = None
+            merged.append({"key": key, "label": snap["label"], "records": records})
+
+        snaps_path = args.outdir / "rankings_snapshots.json"
+        snaps_path.write_text(json.dumps({"schema": 1, "snapshots": merged}, ensure_ascii=False), encoding="utf-8")
+
+        print(f"Wrote {elo_csv}")
+        print(f"Wrote {elo_json}")
+        print(f"Wrote {snaps_path}")
+    except Exception as e:
+        print("WARNING: Elo V2 generation failed:", e)
+
 
 
     print(f"Wrote {csv_path}")
