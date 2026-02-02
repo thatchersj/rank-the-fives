@@ -164,7 +164,7 @@
 
   <div class="note">
     Tap a column header to sort (mobile supported). Search to find a player.
-    <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>, <b>P</b>.</div>
+    <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>.</div>
   </div>
 
   <div class="controls">
@@ -194,6 +194,13 @@ function formatMaybe2dp(col, val){
   return num.toFixed(2);
 }
 
+
+function displayResultValue(val){
+  // Hide 'P' results in the table (treat as blank)
+  if (val === "P" || val === "p") return "";
+  return val;
+}
+
 const statusEl = document.getElementById("status");
       const countEl = document.getElementById("count");
       const searchBox = document.getElementById("searchBox");
@@ -203,7 +210,7 @@ const statusEl = document.getElementById("status");
 
       function normalizeResult(v) {
         const s = (v ?? "").toString().trim().toUpperCase();
-        if (!s) return "";
+        if (!s || s === "P") return "";
         return s.replace(/\s+/g, ""); // "L 16" -> "L16"
       }
       function resultClass(v) {
@@ -267,6 +274,8 @@ const statusEl = document.getElementById("status");
 
             if (resultCols.has(c)) {
               td.classList.add("result-cell");
+          td.textContent = displayResultValue(td.textContent);
+
               const cls = resultClass(val);
               if (cls) td.classList.add(cls);
             }
