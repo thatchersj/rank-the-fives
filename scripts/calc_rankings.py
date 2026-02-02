@@ -982,6 +982,33 @@ def main() -> None:
 
     out = build_output_table(parsed)
 
+    # Match details for click-through UI (and Elo)
+    matches_path = args.outdir / "matches_latest.json"
+    matches = parse_match_details(tournaments)
+    matches_path.write_text(json.dumps(matches, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # --- Experimental Elo V2 outputs (also merged into latest table for the website) ---
+    elo_df = None
+    elo_snaps = None
+    try:
+        elo_df, elo_snaps = compute_elo_v2(matches)
+        if elo_df is not None and not elo_df.empty:
+            elo_df = elo_df.copy()
+            # Add EloRank based on current Elo ordering
+            elo_df = elo_df.sort_values(["Elo", "Surname", "Initial"], ascending=[False, True, True]).reset_index(drop=True)
+            elo_df.insert(0, "EloRank", elo_df.index + 1)
+            # Merge Elo into the latest official table
+            out = out.merge(elo_df[["Initial", "Surname", "Elo", "EloSigma", "EloRank"]], on=["Initial", "Surname"], how="left")
+
+        # Write Elo files
+        if elo_df is not None:
+            elo_csv = args.outdir / "elo_latest.csv"
+            elo_json = args.outdir / "elo_latest.json"
+            elo_df.to_csv(elo_csv, index=False)
+            elo_json.write_text(elo_df.to_json(orient="records"), encoding="utf-8")
+    except Exception as e:
+        print("WARNING: Elo V2 generation failed:", e)
+
     # Save CSV (latest)
     csv_path = args.outdir / "rankings_latest.csv"
     out.to_csv(csv_path, index=False)
@@ -989,32 +1016,19 @@ def main() -> None:
     # Save JSON (records) for the website. Add a Rank column at the front (RANK3).
     records_df = out.copy()
     records_df.insert(0, "Rank", records_df["RANK3"].astype(int))
-    # Keep floats to 3dp-ish like Excel display (still numeric)
     json_path = args.outdir / "rankings_latest.json"
     json_path.write_text(records_df.to_json(orient="records"), encoding="utf-8")
 
-    # Save match details for click-through UI
-    matches_path = args.outdir / "matches_latest.json"
-    matches = parse_match_details(tournaments)
-    matches_path.write_text(json.dumps(matches, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    # --- Experimental Elo V2 outputs (does not affect current website) ---
+    # Build official table snapshots from 2019 Northern onwards, and attach Elo fields if available
     try:
-        elo_df, elo_snaps = compute_elo_v2(matches)
-
-        # Latest Elo (player-level)
-        elo_csv = args.outdir / "elo_latest.csv"
-        elo_json = args.outdir / "elo_latest.json"
-        elo_df.to_csv(elo_csv, index=False)
-        elo_json.write_text(elo_df.to_json(orient="records"), encoding="utf-8")
-
-        # Official table snapshots from 2019 Northern onwards (with Elo fields merged in for future UI work)
         official_snaps = build_official_snapshots(parsed, start_key="19 N")
         merged = []
         for snap in official_snaps:
             key = snap["key"]
             records = snap["records"]
-            elo_rows = {f"{r['Initial']}|{r['Surname']}": r for r in (elo_snaps.get(key, {}).get("rows", []) or [])}
+            elo_rows = {}
+            if elo_snaps is not None:
+                elo_rows = {f"{r['Initial']}|{r['Surname']}": r for r in (elo_snaps.get(key, {}).get("rows", []) or [])}
             for r in records:
                 pk = f"{r.get('Initial','')}|{r.get('Surname','')}"
                 er = elo_rows.get(pk)
@@ -1030,13 +1044,9 @@ def main() -> None:
 
         snaps_path = args.outdir / "rankings_snapshots.json"
         snaps_path.write_text(json.dumps({"schema": 1, "snapshots": merged}, ensure_ascii=False), encoding="utf-8")
-
-        print(f"Wrote {elo_csv}")
-        print(f"Wrote {elo_json}")
         print(f"Wrote {snaps_path}")
     except Exception as e:
-        print("WARNING: Elo V2 generation failed:", e)
-
+        print("WARNING: Snapshot generation failed:", e)
 
 
     print(f"Wrote {csv_path}")

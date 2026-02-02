@@ -19,7 +19,7 @@
     .note { margin: 12px 0 14px; color:#666; font-size: 14px; line-height:1.4; }
     .small { font-size: 12px; color:#666; margin-top:6px; }
     .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 0 0 12px; }
-    .controls input {
+    .controls input, .controls select {
       appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
       background:white; font-size:14px; min-width: 220px;
     }
@@ -56,7 +56,7 @@
     }
     #rankings tbody tr:nth-child(even) td{ background:#fcfcfc; }
 
-    /* Sticky first 3 columns */
+    /* Sticky first 4 columns */
     #rankings th:nth-child(1), #rankings td:nth-child(1){
       position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
       border-right:1px solid #ddd;
@@ -64,25 +64,32 @@
       background: inherit;
     }
     #rankings th:nth-child(2), #rankings td:nth-child(2){
-      position: sticky; left: 60px; z-index: 6; min-width:60px; max-width:60px;
+      position: sticky; left: 60px; z-index: 6; min-width:70px; max-width:70px;
+      border-right:1px solid #ddd;
+      background: inherit;
+      text-align: center;
+    }
+    #rankings th:nth-child(3), #rankings td:nth-child(3){
+      position: sticky; left: 130px; z-index: 6; min-width:60px; max-width:60px;
       border-right:1px solid #ddd;
       background: inherit;
     }
-    #rankings th:nth-child(3), #rankings td:nth-child(3){
-      position: sticky; left: 120px; z-index: 6; min-width:190px; max-width:190px;
+    #rankings th:nth-child(4), #rankings td:nth-child(4){
+      position: sticky; left: 190px; z-index: 6; min-width:190px; max-width:190px;
       border-right:1px solid #ddd;
       font-weight:600;
       background: inherit;
       text-align: left;
     }
 
-    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3),
-    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3){
+    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3), #rankings td:nth-child(4),
+    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3), #rankings th:nth-child(4){
       background: white;
     }
     #rankings tbody tr:nth-child(even) td:nth-child(1),
     #rankings tbody tr:nth-child(even) td:nth-child(2),
-    #rankings tbody tr:nth-child(even) td:nth-child(3){
+    #rankings tbody tr:nth-child(even) td:nth-child(3),
+    #rankings tbody tr:nth-child(even) td:nth-child(4){
       background: #fcfcfc;
     }
 
@@ -143,6 +150,12 @@
     .pill-won{ background:#c6efce; border-color:#9ccc9c; color:#0b5a0b; }
     .pill-lost{ background:#f8cbad; border-color:#f3a981; color:#7f2a00; }
 
+    .elo-pill{ font-variant-numeric: tabular-nums; font-weight:700; margin-right:0; }
+    .unc-low{ background:#c6efce; border-color:#9ccc9c; color:#0b5a0b; }
+    .unc-med{ background:#fff2cc; border-color:#e6d88a; color:#7f6000; }
+    .unc-high{ background:#f8cbad; border-color:#f3a981; color:#7f2a00; }
+
+
   </style>
 </head>
 
@@ -168,6 +181,7 @@
   </div>
 
   <div class="controls">
+    <select id="snapshotSelect" aria-label="As of tournament"></select>
     <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
     <span class="small" id="count"></span>
   </div>
@@ -219,19 +233,38 @@ const statusEl = document.getElementById("status");
         if (["W","F","SF","QF","NQ","L16","P"].includes(key)) return "res-" + key;
         return "res-UNK";
       }
-      function looksLikeResultColumn(colName) {
+            function uncertaintyClass(sigma){
+        const s = Number(sigma);
+        if (!Number.isFinite(s)) return 'unc-med';
+        if (s < 140) return 'unc-low';
+        if (s < 250) return 'unc-med';
+        return 'unc-high';
+      }
+
+function looksLikeResultColumn(colName) {
         // expected like "13 N" / "13N" / "13 K" etc
         return /^\d{2}\s*[NKL]$/i.test(colName.trim().replace(/\s+/g, " "));
       }
 
       async function loadData() {
         // IMPORTANT: relative to the current page URL (works on GH Pages project sites)
-        const url = new URL("data/rankings_latest.json", window.location.href);
-        const res = await fetch(url.toString(), { cache: "no-store" });
-        if (!res.ok) throw new Error(`Failed to load ${url} (${res.status} ${res.statusText})`);
-        const data = await res.json();
-        if (!Array.isArray(data) || data.length === 0) throw new Error("No data found in rankings_latest.json");
-        return data;
+        const latestUrl = new URL("data/rankings_latest.json", window.location.href);
+        const resLatest = await fetch(latestUrl.toString(), { cache: "no-store" });
+        if (!resLatest.ok) throw new Error(`Failed to load ${latestUrl} (${resLatest.status} ${resLatest.statusText})`);
+        const latest = await resLatest.json();
+        if (!Array.isArray(latest) || latest.length === 0) throw new Error("No data found in rankings_latest.json");
+
+        // Snapshots (optional)
+        let snapshots = null;
+        try {
+          const snapsUrl = new URL("data/rankings_snapshots.json", window.location.href);
+          const resSnaps = await fetch(snapsUrl.toString(), { cache: "no-store" });
+          if (resSnaps.ok) snapshots = await resSnaps.json();
+        } catch (e) {
+          console.warn('No rankings_snapshots.json', e);
+        }
+
+        return { latest, snapshots };
       }
 
       async function loadMatches() {
@@ -245,7 +278,8 @@ const statusEl = document.getElementById("status");
       }
 
       function render(data) {
-        const cols = Object.keys(data[0] || {});
+        const cols = Object.keys(data[0] || {}).filter(c => c !== "EloSigma");
+        window.__CURRENT_COLS__ = cols;
         theadRow.innerHTML = "";
         tbody.innerHTML = "";
 
@@ -270,7 +304,14 @@ const statusEl = document.getElementById("status");
             const td = document.createElement("td");
             const val = row[c] ?? "";
             const displayVal = formatMaybe2dp(c, val);
-          td.textContent = displayVal;
+            if (c === "Elo") {
+              const pill = document.createElement("span");
+              pill.className = `pill elo-pill ${uncertaintyClass(row["EloSigma"])}`;
+              pill.textContent = (val === null || val === undefined || val === "") ? "" : String(Math.round(Number(val)));
+              td.appendChild(pill);
+            } else {
+              td.textContent = displayVal;
+            }
 
             if (resultCols.has(c)) {
               td.classList.add("result-cell");
@@ -345,9 +386,13 @@ const statusEl = document.getElementById("status");
           const rows = Array.from(tbody.querySelectorAll("tr"));
           let shown = 0;
           rows.forEach(tr => {
-            const rank = (tr.children[0]?.textContent || "").toUpperCase();
-            const init = (tr.children[1]?.textContent || "").toUpperCase();
-            const sur = (tr.children[2]?.textContent || "").toUpperCase();
+            const cols = window.__CURRENT_COLS__ || [];
+            const idxRank = cols.indexOf("Rank") >= 0 ? cols.indexOf("Rank") : 0;
+            const idxInit = cols.indexOf("Initial");
+            const idxSur = cols.indexOf("Surname");
+            const rank = (tr.children[idxRank]?.textContent || "").toUpperCase();
+            const init = (tr.children[idxInit]?.textContent || "").toUpperCase();
+            const sur = (tr.children[idxSur]?.textContent || "").toUpperCase();
             const hay = `${rank} ${init} ${sur}`;
             const ok = !q || hay.includes(q);
             tr.style.display = ok ? "" : "none";
@@ -500,8 +545,10 @@ const statusEl = document.getElementById("status");
           const result = (td.textContent || "").trim();
           if (!result) return;
 
-          const initial = (tds[1]?.textContent || "").trim().toUpperCase();
-          const surname = (tds[2]?.textContent || "").trim().toUpperCase();
+          const idxInit = headers.indexOf('Initial');
+          const idxSur = headers.indexOf('Surname');
+          const initial = (tds[idxInit]?.textContent || "").trim().toUpperCase();
+          const surname = (tds[idxSur]?.textContent || "").trim().toUpperCase();
           const playerKey = `${initial}|${surname}`;
 
           const tourn = matchesData?.tournaments?.[colName];
@@ -579,12 +626,46 @@ const statusEl = document.getElementById("status");
 
       (async function main(){
         try {
-          const [data, matchesData] = await Promise.all([loadData(), loadMatches()]);
+          const [loaded, matchesData] = await Promise.all([loadData(), loadMatches()]);
           window.__MATCHES_DATA__ = matchesData;
-          render(data);
+
+        const snapshotSelect = document.getElementById('snapshotSelect');
+        const snaps = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
+        if (snapshotSelect) {
+          snapshotSelect.innerHTML = '';
+          const optLatest = document.createElement('option');
+          optLatest.value = 'latest';
+          optLatest.textContent = 'Latest';
+          snapshotSelect.appendChild(optLatest);
+          snaps.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.key;
+            opt.textContent = s.label;
+            snapshotSelect.appendChild(opt);
+          });
+          snapshotSelect.value = 'latest';
+          snapshotSelect.addEventListener('change', () => {
+            const v = snapshotSelect.value;
+            if (v === 'latest') {
+              render(loaded.latest);
+              statusEl.textContent = 'Showing latest';
+            } else {
+              const snap = snaps.find(x => x.key === v);
+              if (snap && Array.isArray(snap.records)) {
+                render(snap.records);
+                statusEl.textContent = `As of ${snap.label}`;
+              }
+            }
+            // reset search + sort
+            searchBox.value = '';
+            sortBy(0, true);
+          });
+        }
+
+          render(loaded.latest);
           enableSortAndSearch();
           attachCellClicks(matchesData);
-          statusEl.textContent = `Loaded • ${new Date().toLocaleString()}`;
+          statusEl.textContent = "Showing latest";
         } catch (e) {
           console.error(e);
           statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";

@@ -1,0 +1,170 @@
+/mnt/data/step2/scripts/calc_rankings.py:581: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  dt1["LastHeld"] = dt1.groupby("Comp")["Year"].transform("max")
+/mnt/data/step2/scripts/calc_rankings.py:610: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:669: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:937: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  m["LastHeld"] = m.groupby("Comp")["Year"].transform("max")
+/opt/pyvenv/lib/python3.11/site-packages/pandas/core/arrays/categorical.py:595: RuntimeWarning: invalid value encountered in cast
+  np.array(self.categories._na_value).astype(dtype)
+/mnt/data/step2/scripts/calc_rankings.py:952: FutureWarning: The default value of observed=False is deprecated and will change to observed=True in a future version of pandas. Specify observed=False to silence this warning and retain the current behavior
+  pivot = m.pivot_table(index=["Initial", "Surname"], columns="YC", values="RoundDisp", aggfunc="first", fill_value="")
+Wrote /mnt/data/step2/docs/data/elo_latest.csv
+Wrote /mnt/data/step2/docs/data/elo_latest.json
+Wrote /mnt/data/step2/docs/data/rankings_snapshots.json
+Wrote /mnt/data/step2/docs/data/rankings_latest.csv
+Wrote /mnt/data/step2/docs/data/rankings_latest.json
+Wrote /mnt/data/step2/docs/data/matches_latest.json
