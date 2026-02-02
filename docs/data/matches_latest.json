@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-02T02:38:08Z",
+  "generatedAt": "2026-02-02T02:58:47Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -141,7 +141,7 @@
             "E|SCOONES",
             "B|MERRETT"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat E.Scoones & B.Merrett 3-0 (12-1, 12-0, 12-0)",
+          "raw": "S.Cooley & T.Dunbar beat E.Scoones & B.Merrett 3-0 (12-1, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -157,7 +157,7 @@
             "L|BROCK",
             "T|MCCAHON"
           ],
-          "raw": "R.Perrie & J.Pemberton  beat L.Brock & T.McCahon 3-0 (13-11, 12-5, 14-12)",
+          "raw": "R.Perrie & J.Pemberton beat L.Brock & T.McCahon 3-0 (13-11, 12-5, 14-12)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -173,7 +173,7 @@
             "I|WEAVER",
             "F|PRICKETT"
           ],
-          "raw": "S.Welti & C.Hughes  beat I.Weaver & F.Prickett 3-0 (12-5, 12-8, 12-6)",
+          "raw": "S.Welti & C.Hughes beat I.Weaver & F.Prickett 3-0 (12-5, 12-8, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -189,7 +189,7 @@
             "A|AGARWAL",
             "T|ARJARIA"
           ],
-          "raw": "S.Tailor & C.Plummer  beat A.Agarwal & T.Arjaria 3-0 (12-5, 12-6, 12-10)",
+          "raw": "S.Tailor & C.Plummer beat A.Agarwal & T.Arjaria 3-0 (12-5, 12-6, 12-10)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -205,7 +205,7 @@
             "J|ALSTER",
             "A|VINEN"
           ],
-          "raw": "J.Toop & M.Wiseman  beat J.Alster & A.Vinen 3-0 (12-2, 12-2, 12-2)",
+          "raw": "J.Toop & M.Wiseman beat J.Alster & A.Vinen 3-0 (12-2, 12-2, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -221,7 +221,7 @@
             "A|BHATTACHARYA",
             "A|BHATTACHARYA"
           ],
-          "raw": "V.Bhimjiyani & A.Abrahams  beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-6, 12-2, 12-10)",
+          "raw": "V.Bhimjiyani & A.Abrahams beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-6, 12-2, 12-10)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -237,7 +237,7 @@
             "H|WISEMAN",
             "G|WISEMAN"
           ],
-          "raw": "E.Taylor & L.Lloyd-Jones beat H.Wiseman & G.Wiseman  3-1 (12-5, 12-6, 7-12, 12-2)",
+          "raw": "E.Taylor & L.Lloyd-Jones beat H.Wiseman & G.Wiseman 3-1 (12-5, 12-6, 7-12, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -253,7 +253,7 @@
             "T|GALLAGHER",
             "J|PRIOR"
           ],
-          "raw": "R.Houlden & H.Young  beat T.Gallagher & J.Prior 3-0 (12-3, 12-5, 12-1)",
+          "raw": "R.Houlden & H.Young beat T.Gallagher & J.Prior 3-0 (12-3, 12-5, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -269,7 +269,7 @@
             "R|PERRIE",
             "J|PEMBERTON"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat R.Perrie & J.Pemberton  3-0 (12-5, 12-10, 12-8)",
+          "raw": "S.Cooley & T.Dunbar beat R.Perrie & J.Pemberton 3-0 (12-5, 12-10, 12-8)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -285,23 +285,23 @@
             "S|WELTI",
             "C|HUGHES"
           ],
-          "raw": "S.Tailor & C.Plummer  beat S.Welti & C.Hughes  3-2 (6-12, 12-11, 12-0, 12-14, 12-2)",
+          "raw": "S.Tailor & C.Plummer beat S.Welti & C.Hughes 3-2 (6-12, 12-11, 12-0, 12-14, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
         {
           "winnerTeam": "J.Toop & M.Wiseman",
-          "loserTeam": "V.Bhimjiyani & A.Abrahams",
-          "score": "w/o",
+          "loserTeam": "V.Bhimjiyani & A.Abrahams w/o",
+          "score": "",
           "winners": [
             "J|TOOP",
             "M|WISEMAN"
           ],
           "losers": [
             "V|BHIMJIYANI",
-            "A|ABRAHAMS"
+            "A|WO"
           ],
-          "raw": "J.Toop & M.Wiseman  beat V.Bhimjiyani & A.Abrahams  w/o",
+          "raw": "J.Toop & M.Wiseman beat V.Bhimjiyani & A.Abrahams w/o",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -317,7 +317,7 @@
             "E|TAYLOR",
             "L|LLOYD-JONES"
           ],
-          "raw": "R.Houlden & H.Young  beat E.Taylor & L.Lloyd-Jones 3-0 (12-8, 12-7, 12-4)",
+          "raw": "R.Houlden & H.Young beat E.Taylor & L.Lloyd-Jones 3-0 (12-8, 12-7, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -883,7 +883,7 @@
             "B|HART",
             "B|SWALLOW"
           ],
-          "raw": "R.Houlden & H.Young  beat B.Hart & B.Swallow 3-0 (12-3, 12-3, 12-1)",
+          "raw": "R.Houlden & H.Young beat B.Hart & B.Swallow 3-0 (12-3, 12-3, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -899,7 +899,7 @@
             "G|WISEMAN",
             "P|SATHIYAMOORTHY"
           ],
-          "raw": "A.Abrahams & V.Bhimjiyani  beat G.Wiseman & P.Sathiyamoorthy 3-0 (12-8, 12-4, 14-11)",
+          "raw": "A.Abrahams & V.Bhimjiyani beat G.Wiseman & P.Sathiyamoorthy 3-0 (12-8, 12-4, 14-11)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -915,7 +915,7 @@
             "D|ROBSON",
             "J|BLACK"
           ],
-          "raw": "S.Tailor & C.Plummer  beat D.Robson & J.Black 3-1 (12-3, 10-12, 12-9, 12-2)",
+          "raw": "S.Tailor & C.Plummer beat D.Robson & J.Black 3-1 (12-3, 10-12, 12-9, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -931,7 +931,7 @@
             "A|BHATTACHARYA",
             "A|BHATTACHARYA"
           ],
-          "raw": "J.Toop & M.Wiseman  beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-0, 12-2, 12-2)",
+          "raw": "J.Toop & M.Wiseman beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-0, 12-2, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -947,7 +947,7 @@
             "A|FIELD",
             "F|PRICKETT"
           ],
-          "raw": "J.Ho & J.Hopkins  beat A.Field & F.Prickett 3-0 (12-5, 12-6, 12-6)",
+          "raw": "J.Ho & J.Hopkins beat A.Field & F.Prickett 3-0 (12-5, 12-6, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -963,7 +963,7 @@
             "R|PERRIE",
             "E|SCOONES"
           ],
-          "raw": "E.Taylor & N.Caplin  beat R.Perrie & E.Scoones 3-0 (12-6, 12-7, 12-0)",
+          "raw": "E.Taylor & N.Caplin beat R.Perrie & E.Scoones 3-0 (12-6, 12-7, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -979,7 +979,7 @@
             "H|WISEMAN",
             "A|CAMERON-BLACKIE"
           ],
-          "raw": "S.Welti & C.Hughes  beat H.Wiseman & A.Cameron-Blackie 3-0 (12-2, 12-3, 12-1)",
+          "raw": "S.Welti & C.Hughes beat H.Wiseman & A.Cameron-Blackie 3-0 (12-2, 12-3, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -995,7 +995,7 @@
             "A|VINEN",
             "J|ALSTER"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat A.Vinen & J.Alster 3-0 (12-5, 12-0, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat A.Vinen & J.Alster 3-0 (12-5, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -1011,7 +1011,7 @@
             "A|ABRAHAMS",
             "V|BHIMJIYANI"
           ],
-          "raw": "R.Houlden & H.Young  beat A.Abrahams & V.Bhimjiyani  3-0 (12-2, 12-7, 12-1)",
+          "raw": "R.Houlden & H.Young beat A.Abrahams & V.Bhimjiyani 3-0 (12-2, 12-7, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1027,7 +1027,7 @@
             "S|TAILOR",
             "C|PLUMMER"
           ],
-          "raw": "J.Toop & M.Wiseman  beat S.Tailor & C.Plummer  3-0 (12-4, 12-5, 12-5)",
+          "raw": "J.Toop & M.Wiseman beat S.Tailor & C.Plummer 3-0 (12-4, 12-5, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1043,7 +1043,7 @@
             "J|HO",
             "J|HOPKINS"
           ],
-          "raw": "E.Taylor & N.Caplin  beat J.Ho & J.Hopkins  3-1 (7-12, 12-7, 13-12, 12-5)",
+          "raw": "E.Taylor & N.Caplin beat J.Ho & J.Hopkins 3-1 (7-12, 12-7, 13-12, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1059,7 +1059,7 @@
             "S|WELTI",
             "C|HUGHES"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat S.Welti & C.Hughes  3-0 (12-5, 12-1, 12-4)",
+          "raw": "T.Dunbar & S.Cooley beat S.Welti & C.Hughes 3-0 (12-5, 12-1, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1075,7 +1075,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "R.Houlden & H.Young  beat J.Toop & M.Wiseman  3-1 (13-10, 4-12, 15-13, 12-10)",
+          "raw": "R.Houlden & H.Young beat J.Toop & M.Wiseman 3-1 (13-10, 4-12, 15-13, 12-10)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -1091,7 +1091,7 @@
             "E|TAYLOR",
             "N|CAPLIN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & N.Caplin  3-0 (12-4, 12-4, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & N.Caplin 3-0 (12-4, 12-4, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -1107,7 +1107,7 @@
             "T|DUNBAR",
             "S|COOLEY"
           ],
-          "raw": "R.Houlden & H.Young  beat T.Dunbar & S.Cooley  3-1 (3-12, 12-0, 14-13, 12-8)",
+          "raw": "R.Houlden & H.Young beat T.Dunbar & S.Cooley 3-1 (3-12, 12-0, 14-13, 12-8)",
           "round": "F",
           "roundName": "Final"
         }
@@ -1252,7 +1252,7 @@
             "A|ABRAHAMS",
             "B|MERRETT"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat A.Abrahams & B.Merrett 3-0 (12-0, 12-2, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat A.Abrahams & B.Merrett 3-0 (12-0, 12-2, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1268,7 +1268,7 @@
             "E|TAYLOR",
             "N|CAPLIN"
           ],
-          "raw": "S.Tailor & C.Plummer  beat E.Taylor & N.Caplin 3-2 (12-6, 8-12, 12-9, 7-12, 12-9)",
+          "raw": "S.Tailor & C.Plummer beat E.Taylor & N.Caplin 3-2 (12-6, 8-12, 12-9, 7-12, 12-9)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1284,7 +1284,7 @@
             "C|HUGHES",
             "S|WELTI"
           ],
-          "raw": "J.Toop & H.Wiseman  beat C.Hughes & S.Welti 3-1 (6-12, 12-8, 12-6, 12-5)",
+          "raw": "J.Toop & H.Wiseman beat C.Hughes & S.Welti 3-1 (6-12, 12-8, 12-6, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1300,7 +1300,7 @@
             "G|WISEMAN",
             "P|SATHIYAMOORTHY"
           ],
-          "raw": "R.Houlden & H.Young  beat G.Wiseman & P.Sathiyamoorthy 3-0 (12-2, 12-1, 12-1)",
+          "raw": "R.Houlden & H.Young beat G.Wiseman & P.Sathiyamoorthy 3-0 (12-2, 12-1, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1916,7 +1916,7 @@
             "C|HUGHES",
             "S|WELTI"
           ],
-          "raw": "R.Houlden & H.Young  beat C.Hughes & S.Welti  3-0 (12-5, 12-1, 12-2)",
+          "raw": "R.Houlden & H.Young beat C.Hughes & S.Welti 3-0 (12-5, 12-1, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1932,7 +1932,7 @@
             "H|WISEMAN",
             "T|BARKER"
           ],
-          "raw": "E.Taylor & N.Caplin  beat H.Wiseman & T.Barker  3-1 (12-14, 12-8, 12-2, 12-5)",
+          "raw": "E.Taylor & N.Caplin beat H.Wiseman & T.Barker 3-1 (12-14, 12-8, 12-2, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1948,7 +1948,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "J.Ho & J.Hopkins  beat J.Toop & M.Wiseman  3-0 (15-10, 14-11, 2-0 ret)",
+          "raw": "J.Ho & J.Hopkins beat J.Toop & M.Wiseman 3-0 (15-10, 14-11, 2-0 ret)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -1964,23 +1964,23 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat A.Theodossi & R.Perrie  3-0 (12-3, 12-1, 12-3)",
+          "raw": "T.Dunbar & S.Cooley beat A.Theodossi & R.Perrie 3-0 (12-3, 12-1, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
         {
           "winnerTeam": "R.Houlden & H.Young",
-          "loserTeam": "E.Taylor & N.Caplin",
-          "score": "w/o",
+          "loserTeam": "E.Taylor & N.Caplin w/o",
+          "score": "",
           "winners": [
             "R|HOULDEN",
             "H|YOUNG"
           ],
           "losers": [
             "E|TAYLOR",
-            "N|CAPLIN"
+            "N|WO"
           ],
-          "raw": "R.Houlden & H.Young  beat E.Taylor & N.Caplin  w/o",
+          "raw": "R.Houlden & H.Young beat E.Taylor & N.Caplin w/o",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -1996,7 +1996,7 @@
             "J|HO",
             "J|HOPKINS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Ho & J.Hopkins  3-0 (12-7, 14-12, 12-5)",
+          "raw": "T.Dunbar & S.Cooley beat J.Ho & J.Hopkins 3-0 (12-7, 14-12, 12-5)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -2224,15 +2224,15 @@
         },
         {
           "winnerTeam": "J.Toop & H.Wiseman",
-          "loserTeam": "A.Abrahams & Sahil",
-          "score": "Shah 3-0 (12-2, 12-2, 12-4)",
+          "loserTeam": "A.Abrahams & Sahil Shah",
+          "score": "3-0 (12-2, 12-2, 12-4)",
           "winners": [
             "J|TOOP",
             "H|WISEMAN"
           ],
           "losers": [
             "A|ABRAHAMS",
-            "S|SAHIL"
+            "S|SHAH"
           ],
           "raw": "J.Toop & H.Wiseman beat A.Abrahams & Sahil Shah 3-0 (12-2, 12-2, 12-4)",
           "round": "QF",
@@ -2272,15 +2272,15 @@
         },
         {
           "winnerTeam": "J.Toop & H.Wiseman",
-          "loserTeam": "S.Cooley & T.Dunbar",
-          "score": "w/o",
+          "loserTeam": "S.Cooley & T.Dunbar w/o",
+          "score": "",
           "winners": [
             "J|TOOP",
             "H|WISEMAN"
           ],
           "losers": [
             "S|COOLEY",
-            "T|DUNBAR"
+            "T|WO"
           ],
           "raw": "J.Toop & H.Wiseman beat S.Cooley & T.Dunbar w/o",
           "round": "SF",
@@ -2479,7 +2479,7 @@
             "C|HUGHES",
             "S|WELTI"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat C.Hughes & S.Welti 3-0 (12-6, 12-0, 12-3)",
+          "raw": "S.Cooley & T.Dunbar beat C.Hughes & S.Welti 3-0 (12-6, 12-0, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -2495,7 +2495,7 @@
             "S|TAILOR",
             "V|BHIMJIYANI"
           ],
-          "raw": "J.Ho & J.Hopkins beat S.Tailor & V.Bhimjiyani  3-0 (12-5, 12-8, 12-6)",
+          "raw": "J.Ho & J.Hopkins beat S.Tailor & V.Bhimjiyani 3-0 (12-5, 12-8, 12-6)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -2511,7 +2511,7 @@
             "N|CAPLIN",
             "A|ABRAHAMS"
           ],
-          "raw": "J.Toop & T.Barker  beat N.Caplin & A.Abrahams 3-0 (12-4, 12-2, 12-9)",
+          "raw": "J.Toop & T.Barker beat N.Caplin & A.Abrahams 3-0 (12-4, 12-2, 12-9)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -2527,7 +2527,7 @@
             "W|SISSONS",
             "T|COTTERELL"
           ],
-          "raw": "R.Houlden & H.Young  beat W.Sissons & T.Cotterell 3-0 (12-2, 12-4, 12-5)",
+          "raw": "R.Houlden & H.Young beat W.Sissons & T.Cotterell 3-0 (12-2, 12-4, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -2693,7 +2693,7 @@
             "D|ROBSON",
             "J|RAVI"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat D.Robson & J.Ravi 3-0 (12-2, 12-1, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat D.Robson & J.Ravi 3-0 (12-2, 12-1, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2709,7 +2709,7 @@
             "H|GIBSON-LEITAO",
             "C|PLUMMER"
           ],
-          "raw": "H.Wiseman & P.Sathiyamoorthy  beat H.Gibson-Leitao & C.Plummer 3-2 (12-9, 12-14, 12-5, 5-12, 12-9)",
+          "raw": "H.Wiseman & P.Sathiyamoorthy beat H.Gibson-Leitao & C.Plummer 3-2 (12-9, 12-14, 12-5, 5-12, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2725,7 +2725,7 @@
             "G|WISEMAN",
             "J|PRIOR"
           ],
-          "raw": "E.Taylor & V.Bhimjiyani  beat G.Wiseman & J.Prior 3-0 (12-4, 12-1, 12-5)",
+          "raw": "E.Taylor & V.Bhimjiyani beat G.Wiseman & J.Prior 3-0 (12-4, 12-1, 12-5)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2741,7 +2741,7 @@
             "P|ASHWORTH",
             "J|BARLEY"
           ],
-          "raw": "J.Toop & T.Barker  beat P.Ashworth & J.Barley 3-0 (12-5, 12-5, 12-6)",
+          "raw": "J.Toop & T.Barker beat P.Ashworth & J.Barley 3-0 (12-5, 12-5, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2757,23 +2757,23 @@
             "A|BHATTACHARYA",
             "T|COTTERELL"
           ],
-          "raw": "H.Young & N.Caplin  beat Ar.Bhattacharya & T.Cotterell 3-0 (12-4, 12-0, 12-0)",
+          "raw": "H.Young & N.Caplin beat Ar.Bhattacharya & T.Cotterell 3-0 (12-4, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
         {
           "winnerTeam": "T.Gallagher & I.Jochim",
-          "loserTeam": "T.McCahon & Sahil",
-          "score": "Shah  3-1 (12-2, 12-7, 9-12, 12-5)",
+          "loserTeam": "T.McCahon & Sahil Shah",
+          "score": "3-1 (12-2, 12-7, 9-12, 12-5)",
           "winners": [
             "T|GALLAGHER",
             "I|JOCHIM"
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SAHIL"
+            "S|SHAH"
           ],
-          "raw": "T.Gallagher & I.Jochim beat T.McCahon & Sahil Shah  3-1 (12-2, 12-7, 9-12, 12-5)",
+          "raw": "T.Gallagher & I.Jochim beat T.McCahon & Sahil Shah 3-1 (12-2, 12-7, 9-12, 12-5)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2789,7 +2789,7 @@
             "T|BETTS",
             "E|HABERSHON"
           ],
-          "raw": "R.Tyler & C.Koksal  beat T.Betts & E.Habershon 3-0 (12-4, 12-1, 12-3)",
+          "raw": "R.Tyler & C.Koksal beat T.Betts & E.Habershon 3-0 (12-4, 12-1, 12-3)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2805,7 +2805,7 @@
             "G|NSENGA",
             "A|DESHMUKH"
           ],
-          "raw": "J.Ho & R.Houlden  beat G.Nsenga & A.Deshmukh 3-0 (12-1, 12-0, 12-0)",
+          "raw": "J.Ho & R.Houlden beat G.Nsenga & A.Deshmukh 3-0 (12-1, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -2885,7 +2885,7 @@
             "J|TOOP",
             "T|BARKER"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat J.Toop & T.Barker  3-0 (12-2, 12-1, 12-2)",
+          "raw": "S.Cooley & T.Dunbar beat J.Toop & T.Barker 3-0 (12-2, 12-1, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -2901,23 +2901,23 @@
             "N|CAPLIN",
             "H|YOUNG"
           ],
-          "raw": "R.Houlden & J.Ho  beat N.Caplin & H.Young  3-0 (12-4, 12-7, 12-0)",
+          "raw": "R.Houlden & J.Ho beat N.Caplin & H.Young 3-0 (12-4, 12-7, 12-0)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
         {
           "winnerTeam": "T Dunbar & S Cooley",
-          "loserTeam": "J Ho & R",
-          "score": "Houlden  3-0 (12-1, 12-4, 14-12)",
+          "loserTeam": "J Ho & R Houlden",
+          "score": "3-0 (12-1, 12-4, 14-12)",
           "winners": [
             "T|DUNBAR",
             "S|COOLEY"
           ],
           "losers": [
             "J|HO",
-            "R|R"
+            "R|HOULDEN"
           ],
-          "raw": "T Dunbar & S Cooley  beat J Ho & R Houlden  3-0 (12-1, 12-4, 14-12)",
+          "raw": "T Dunbar & S Cooley beat J Ho & R Houlden 3-0 (12-1, 12-4, 14-12)",
           "round": "F",
           "roundName": "Final"
         }
@@ -3284,15 +3284,15 @@
       "matches": [
         {
           "winnerTeam": "V.Bhimjiyani & S.Tailor",
-          "loserTeam": "T.McCahon & Sahil",
-          "score": "Shah 3-2 (8-12, 12-6, 12-7, 10-12, 12-2)",
+          "loserTeam": "T.McCahon & Sahil Shah",
+          "score": "3-2 (8-12, 12-6, 12-7, 10-12, 12-2)",
           "winners": [
             "V|BHIMJIYANI",
             "S|TAILOR"
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SAHIL"
+            "S|SHAH"
           ],
           "raw": "V.Bhimjiyani & S.Tailor beat T.McCahon & Sahil Shah 3-2 (8-12, 12-6, 12-7, 10-12, 12-2)",
           "round": "QF",
@@ -3380,15 +3380,15 @@
         },
         {
           "winnerTeam": "J.Ho & R.Houlden",
-          "loserTeam": "J.Toop & H.Wiseman",
-          "score": "w/o",
+          "loserTeam": "J.Toop & H.Wiseman w/o",
+          "score": "",
           "winners": [
             "J|HO",
             "R|HOULDEN"
           ],
           "losers": [
             "J|TOOP",
-            "H|WISEMAN"
+            "H|WO"
           ],
           "raw": "J.Ho & R.Houlden beat J.Toop & H.Wiseman w/o",
           "round": "F",
@@ -3490,7 +3490,7 @@
             "T|BETTS",
             "J|PRIOR"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat T.Betts & J.Prior 3-0 (12-0, 12-1, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat T.Betts & J.Prior 3-0 (12-0, 12-1, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3506,7 +3506,7 @@
             "J|MARKS",
             "O|HALLAM"
           ],
-          "raw": "L.Brock & I.Salim  beat J.Marks & O.Hallam 3-0 (12-3, 12-4, 12-7)",
+          "raw": "L.Brock & I.Salim beat J.Marks & O.Hallam 3-0 (12-3, 12-4, 12-7)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3522,7 +3522,7 @@
             "A|BHATTACHARYA",
             "A|BHATTACHARYA"
           ],
-          "raw": "H.Young & N.Caplin  beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-1, 12-2, 12-1)",
+          "raw": "H.Young & N.Caplin beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-1, 12-2, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3538,7 +3538,7 @@
             "N|TURNBULL",
             "A|ABRAHAMS"
           ],
-          "raw": "E.Taylor & S.Tailor  beat N.Turnbull & A.Abrahams 3-0 (12-1, 12-5, 12-8)",
+          "raw": "E.Taylor & S.Tailor beat N.Turnbull & A.Abrahams 3-0 (12-1, 12-5, 12-8)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3554,7 +3554,7 @@
             "W|SISSONS",
             "A|MORRIS"
           ],
-          "raw": "J.Ho & R.Houlden  beat W.Sissons & A.Morris 3-0 (12-2, 12-5, 12-1)",
+          "raw": "J.Ho & R.Houlden beat W.Sissons & A.Morris 3-0 (12-2, 12-5, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3570,7 +3570,7 @@
             "H|WISEMAN",
             "G|WISEMAN"
           ],
-          "raw": "R.Tyler & M.de Souza Girao beat H.Wiseman & G.Wiseman  3-0 (12-8, 12-6, 12-2)",
+          "raw": "R.Tyler & M.de Souza Girao beat H.Wiseman & G.Wiseman 3-0 (12-8, 12-6, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3586,7 +3586,7 @@
             "R|PERRIE",
             "J|PEMBERTON"
           ],
-          "raw": "T.McCahon & Sahil Shah beat R.Perrie & J.Pemberton  3-1 (12-9, 4-12, 12-8, 15-14)",
+          "raw": "T.McCahon & Sahil Shah beat R.Perrie & J.Pemberton 3-1 (12-9, 4-12, 12-8, 15-14)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3602,7 +3602,7 @@
             "R|MACDONALD-O'BRIEN",
             "D|TAYLOR-WEST"
           ],
-          "raw": "J.Toop & M.Wiseman  beat R.MacDonald-O'Brien & D.Taylor-West 3-0 (12-1, 12-0, 12-1)",
+          "raw": "J.Toop & M.Wiseman beat R.MacDonald-O'Brien & D.Taylor-West 3-0 (12-1, 12-0, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -3640,15 +3640,15 @@
         },
         {
           "winnerTeam": "J.Ho & R.Houlden",
-          "loserTeam": "R.Tyler & M.de",
-          "score": "Souza Girao 3-0 (12-4, 12-1, 12-3)",
+          "loserTeam": "R.Tyler & M.de Souza Girao",
+          "score": "3-0 (12-4, 12-1, 12-3)",
           "winners": [
             "J|HO",
             "R|HOULDEN"
           ],
           "losers": [
             "R|TYLER",
-            "M|DE"
+            "M|DESOUZAGIRAO"
           ],
           "raw": "J.Ho & R.Houlden beat R.Tyler & M.de Souza Girao 3-0 (12-4, 12-1, 12-3)",
           "round": "QF",
@@ -3656,15 +3656,15 @@
         },
         {
           "winnerTeam": "J.Toop & M.Wiseman",
-          "loserTeam": "T.McCahon & Sahil",
-          "score": "Shah 3-0 (12-0, 12-2, 12-4)",
+          "loserTeam": "T.McCahon & Sahil Shah",
+          "score": "3-0 (12-0, 12-2, 12-4)",
           "winners": [
             "J|TOOP",
             "M|WISEMAN"
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SAHIL"
+            "S|SHAH"
           ],
           "raw": "J.Toop & M.Wiseman beat T.McCahon & Sahil Shah 3-0 (12-0, 12-2, 12-4)",
           "round": "QF",
@@ -3682,7 +3682,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "J.Ho & R.Houlden  beat J.Toop & M.Wiseman  3-2 (7-12, 15-13, 5-12, 15-10, 12-9)",
+          "raw": "J.Ho & R.Houlden beat J.Toop & M.Wiseman 3-2 (7-12, 15-13, 5-12, 15-10, 12-9)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -3698,7 +3698,7 @@
             "H|YOUNG",
             "N|CAPLIN"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat H.Young & N.Caplin  3-0 (12-0, 12-5, 12-4)",
+          "raw": "S.Cooley & T.Dunbar beat H.Young & N.Caplin 3-0 (12-0, 12-5, 12-4)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -3714,7 +3714,7 @@
             "J|HO",
             "R|HOULDEN"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat J.Ho & R.Houlden  3-1 (12-4, 12-4, 10-15, 12-8)",
+          "raw": "S.Cooley & T.Dunbar beat J.Ho & R.Houlden 3-1 (12-4, 12-4, 10-15, 12-8)",
           "round": "F",
           "roundName": "Final"
         }
@@ -3987,7 +3987,7 @@
             "E|TAYLOR",
             "A|TAYLOR"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & A.Taylor 3-0 (12-0, 12-0, 12-1)",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & A.Taylor 3-0 (12-0, 12-0, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4577,7 +4577,7 @@
             "H|YOUNG",
             "N|CAPLIN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat H.Young & N.Caplin 3-0 (12-6, 12-5, 12-7)",
+          "raw": "T.Dunbar & S.Cooley beat H.Young & N.Caplin 3-0 (12-6, 12-5, 12-7)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4593,7 +4593,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "E.Taylor & V.Bhimjiyani beat A.Theodossi & R.Perrie  3-0 (13-11, 12-4, 14-11)",
+          "raw": "E.Taylor & V.Bhimjiyani beat A.Theodossi & R.Perrie 3-0 (13-11, 12-4, 14-11)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4609,7 +4609,7 @@
             "A|BHATTACHARYA",
             "A|BHATTACHARYA"
           ],
-          "raw": "J.Toop & T.Barker  beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-0, 12-0)",
+          "raw": "J.Toop & T.Barker beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-0, 12-0)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4625,7 +4625,7 @@
             "J|MARKS",
             "O|HALLAM"
           ],
-          "raw": "R.Houlden & J.Ho  beat J.Marks & O.Hallam 3-0 (12-2, 12-1, 12-1)",
+          "raw": "R.Houlden & J.Ho beat J.Marks & O.Hallam 3-0 (12-2, 12-1, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4641,7 +4641,7 @@
             "E|TAYLOR",
             "V|BHIMJIYANI"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & V.Bhimjiyani 3-0 (12-2, 12-4, 12-1)",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & V.Bhimjiyani 3-0 (12-2, 12-4, 12-1)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -4657,7 +4657,7 @@
             "J|TOOP",
             "T|BARKER"
           ],
-          "raw": "R.Houlden & J.Ho  beat J.Toop & T.Barker  3-1 (12-2, 14-11, 8-12, 14-11)",
+          "raw": "R.Houlden & J.Ho beat J.Toop & T.Barker 3-1 (12-2, 14-11, 8-12, 14-11)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -4673,7 +4673,7 @@
             "T|DUNBAR",
             "S|COOLEY"
           ],
-          "raw": "R.Houlden & J.Ho  beat T.Dunbar & S.Cooley  3-1 (12-6, 12-8, 3-12, 15-14)",
+          "raw": "R.Houlden & J.Ho beat T.Dunbar & S.Cooley 3-1 (12-6, 12-8, 3-12, 15-14)",
           "round": "F",
           "roundName": "Final"
         }
@@ -4773,7 +4773,7 @@
             "H|YOUNG",
             "C|KOKSAL"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat H.Young & C.Koksal 3-0 (12-1, 12-0, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat H.Young & C.Koksal 3-0 (12-1, 12-0, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4789,7 +4789,7 @@
             "M|KOVAR",
             "J|MARKS"
           ],
-          "raw": "C.Hughes & T.Walters beat M.Kovar & J.Marks  3-2 (12-9, 12-8, 8-12, 9-12, 12-8)",
+          "raw": "C.Hughes & T.Walters beat M.Kovar & J.Marks 3-2 (12-9, 12-8, 8-12, 9-12, 12-8)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4805,7 +4805,7 @@
             "A|BHATTACHARYA",
             "A|BHATTACHARYA"
           ],
-          "raw": "E.Taylor & S.Tailor  beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-1, 12-1)",
+          "raw": "E.Taylor & S.Tailor beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-1, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4821,7 +4821,7 @@
             "S|MCLOUGHLIN",
             "W|PONSONBY"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat S.Mcloughlin & W.Ponsonby 3-0 (12-4, 12-4, 12-1)",
+          "raw": "A.Theodossi & R.Perrie beat S.Mcloughlin & W.Ponsonby 3-0 (12-4, 12-4, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4837,7 +4837,7 @@
             "N|CAPLIN",
             "N|TURNBULL"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat N.Caplin & N.Turnbull 3-0 (12-6, 12-1, 12-6)",
+          "raw": "P.Dunbar & G.Campbell beat N.Caplin & N.Turnbull 3-0 (12-6, 12-1, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4853,7 +4853,7 @@
             "T|MCCAHON",
             "J|BLACK"
           ],
-          "raw": "H.Wiseman & T.Barker  beat T.McCahon & J.Black 3-0 (12-5, 12-0, 12-2)",
+          "raw": "H.Wiseman & T.Barker beat T.McCahon & J.Black 3-0 (12-5, 12-0, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4869,7 +4869,7 @@
             "A|RENNIE",
             "C|PLUMMER"
           ],
-          "raw": "G.Thomason & J.Piggot  beat A.Rennie & C.Plummer 3-0 (14-11, 12-5, 14-12)",
+          "raw": "G.Thomason & J.Piggot beat A.Rennie & C.Plummer 3-0 (14-11, 12-5, 14-12)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4885,7 +4885,7 @@
             "J|RAVI",
             "S|KUNDU"
           ],
-          "raw": "J.Ho & R.Houlden  beat J.Ravi & S.Kundu 3-0 (12-1, 12-1, 12-1)",
+          "raw": "J.Ho & R.Houlden beat J.Ravi & S.Kundu 3-0 (12-1, 12-1, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -4901,7 +4901,7 @@
             "C|HUGHES",
             "T|WALTERS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat C.Hughes & T.Walters 3-0 (12-2, 12-0, 12-3)",
+          "raw": "T.Dunbar & S.Cooley beat C.Hughes & T.Walters 3-0 (12-2, 12-0, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4917,7 +4917,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "E.Taylor & S.Tailor  beat A.Theodossi & R.Perrie  3-0 (12-8, 12-6, 12-5)",
+          "raw": "E.Taylor & S.Tailor beat A.Theodossi & R.Perrie 3-0 (12-8, 12-6, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4933,7 +4933,7 @@
             "H|WISEMAN",
             "T|BARKER"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat H.Wiseman & T.Barker  3-0 (12-7, 12-1, 12-8)",
+          "raw": "P.Dunbar & G.Campbell beat H.Wiseman & T.Barker 3-0 (12-7, 12-1, 12-8)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4949,7 +4949,7 @@
             "G|THOMASON",
             "J|PIGGOT"
           ],
-          "raw": "J.Ho & R.Houlden  beat G.Thomason & J.Piggot  3-0 (12-5, 12-8, 12-5)",
+          "raw": "J.Ho & R.Houlden beat G.Thomason & J.Piggot 3-0 (12-5, 12-8, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -4965,7 +4965,7 @@
             "G|CAMPBELL",
             "P|DUNBAR"
           ],
-          "raw": "J.Ho & R.Houlden  beat G.Campbell & P.Dunbar  3-0 (15-11, 12-9, 12-7)",
+          "raw": "J.Ho & R.Houlden beat G.Campbell & P.Dunbar 3-0 (15-11, 12-9, 12-7)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -4981,7 +4981,7 @@
             "E|TAYLOR",
             "S|TAILOR"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat E.Taylor & S.Tailor  3-0 (12-3, 12-3, 12-2)",
+          "raw": "S.Cooley & T.Dunbar beat E.Taylor & S.Tailor 3-0 (12-3, 12-3, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -4997,7 +4997,7 @@
             "J|HO",
             "R|HOULDEN"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat J.Ho & R.Houlden  3-0 (12-4, 12-6, 12-1)",
+          "raw": "S.Cooley & T.Dunbar beat J.Ho & R.Houlden 3-0 (12-4, 12-6, 12-1)",
           "round": "F",
           "roundName": "Final"
         }
@@ -5455,7 +5455,7 @@
             "J|MARKS",
             "M|KOVAR"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Marks & M.Kovar 3-0 (12-1, 12-4, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat J.Marks & M.Kovar 3-0 (12-1, 12-4, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -5471,7 +5471,7 @@
             "E|TAYLOR",
             "S|TAILOR"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat E.Taylor & S.Tailor  3-1 (12-8, 12-14, 14-12, 13-11)",
+          "raw": "A.Theodossi & R.Perrie beat E.Taylor & S.Tailor 3-1 (12-8, 12-14, 14-12, 13-11)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -5487,7 +5487,7 @@
             "L|BROCK",
             "A|JOYCE"
           ],
-          "raw": "J.Toop & T.Barker  beat L.Brock & A.Joyce  3-0 (12-9, 12-7, 12-7)",
+          "raw": "J.Toop & T.Barker beat L.Brock & A.Joyce 3-0 (12-9, 12-7, 12-7)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -5503,7 +5503,7 @@
             "T|COX",
             "R|WORTH"
           ],
-          "raw": "J.Ho & R.Houlden  beat T.Cox & R.Worth  3-0 (12-2, 12-3, 12-8)",
+          "raw": "J.Ho & R.Houlden beat T.Cox & R.Worth 3-0 (12-2, 12-3, 12-8)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -5822,15 +5822,15 @@
         },
         {
           "winnerTeam": "T.Dunbar & S.Cooley",
-          "loserTeam": "V.Bhimjiyani & J.Patel",
-          "score": "w/o",
+          "loserTeam": "V.Bhimjiyani & J.Patel w/o",
+          "score": "",
           "winners": [
             "T|DUNBAR",
             "S|COOLEY"
           ],
           "losers": [
             "V|BHIMJIYANI",
-            "J|PATEL"
+            "J|WO"
           ],
           "raw": "T.Dunbar & S.Cooley beat V.Bhimjiyani & J.Patel w/o",
           "round": "QF",
@@ -6099,7 +6099,7 @@
             "S|BALAJI",
             "L|MACLEAN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat Sa.Balaji & L.Maclean 3-0 (12-1, 12-0, 12-3)",
+          "raw": "T.Dunbar & S.Cooley beat Sa.Balaji & L.Maclean 3-0 (12-1, 12-0, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6115,7 +6115,7 @@
             "A|ASLAM-BASKEYFIELD",
             "S|MCLOUGHLIN"
           ],
-          "raw": "T.Cox & R.Worth  beat A.Aslam-Baskeyfield & S.Mcloughlin 3-0 (12-10, 12-6, 12-5)",
+          "raw": "T.Cox & R.Worth beat A.Aslam-Baskeyfield & S.Mcloughlin 3-0 (12-10, 12-6, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6131,7 +6131,7 @@
             "A|GARRETT",
             "P|CLARK"
           ],
-          "raw": "R.Houlden & J.Ho  beat A.Garrett & P.Clark 3-0 (12-1, 12-0, 12-0)",
+          "raw": "R.Houlden & J.Ho beat A.Garrett & P.Clark 3-0 (12-1, 12-0, 12-0)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6147,7 +6147,7 @@
             "J|PRIOR",
             "G|WISEMAN"
           ],
-          "raw": "J.Toop & H.Wiseman  beat J.Prior & G.Wiseman 3-0 (12-1, 12-4, 12-2)",
+          "raw": "J.Toop & H.Wiseman beat J.Prior & G.Wiseman 3-0 (12-1, 12-4, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6163,7 +6163,7 @@
             "T|COX",
             "R|WORTH"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat T.Cox & R.Worth  3-0 (12-5, 12-2, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat T.Cox & R.Worth 3-0 (12-5, 12-2, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -6179,7 +6179,7 @@
             "J|TOOP",
             "H|WISEMAN"
           ],
-          "raw": "R.Houlden & J.Ho  beat J.Toop & H.Wiseman  3-2 (9-12, 6-12, 12-8, 12-2, 15-12)",
+          "raw": "R.Houlden & J.Ho beat J.Toop & H.Wiseman 3-2 (9-12, 6-12, 12-8, 12-2, 15-12)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -6195,7 +6195,7 @@
             "R|HOULDEN",
             "J|HO"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat R.Houlden & J.Ho  3-0 (12-2, 12-2, 12-6)",
+          "raw": "T.Dunbar & S.Cooley beat R.Houlden & J.Ho 3-0 (12-2, 12-2, 12-6)",
           "round": "F",
           "roundName": "Final"
         }
@@ -6527,7 +6527,7 @@
             "M|PUGH",
             "K|NWUBA"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat M.Pugh & K.Nwuba 3-0 (12-4, 12-0, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat M.Pugh & K.Nwuba 3-0 (12-4, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6543,7 +6543,7 @@
             "D|MEW",
             "R|TYLER"
           ],
-          "raw": "V.Bhimjiyani & S.Tailor  beat D.Mew & R.Tyler 3-1 (4-12, 12-3, 12-9, 12-9)",
+          "raw": "V.Bhimjiyani & S.Tailor beat D.Mew & R.Tyler 3-1 (4-12, 12-3, 12-9, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6559,7 +6559,7 @@
             "O|SANDER",
             "C|PLUMMER"
           ],
-          "raw": "E.Taylor & J.Ho  beat O.Sander & C.Plummer 3-0 (12-6, 12-0, 12-5)",
+          "raw": "E.Taylor & J.Ho beat O.Sander & C.Plummer 3-0 (12-6, 12-0, 12-5)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6575,7 +6575,7 @@
             "H|WISEMAN",
             "T|GALLAGHER"
           ],
-          "raw": "I.Hutchinson & R.Wijeratne beat H.Wiseman & T.Gallagher  3-1 (12-3, 3-12, 12-4, 12-9)",
+          "raw": "I.Hutchinson & R.Wijeratne beat H.Wiseman & T.Gallagher 3-1 (12-3, 3-12, 12-4, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6591,7 +6591,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "T.Cox & R.Worth beat A.Theodossi & R.Perrie  3-1 (12-9, 7-12, 12-9, 12-7)",
+          "raw": "T.Cox & R.Worth beat A.Theodossi & R.Perrie 3-1 (12-9, 7-12, 12-9, 12-7)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6607,7 +6607,7 @@
             "A|JOYCE",
             "C|NICHOLLS"
           ],
-          "raw": "L.Brock & R.Houlden  beat A.Joyce & C.Nicholls 3-1 (12-8, 12-13, 12-7, 12-6)",
+          "raw": "L.Brock & R.Houlden beat A.Joyce & C.Nicholls 3-1 (12-8, 12-13, 12-7, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6623,7 +6623,7 @@
             "J|MARKS",
             "M|KOVAR"
           ],
-          "raw": "G.Campbell & P.Dunbar  beat J.Marks & M.Kovar 3-0 (12-6, 12-8, 15-14)",
+          "raw": "G.Campbell & P.Dunbar beat J.Marks & M.Kovar 3-0 (12-6, 12-8, 15-14)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6639,7 +6639,7 @@
             "G|CHAPMAN",
             "A|TAYLOR"
           ],
-          "raw": "J.Toop & M.Wiseman  beat G.Chapman & A.Taylor 3-0 (12-1, 12-3, 12-4)",
+          "raw": "J.Toop & M.Wiseman beat G.Chapman & A.Taylor 3-0 (12-1, 12-3, 12-4)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -6655,7 +6655,7 @@
             "V|BHIMJIYANI",
             "S|TAILOR"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat V.Bhimjiyani & S.Tailor  3-0 (12-3, 12-2, 12-3)",
+          "raw": "T.Dunbar & S.Cooley beat V.Bhimjiyani & S.Tailor 3-0 (12-3, 12-2, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6671,7 +6671,7 @@
             "I|HUTCHINSON",
             "R|WIJERATNE"
           ],
-          "raw": "E.Taylor & J.Ho  beat I.Hutchinson & R.Wijeratne 3-1 (10-12, 12-3, 12-3, 12-4)",
+          "raw": "E.Taylor & J.Ho beat I.Hutchinson & R.Wijeratne 3-1 (10-12, 12-3, 12-3, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6687,7 +6687,7 @@
             "T|COX",
             "R|WORTH"
           ],
-          "raw": "L.Brock & R.Houlden  beat T.Cox & R.Worth 3-1 (12-8, 7-12, 14-11, 12-6)",
+          "raw": "L.Brock & R.Houlden beat T.Cox & R.Worth 3-1 (12-8, 7-12, 14-11, 12-6)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6703,7 +6703,7 @@
             "G|CAMPBELL",
             "P|DUNBAR"
           ],
-          "raw": "J.Toop & M.Wiseman  beat G.Campbell & P.Dunbar  3-0 (12-6, 12-10, 12-3)",
+          "raw": "J.Toop & M.Wiseman beat G.Campbell & P.Dunbar 3-0 (12-6, 12-10, 12-3)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6719,7 +6719,7 @@
             "E|TAYLOR",
             "J|HO"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & J.Ho  3-0 (12-5, 12-2, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & J.Ho 3-0 (12-5, 12-2, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -6735,7 +6735,7 @@
             "L|BROCK",
             "R|HOULDEN"
           ],
-          "raw": "J.Toop & M.Wiseman  beat L.Brock & R.Houlden  3-0 (12-1, 12-0, 12-7)",
+          "raw": "J.Toop & M.Wiseman beat L.Brock & R.Houlden 3-0 (12-1, 12-0, 12-7)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -6751,7 +6751,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Toop & M.Wiseman  3-0 (12-7, 12-5, 12-4)",
+          "raw": "T.Dunbar & S.Cooley beat J.Toop & M.Wiseman 3-0 (12-7, 12-5, 12-4)",
           "round": "F",
           "roundName": "Final"
         }
@@ -6950,7 +6950,7 @@
             "C|HUGHES",
             "T|WELTI"
           ],
-          "raw": "J.Toop & H.Wiseman  beat C.Hughes & T.Welti  3-0 (12-6, 12-3, 12-5)",
+          "raw": "J.Toop & H.Wiseman beat C.Hughes & T.Welti 3-0 (12-6, 12-3, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6966,7 +6966,7 @@
             "E|TAYLOR",
             "S|WELTI"
           ],
-          "raw": "S.Cooley & D.Orchard  beat E.Taylor & S.Welti  3-0 (12-6, 12-6, 12-7)",
+          "raw": "S.Cooley & D.Orchard beat E.Taylor & S.Welti 3-0 (12-6, 12-6, 12-7)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6982,7 +6982,7 @@
             "G|WILLIAMS",
             "T|WALTERS"
           ],
-          "raw": "L.Brock & R.Houlden  beat Guy.Williams & T.Walters 3-0 (12-6, ret)",
+          "raw": "L.Brock & R.Houlden beat Guy.Williams & T.Walters 3-0 (12-6, ret)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -6998,7 +6998,7 @@
             "T|COX",
             "R|WORTH"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat T.Cox & R.Worth 3-0 (12-6, 12-2, 12-1)",
+          "raw": "A.Theodossi & R.Perrie beat T.Cox & R.Worth 3-0 (12-6, 12-2, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -7014,7 +7014,7 @@
             "S|COOLEY",
             "D|ORCHARD"
           ],
-          "raw": "J.Toop & H.Wiseman  beat S.Cooley & D.Orchard  3-0 (12-1, 12-9, 12-9)",
+          "raw": "J.Toop & H.Wiseman beat S.Cooley & D.Orchard 3-0 (12-1, 12-9, 12-9)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -7030,7 +7030,7 @@
             "L|BROCK",
             "R|HOULDEN"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat L.Brock & R.Houlden  3-0 (12-6, 12-6, 14-12)",
+          "raw": "A.Theodossi & R.Perrie beat L.Brock & R.Houlden 3-0 (12-6, 12-6, 14-12)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -7046,7 +7046,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "J.Toop & H.Wiseman  beat A.Theodossi & R.Perrie  3-1 (6-12, 12-6, 12-3, 12-9)",
+          "raw": "J.Toop & H.Wiseman beat A.Theodossi & R.Perrie 3-1 (6-12, 12-6, 12-3, 12-9)",
           "round": "F",
           "roundName": "Final"
         }
@@ -7428,7 +7428,7 @@
             "D|FOSTER",
             "A|JOYCE"
           ],
-          "raw": "E.Taylor & I.Hutchinson beat D.Foster & A.Joyce  3-2 (3-12, 12-3, 9-12, 12-9, 12-9)",
+          "raw": "E.Taylor & I.Hutchinson beat D.Foster & A.Joyce 3-2 (3-12, 12-3, 9-12, 12-9, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -7578,15 +7578,15 @@
         },
         {
           "winnerTeam": "J.Toop & M.Wiseman",
-          "loserTeam": "A.Theodossi & R.Perrie",
-          "score": "w/o",
+          "loserTeam": "A.Theodossi & R.Perrie w/o",
+          "score": "",
           "winners": [
             "J|TOOP",
             "M|WISEMAN"
           ],
           "losers": [
             "A|THEODOSSI",
-            "R|PERRIE"
+            "R|WO"
           ],
           "raw": "J.Toop & M.Wiseman beat A.Theodossi & R.Perrie w/o",
           "round": "SF",
@@ -7693,7 +7693,7 @@
             "E|TAYLOR",
             "G|WILLIAMS"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat E.Taylor & Guy.Williams  3-0 (12-0, 12-1, 12-0)",
+          "raw": "S.Cooley & T.Dunbar beat E.Taylor & Guy.Williams 3-0 (12-0, 12-1, 12-0)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -7709,7 +7709,7 @@
             "D|FOSTER",
             "A|JOYCE"
           ],
-          "raw": "L.Brock & E.Rose  beat D.Foster & A.Joyce  3-1 (11-15, 12-2, 12-7, 12-9)",
+          "raw": "L.Brock & E.Rose beat D.Foster & A.Joyce 3-1 (11-15, 12-2, 12-7, 12-9)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -7725,7 +7725,7 @@
             "R|WORTH",
             "T|COX"
           ],
-          "raw": "J.Toop & T.Gallagher  beat R.Worth & T.Cox 3-0 (12-5, 12-4, 12-1)",
+          "raw": "J.Toop & T.Gallagher beat R.Worth & T.Cox 3-0 (12-5, 12-4, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -7741,7 +7741,7 @@
             "H|WISEMAN",
             "R|HOULDEN"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat H.Wiseman & R.Houlden  3-0 (12-8, 12-8, 12-1)",
+          "raw": "A.Theodossi & R.Perrie beat H.Wiseman & R.Houlden 3-0 (12-8, 12-8, 12-1)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -7757,7 +7757,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat L.Brock & E.Rose  3-0 (12-1, 12-3, 12-2)",
+          "raw": "S.Cooley & T.Dunbar beat L.Brock & E.Rose 3-0 (12-1, 12-3, 12-2)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -7773,7 +7773,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "J.Toop & T.Gallagher  beat A.Theodossi & R.Perrie  3-1 (12-5, 9-12, 12-2, 12-7)",
+          "raw": "J.Toop & T.Gallagher beat A.Theodossi & R.Perrie 3-1 (12-5, 9-12, 12-2, 12-7)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -7789,7 +7789,7 @@
             "J|TOOP",
             "T|GALLAGHER"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat J.Toop & T.Gallagher  3-0 (12-3, 12-3, 12-6)",
+          "raw": "S.Cooley & T.Dunbar beat J.Toop & T.Gallagher 3-0 (12-3, 12-3, 12-6)",
           "round": "F",
           "roundName": "Final"
         }
@@ -8139,7 +8139,7 @@
             "G|WILLIAMS",
             "G|WILLIAMS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat Grant.Williams & Guy.Williams 3-0 (12-8, 12-0, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat Grant.Williams & Guy.Williams 3-0 (12-8, 12-0, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8155,7 +8155,7 @@
             "S|SIMMONS",
             "C|AUSTIN"
           ],
-          "raw": "J.Ho & J.Marks  beat S.Simmons & C.Austin 3-1 (12-9, 12-4, 9-12, 12-9)",
+          "raw": "J.Ho & J.Marks beat S.Simmons & C.Austin 3-1 (12-9, 12-4, 9-12, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8171,7 +8171,7 @@
             "T|WELD",
             "A|WELLESLEY"
           ],
-          "raw": "A.Joyce & D.Foster  beat T.Weld & A.Wellesley 3-0 (12-4, 12-8, 13-12)",
+          "raw": "A.Joyce & D.Foster beat T.Weld & A.Wellesley 3-0 (12-4, 12-8, 13-12)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8187,7 +8187,7 @@
             "G|HOSKINS",
             "A|BHATTACHARYA"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat G.Hoskins & Ab.Bhattacharya 3-0 (12-2, 12-2, 12-1)",
+          "raw": "A.Theodossi & R.Perrie beat G.Hoskins & Ab.Bhattacharya 3-0 (12-2, 12-2, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8203,7 +8203,7 @@
             "T|BETTS",
             "W|BETTS"
           ],
-          "raw": "E.Taylor & H.Wiseman  beat T.Betts & W.Betts 3-0 (12-2, 12-5, 12-3)",
+          "raw": "E.Taylor & H.Wiseman beat T.Betts & W.Betts 3-0 (12-2, 12-5, 12-3)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8219,7 +8219,7 @@
             "L|BROCK",
             "C|HUGHES"
           ],
-          "raw": "T.Barker & R.Houlden beat L.Brock & C.Hughes  3-1 (9-12, 14-13, 12-7, 12-9)",
+          "raw": "T.Barker & R.Houlden beat L.Brock & C.Hughes 3-1 (9-12, 14-13, 12-7, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8235,7 +8235,7 @@
             "A|KNIGHT",
             "P|ROPER"
           ],
-          "raw": "V.Bhimjiyani & S.Tailor  beat A.Knight & P.Roper 3-0 (12-3, 12-8, 12-9)",
+          "raw": "V.Bhimjiyani & S.Tailor beat A.Knight & P.Roper 3-0 (12-3, 12-8, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8251,7 +8251,7 @@
             "S|CHAPMAN",
             "A|YUSAF"
           ],
-          "raw": "J.Toop & M.Wiseman  beat S.Chapman & A.Yusaf 3-0 (12-3, 12-0, 12-2)",
+          "raw": "J.Toop & M.Wiseman beat S.Chapman & A.Yusaf 3-0 (12-3, 12-0, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8267,7 +8267,7 @@
             "J|HO",
             "J|MARKS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Ho & J.Marks  3-0 (12-5, 12-0, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat J.Ho & J.Marks 3-0 (12-5, 12-0, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -8283,7 +8283,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "A.Joyce & D.Foster  beat A.Theodossi & R.Perrie  3-0 (12-9, 13-12, 12-5)",
+          "raw": "A.Joyce & D.Foster beat A.Theodossi & R.Perrie 3-0 (12-9, 13-12, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -8299,7 +8299,7 @@
             "T|BARKER",
             "R|HOULDEN"
           ],
-          "raw": "E.Taylor & H.Wiseman  beat T.Barker & R.Houlden 3-1 (15-13, 12-5, 9-12, 12-7)",
+          "raw": "E.Taylor & H.Wiseman beat T.Barker & R.Houlden 3-1 (15-13, 12-5, 9-12, 12-7)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -8315,7 +8315,7 @@
             "V|BHIMJIYANI",
             "S|TAILOR"
           ],
-          "raw": "J.Toop & M.Wiseman  beat V.Bhimjiyani & S.Tailor  3-0 (12-4, 12-3, 12-5)",
+          "raw": "J.Toop & M.Wiseman beat V.Bhimjiyani & S.Tailor 3-0 (12-4, 12-3, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -8331,7 +8331,7 @@
             "A|JOYCE",
             "D|FOSTER"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat A.Joyce & D.Foster  3-0 (12-2, 12-3, 12-6)",
+          "raw": "T.Dunbar & S.Cooley beat A.Joyce & D.Foster 3-0 (12-2, 12-3, 12-6)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -8347,7 +8347,7 @@
             "H|WISEMAN",
             "E|TAYLOR"
           ],
-          "raw": "J.Toop & M.Wiseman  beat H.Wiseman & E.Taylor  3-0 (12-3, 12-3, 12-1)",
+          "raw": "J.Toop & M.Wiseman beat H.Wiseman & E.Taylor 3-0 (12-3, 12-3, 12-1)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -8944,7 +8944,7 @@
             "W|BETTS",
             "J|BETTS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat W.Betts & J.Betts 3-0 (12-5, 12-0, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat W.Betts & J.Betts 3-0 (12-5, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8960,7 +8960,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "G.Thomason & H.Lewis beat L.Brock & E.Rose  3-1 (13-15, 12-8, 12-5, 12-7)",
+          "raw": "G.Thomason & H.Lewis beat L.Brock & E.Rose 3-1 (13-15, 12-8, 12-5, 12-7)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8976,7 +8976,7 @@
             "G|WILLIAMS",
             "S|WELTI"
           ],
-          "raw": "E.Taylor & H.Wiseman  beat Guy Williams & S.Welti 3-0 (12-0, 12-6, 12-3)",
+          "raw": "E.Taylor & H.Wiseman beat Guy Williams & S.Welti 3-0 (12-0, 12-6, 12-3)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -8992,7 +8992,7 @@
             "G|WILLIAMS",
             "M|HUGHES"
           ],
-          "raw": "R.Tyler & D.Mew  beat Grant Williams & M.Hughes 3-0 (12-3, 12-6, 12-1)",
+          "raw": "R.Tyler & D.Mew beat Grant Williams & M.Hughes 3-0 (12-3, 12-6, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9008,7 +9008,7 @@
             "G|HOSKINS",
             "I|WAGLAND"
           ],
-          "raw": "J.Toop & M.Wiseman  beat G.Hoskins & I.Wagland 3-0 (12-0, 12-1, 12-2)",
+          "raw": "J.Toop & M.Wiseman beat G.Hoskins & I.Wagland 3-0 (12-0, 12-1, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9024,7 +9024,7 @@
             "V|BHIMJIYANI",
             "J|LEFORT"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat V.Bhimjiyani & J.Lefort 3-0 (12-5, 12-2, 12-3)",
+          "raw": "A.Theodossi & R.Perrie beat V.Bhimjiyani & J.Lefort 3-0 (12-5, 12-2, 12-3)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9040,7 +9040,7 @@
             "R|WILSON",
             "J|ABBOTT"
           ],
-          "raw": "D.Foster & A.Joyce  beat R.Wilson & J.Abbott 3-1 (12-6, 7-12, 12-1, 12-1)",
+          "raw": "D.Foster & A.Joyce beat R.Wilson & J.Abbott 3-1 (12-6, 7-12, 12-1, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9056,7 +9056,7 @@
             "J|HO",
             "S|LITTLE"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat J.Ho & S.Little 3-0 (12-4, 12-7, 12-1)",
+          "raw": "P.Dunbar & G.Campbell beat J.Ho & S.Little 3-0 (12-4, 12-7, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9072,7 +9072,7 @@
             "G|THOMASON",
             "H|LEWIS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat G.Thomason & H.Lewis 3-0 (12-8, 12-0, 12-4)",
+          "raw": "T.Dunbar & S.Cooley beat G.Thomason & H.Lewis 3-0 (12-8, 12-0, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9088,7 +9088,7 @@
             "R|TYLER",
             "D|MEW"
           ],
-          "raw": "E.Taylor & H.Wiseman  beat R.Tyler & D.Mew  3-2 (14-11, 9-12, 6-12, 12-5, 12-6)",
+          "raw": "E.Taylor & H.Wiseman beat R.Tyler & D.Mew 3-2 (14-11, 9-12, 6-12, 12-5, 12-6)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9104,7 +9104,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "J.Toop & M.Wiseman  beat A.Theodossi & R.Perrie  3-0 (12-1, 12-2, 12-5)",
+          "raw": "J.Toop & M.Wiseman beat A.Theodossi & R.Perrie 3-0 (12-1, 12-2, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9120,7 +9120,7 @@
             "D|FOSTER",
             "A|JOYCE"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat D.Foster & A.Joyce  3-1 (12-4, 12-8, 5-12, 12-4)",
+          "raw": "P.Dunbar & G.Campbell beat D.Foster & A.Joyce 3-1 (12-4, 12-8, 5-12, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9136,7 +9136,7 @@
             "H|WISEMAN",
             "E|TAYLOR"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat H.Wiseman & E.Taylor  3-0 (12-7, 12-6, 12-5)",
+          "raw": "T.Dunbar & S.Cooley beat H.Wiseman & E.Taylor 3-0 (12-7, 12-6, 12-5)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -9152,7 +9152,7 @@
             "P|DUNBAR",
             "G|CAMPBELL"
           ],
-          "raw": "J.Toop & M.Wiseman  beat P.Dunbar & G.Campbell  3-0 (12-11, 12-4, 12-8)",
+          "raw": "J.Toop & M.Wiseman beat P.Dunbar & G.Campbell 3-0 (12-11, 12-4, 12-8)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -9168,7 +9168,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Toop & M.Wiseman  3-0 (14-12, 12-4, 12-7)",
+          "raw": "T.Dunbar & S.Cooley beat J.Toop & M.Wiseman 3-0 (14-12, 12-4, 12-7)",
           "round": "F",
           "roundName": "Final"
         }
@@ -9339,7 +9339,7 @@
             "R|WORTH",
             "G|WILLIAMS"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat R.Worth & Guy.Williams 2-0 (12-0 12-2)",
+          "raw": "S.Cooley & T.Dunbar beat R.Worth & Guy.Williams 2-0 (12-0 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9355,7 +9355,7 @@
             "W|GIBBONS",
             "D|LEACH"
           ],
-          "raw": "L.Brock & E.Rose  beat W.Gibbons & D.Leach 2-0 (12-6, 12-4)",
+          "raw": "L.Brock & E.Rose beat W.Gibbons & D.Leach 2-0 (12-6, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9371,7 +9371,7 @@
             "H|WISEMAN",
             "D|ROBSON"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat H.Wiseman & D.Robson 2-1 (9-12, 12-1, 12-2)",
+          "raw": "A.Theodossi & R.Perrie beat H.Wiseman & D.Robson 2-1 (9-12, 12-1, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9387,7 +9387,7 @@
             "H|BLOFIELD",
             "G|LEWIS"
           ],
-          "raw": "J.Toop & M.Wiseman  beat H.Blofield & G.Lewis 2-0 (12-1, 12-2)",
+          "raw": "J.Toop & M.Wiseman beat H.Blofield & G.Lewis 2-0 (12-1, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9403,7 +9403,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat L.Brock & E.Rose  3-0 (12-4, 12-5, 12-4)",
+          "raw": "S.Cooley & T.Dunbar beat L.Brock & E.Rose 3-0 (12-4, 12-5, 12-4)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -9419,7 +9419,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "J.Toop & M.Wiseman  beat A.Theodossi & R.Perrie  3-0 (12-0, 12-7, 12-6)",
+          "raw": "J.Toop & M.Wiseman beat A.Theodossi & R.Perrie 3-0 (12-0, 12-7, 12-6)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -9435,7 +9435,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat J.Toop & M.Wiseman  3-2 (12-8, 11-14, 12-4, 6-12, 12-5)",
+          "raw": "S.Cooley & T.Dunbar beat J.Toop & M.Wiseman 3-2 (12-8, 11-14, 12-4, 6-12, 12-5)",
           "round": "F",
           "roundName": "Final"
         }
@@ -9802,7 +9802,7 @@
             "C|SELF",
             "S|KUNDU"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat C.Self & S.Kundu 3-0 (12-1, 12-0, 12-0)",
+          "raw": "T.Dunbar & S.Cooley beat C.Self & S.Kundu 3-0 (12-1, 12-0, 12-0)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9818,7 +9818,7 @@
             "V|BHIMJIYANI",
             "J|LEFORT"
           ],
-          "raw": "R.Wilson & J.Abbott beat V.Bhimjiyani & J.Lefort  3-2 (13-10, 9-12, 12-7, 4-12, 12-9)",
+          "raw": "R.Wilson & J.Abbott beat V.Bhimjiyani & J.Lefort 3-2 (13-10, 9-12, 12-7, 4-12, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9834,7 +9834,7 @@
             "R|BRYAN",
             "W|JONES"
           ],
-          "raw": "D.Mew & R.Tyler  beat R.Bryan & W.Jones 3-0 (14-12, 12-3, 12-2)",
+          "raw": "D.Mew & R.Tyler beat R.Bryan & W.Jones 3-0 (14-12, 12-3, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9850,7 +9850,7 @@
             "P|COHEN",
             "P|WHITE"
           ],
-          "raw": "S.Tailor & J.Patel beat P.Cohen & P.White  3-0 (15-13, 7-3 ret)",
+          "raw": "S.Tailor & J.Patel beat P.Cohen & P.White 3-0 (15-13, 7-3 ret)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9866,7 +9866,7 @@
             "S|WELTI",
             "J|FLOWERS"
           ],
-          "raw": "J.Toop & H.Wiseman  beat S.Welti & J.Flowers 3-0 (12-1, 12-3, 12-5)",
+          "raw": "J.Toop & H.Wiseman beat S.Welti & J.Flowers 3-0 (12-1, 12-3, 12-5)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9882,7 +9882,7 @@
             "G|THOMASON",
             "H|LEWIS"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat G.Thomason & H.Lewis 3-0 (15-12, 15-11, 12-2)",
+          "raw": "A.Theodossi & R.Perrie beat G.Thomason & H.Lewis 3-0 (15-12, 15-11, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9898,7 +9898,7 @@
             "C|AUSTIN",
             "S|SIMMONS"
           ],
-          "raw": "L.Brock & E.Rose  beat C.Austin & S.Simmons 3-0 (7-5 ret)",
+          "raw": "L.Brock & E.Rose beat C.Austin & S.Simmons 3-0 (7-5 ret)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9914,7 +9914,7 @@
             "G|HOSKINS",
             "M|YATES"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat G.Hoskins & M.Yates 3-0 (12-1, 12-5, 12-1)",
+          "raw": "P.Dunbar & G.Campbell beat G.Hoskins & M.Yates 3-0 (12-1, 12-5, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -9930,7 +9930,7 @@
             "R|WILSON",
             "J|ABBOTT"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat R.Wilson & J.Abbott 3-0 (12-2, 12-0, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat R.Wilson & J.Abbott 3-0 (12-2, 12-0, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9946,7 +9946,7 @@
             "S|TAILOR",
             "J|PATEL"
           ],
-          "raw": "D.Mew & R.Tyler  beat S.Tailor & J.Patel 3-0 (12-6, 12-1, 12-5)",
+          "raw": "D.Mew & R.Tyler beat S.Tailor & J.Patel 3-0 (12-6, 12-1, 12-5)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9962,7 +9962,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "J.Toop & H.Wiseman  beat A.Theodossi & R.Perrie  3-0 (12-2, 15-13, 12-4)",
+          "raw": "J.Toop & H.Wiseman beat A.Theodossi & R.Perrie 3-0 (12-2, 15-13, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -9978,7 +9978,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat L.Brock & E.Rose  3-0 (12-5, 12-1, 12-6)",
+          "raw": "P.Dunbar & G.Campbell beat L.Brock & E.Rose 3-0 (12-5, 12-1, 12-6)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10215,7 +10215,7 @@
             "G|THOMASON",
             "H|LEWIS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat G.Thomason & H.Lewis 3-0",
+          "raw": "T.Dunbar & S.Cooley beat G.Thomason & H.Lewis 3-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10231,7 +10231,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "E.Taylor & A.Walters  beat L.Brock & E.Rose  2-0",
+          "raw": "E.Taylor & A.Walters beat L.Brock & E.Rose 2-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10247,7 +10247,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "H.Wiseman & J.Toop  beat A.Theodossi & R.Perrie  3-0",
+          "raw": "H.Wiseman & J.Toop beat A.Theodossi & R.Perrie 3-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10263,7 +10263,7 @@
             "D|FOSTER",
             "P|WHITE"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat D.Foster & P.White  3-0",
+          "raw": "P.Dunbar & G.Campbell beat D.Foster & P.White 3-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10279,7 +10279,7 @@
             "E|TAYLOR",
             "A|WALTERS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & A.Walters  3-0",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & A.Walters 3-0",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -10295,23 +10295,23 @@
             "H|WISEMAN",
             "J|TOOP"
           ],
-          "raw": "P.Dunbar & G.Campbell  beat H.Wiseman & J.Toop  3-0",
+          "raw": "P.Dunbar & G.Campbell beat H.Wiseman & J.Toop 3-0",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
         {
           "winnerTeam": "T.Dunbar & S.Cooley",
-          "loserTeam": "P.Dunbar & G.Campbell",
-          "score": "w/o",
+          "loserTeam": "P.Dunbar & G.Campbell w/o",
+          "score": "",
           "winners": [
             "T|DUNBAR",
             "S|COOLEY"
           ],
           "losers": [
             "P|DUNBAR",
-            "G|CAMPBELL"
+            "G|WO"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat P.Dunbar & G.Campbell  w/o",
+          "raw": "T.Dunbar & S.Cooley beat P.Dunbar & G.Campbell w/o",
           "round": "F",
           "roundName": "Final"
         }
@@ -10494,15 +10494,15 @@
         },
         {
           "winnerTeam": "P.Cohen & P.White",
-          "loserTeam": "S.Cooley & Guy",
-          "score": "Williams 3-0 (12-4, 12-7, 12-5)",
+          "loserTeam": "S.Cooley & Guy Williams",
+          "score": "3-0 (12-4, 12-7, 12-5)",
           "winners": [
             "P|COHEN",
             "P|WHITE"
           ],
           "losers": [
             "S|COOLEY",
-            "G|GUY"
+            "G|WILLIAMS"
           ],
           "raw": "P.Cohen & P.White beat S.Cooley & Guy Williams 3-0 (12-4, 12-7, 12-5)",
           "round": "QF",
@@ -10739,7 +10739,7 @@
             "S|WELTI",
             "G|WILLIAMS"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat S.Welti & Guy.Williams 3-0 (12-1, 12-0, 12-1)",
+          "raw": "T.Dunbar & S.Cooley beat S.Welti & Guy.Williams 3-0 (12-1, 12-0, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10755,7 +10755,7 @@
             "J|HUDSON-WILLIAMS",
             "H|LEWIS"
           ],
-          "raw": "V.Bhimjiyani & J.Lefort beat J.Hudson-Williams & H.Lewis  3-0 (14-13, 12-5, 12-4)",
+          "raw": "V.Bhimjiyani & J.Lefort beat J.Hudson-Williams & H.Lewis 3-0 (14-13, 12-5, 12-4)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10771,7 +10771,7 @@
             "M|HUGHES",
             "G|WILLIAMS"
           ],
-          "raw": "G.Campbell & D.Foster  beat M.Hughes & Grant.Williams 3-0 (12-9, 12-8, 12-1)",
+          "raw": "G.Campbell & D.Foster beat M.Hughes & Grant.Williams 3-0 (12-9, 12-8, 12-1)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10787,7 +10787,7 @@
             "G|CHAPMAN",
             "J|O'NEILL"
           ],
-          "raw": "W.Sorrell & E.Taylor  beat G.Chapman & J.O'Neill 3-0 (12-9, 12-6, 12-5)",
+          "raw": "W.Sorrell & E.Taylor beat G.Chapman & J.O'Neill 3-0 (12-9, 12-6, 12-5)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10803,7 +10803,7 @@
             "S|SIMMONS",
             "C|AUSTIN"
           ],
-          "raw": "P.Cohen & D.Mew  beat S.Simmons & C.Austin 3-0 (12-9, 12-6, 12-6)",
+          "raw": "P.Cohen & D.Mew beat S.Simmons & C.Austin 3-0 (12-9, 12-6, 12-6)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10819,7 +10819,7 @@
             "G|HOSKINS",
             "N|SHAW"
           ],
-          "raw": "A.Theodossi & R.Perrie  beat G.Hoskins & N.Shaw 3-1 (7-12, 12-2, 12-3, 12-9)",
+          "raw": "A.Theodossi & R.Perrie beat G.Hoskins & N.Shaw 3-1 (7-12, 12-2, 12-3, 12-9)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10835,7 +10835,7 @@
             "L|BROCK",
             "R|BEENSTOCK"
           ],
-          "raw": "S.Tailor & J.Coakley beat L.Brock & R.Beenstock  3-2 (10-13, 7-12, 12-4, 12-8, 13-12)",
+          "raw": "S.Tailor & J.Coakley beat L.Brock & R.Beenstock 3-2 (10-13, 7-12, 12-4, 12-8, 13-12)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10851,7 +10851,7 @@
             "N|BUNYAN",
             "R|WILSON"
           ],
-          "raw": "J.Toop & H.Wiseman  beat N.Bunyan & R.Wilson 3-0 (12-4, 12-3, 12-2)",
+          "raw": "J.Toop & H.Wiseman beat N.Bunyan & R.Wilson 3-0 (12-4, 12-3, 12-2)",
           "round": "L16",
           "roundName": "Last 16"
         },
@@ -10867,7 +10867,7 @@
             "V|BHIMJIYANI",
             "J|LEFORT"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat V.Bhimjiyani & J.Lefort 3-0 (12-0, 12-0, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat V.Bhimjiyani & J.Lefort 3-0 (12-0, 12-0, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10883,7 +10883,7 @@
             "G|CAMPBELL",
             "D|FOSTER"
           ],
-          "raw": "W.Sorrell & E.Taylor  beat G.Campbell & D.Foster  3-0 (12-9, 12-9, 15-12)",
+          "raw": "W.Sorrell & E.Taylor beat G.Campbell & D.Foster 3-0 (12-9, 12-9, 15-12)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10899,7 +10899,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "P.Cohen & D.Mew  beat A.Theodossi & R.Perrie  3-0 (12-5, 12-5, 12-8)",
+          "raw": "P.Cohen & D.Mew beat A.Theodossi & R.Perrie 3-0 (12-5, 12-5, 12-8)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10915,7 +10915,7 @@
             "S|TAILOR",
             "J|COAKLEY"
           ],
-          "raw": "J.Toop & H.Wiseman  beat S.Tailor & J.Coakley 3-0 (12-1, 12-5, 12-4)",
+          "raw": "J.Toop & H.Wiseman beat S.Tailor & J.Coakley 3-0 (12-1, 12-5, 12-4)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -10931,7 +10931,7 @@
             "E|TAYLOR",
             "W|SORRELL"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat E.Taylor & W.Sorrell 3-0",
+          "raw": "T.Dunbar & S.Cooley beat E.Taylor & W.Sorrell 3-0",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -10963,7 +10963,7 @@
             "J|TOOP",
             "H|WISEMAN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Toop & H.Wiseman 3-0 (12-5, 12-5, 12-2)",
+          "raw": "T.Dunbar & S.Cooley beat J.Toop & H.Wiseman 3-0 (12-5, 12-5, 12-2)",
           "round": "F",
           "roundName": "Final"
         }
@@ -11134,7 +11134,7 @@
             "G|THOMASON",
             "T|WELTI"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat G.Thomason & T.Welti  2-0",
+          "raw": "T.Dunbar & S.Cooley beat G.Thomason & T.Welti 2-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11150,7 +11150,7 @@
             "R|TYLER",
             "D|MEW"
           ],
-          "raw": "G.Campbell & D.Foster  beat R.Tyler & D.Mew  2-0",
+          "raw": "G.Campbell & D.Foster beat R.Tyler & D.Mew 2-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11166,7 +11166,7 @@
             "L|BROCK",
             "E|ROSE"
           ],
-          "raw": "P.Cohen & H.Wiseman  beat L.Brock & E.Rose  2-1",
+          "raw": "P.Cohen & H.Wiseman beat L.Brock & E.Rose 2-1",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11182,7 +11182,7 @@
             "J|HUDSON-WILLIAMS",
             "H|LEWIS"
           ],
-          "raw": "J.Toop & M.Wiseman  beat J.Hudson-Williams & H.Lewis  2-0",
+          "raw": "J.Toop & M.Wiseman beat J.Hudson-Williams & H.Lewis 2-0",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11198,7 +11198,7 @@
             "G|CAMPBELL",
             "D|FOSTER"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat G.Campbell & D.Foster  3-0 (12-2, 12-4, 12-7)",
+          "raw": "T.Dunbar & S.Cooley beat G.Campbell & D.Foster 3-0 (12-2, 12-4, 12-7)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -11214,7 +11214,7 @@
             "P|COHEN",
             "H|WISEMAN"
           ],
-          "raw": "J.Toop & M.Wiseman  beat P.Cohen & H.Wiseman  3-0 (12-1, 12-8, 12-7)",
+          "raw": "J.Toop & M.Wiseman beat P.Cohen & H.Wiseman 3-0 (12-1, 12-8, 12-7)",
           "round": "SF",
           "roundName": "Semi-Finals"
         },
@@ -11230,7 +11230,7 @@
             "J|TOOP",
             "M|WISEMAN"
           ],
-          "raw": "T.Dunbar & S.Cooley  beat J.Toop & M.Wiseman  3-0 (12-7, 12-3, 12-7)",
+          "raw": "T.Dunbar & S.Cooley beat J.Toop & M.Wiseman 3-0 (12-7, 12-3, 12-7)",
           "round": "F",
           "roundName": "Final"
         }
@@ -11330,7 +11330,7 @@
             "L|STRADWICK",
             "J|BLACK"
           ],
-          "raw": "S.Cooley & T.Dunbar  beat L.Stradwick & J.Black 3-0 (12-0, 12-4, 12-2)",
+          "raw": "S.Cooley & T.Dunbar beat L.Stradwick & J.Black 3-0 (12-0, 12-4, 12-2)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11362,7 +11362,7 @@
             "V|BHIMJIYANI",
             "J|LEFORT"
           ],
-          "raw": "D.Foster & G.Campbell  beat V.Bhimjiyani & J.Lefort 3-0 (12-7, 12-8, 12-6)",
+          "raw": "D.Foster & G.Campbell beat V.Bhimjiyani & J.Lefort 3-0 (12-7, 12-8, 12-6)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
@@ -11378,7 +11378,7 @@
             "A|THEODOSSI",
             "R|PERRIE"
           ],
-          "raw": "H.Wiseman & P.Cohen  beat A.Theodossi & R.Perrie  3-1 (12-7, 9-12, 12-1, 15-11)",
+          "raw": "H.Wiseman & P.Cohen beat A.Theodossi & R.Perrie 3-1 (12-7, 9-12, 12-1, 15-11)",
           "round": "QF",
           "roundName": "Quarter-Finals"
         },
