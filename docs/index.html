@@ -10,11 +10,13 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin
 header{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap}
 h1{margin:0}
 .meta{font-size:14px;color:#555;min-height:20px}
-.actions a{border:1px solid #ccc;border-radius:10px;padding:10px 12px;text-decoration:none;color:#111}
-.table-wrap{border:1px solid #ddd;border-radius:14px;overflow:auto}
-table{border-collapse:separate;border-spacing:0}
+.actions a{border:1px solid #ccc;border-radius:10px;padding:10px 12px;text-decoration:none;color:#111;display:inline-block;margin-right:8px}
+.actions a:hover{background:#f6f6f6}
+.table-wrap{border:1px solid #ddd;border-radius:14px;overflow:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}
 th,td{padding:6px 10px;border-bottom:1px solid #eee;white-space:nowrap}
 thead th{background:#fafafa;position:sticky;top:0;z-index:5;cursor:pointer}
+tbody tr:nth-child(even) td{background:#fcfcfc}
 .result-cell{text-align:center;font-weight:600}
 .res-W{background:#c6efce}
 .res-F{background:#d9e1f2}
@@ -24,16 +26,16 @@ thead th{background:#fafafa;position:sticky;top:0;z-index:5;cursor:pointer}
 .res-NQ{background:#f8cbad}
 .res-P{background:#e7e6e6}
 
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center}
-.modal{background:#fff;border-radius:22px;width:min(720px,100%);max-height:80vh;overflow:auto}
-.modal-head{padding:18px;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;padding:18px}
+.modal{background:#fff;border-radius:22px;width:min(720px,100%);max-height:80vh;overflow:auto;box-shadow:0 18px 60px rgba(0,0,0,.25)}
+.modal-head{padding:18px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .modal-body{padding:18px}
 .card{border:1px solid #eee;border-radius:18px;padding:14px;margin-bottom:12px;background:#fafafa}
 .round{font-size:22px;font-weight:800;margin-top:16px}
-.match{border:1px solid #eee;border-radius:14px;padding:12px;margin-top:10px}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;margin-right:6px}
-.pill-won{background:#c6efce}
-.pill-lost{background:#f8cbad}
+.match{border:1px solid #eee;border-radius:14px;padding:12px;margin-top:10px;background:white}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;margin-right:6px;border:1px solid #ddd;background:white}
+.pill-won{background:#c6efce;border-color:#9ccc9c}
+.pill-lost{background:#f8cbad;border-color:#f3a981}
 </style>
 </head>
 
@@ -46,123 +48,212 @@ thead th{background:#fafafa;position:sticky;top:0;z-index:5;cursor:pointer}
   <div class="actions">
     <a href="./downloads/rankings_latest.xlsx">Download XLSX</a>
     <a href="./downloads/rankings_latest.csv">Download CSV</a>
-    <a href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml">Submit results</a>
+    <a href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate" target="_blank" rel="noopener">Submit results</a>
   </div>
 </header>
 
-<div class="table-wrap">
+<div class="table-wrap" style="margin-top:14px">
 <table id="rankings">
   <thead><tr id="thead"></tr></thead>
   <tbody></tbody>
 </table>
 </div>
 
-<div class="modal-backdrop" id="backdrop">
-  <div class="modal">
+<div class="modal-backdrop" id="backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-head">
       <div>
         <div id="modalTitle" style="font-size:26px;font-weight:800"></div>
         <div id="modalSubtitle" style="color:#666"></div>
       </div>
-      <button onclick="closeModal()">Close</button>
+      <button id="modalClose" style="border:1px solid #ddd;border-radius:12px;padding:10px 12px;background:white;cursor:pointer">Close</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
 
+<noscript><p><b>This page needs JavaScript enabled</b> to load rankings.</p></noscript>
+
 <script>
-const statusEl = document.getElementById("status");
-const thead = document.getElementById("thead");
-const tbody = document.querySelector("#rankings tbody");
+(() => {
+  const statusEl = document.getElementById("status");
+  const thead = document.getElementById("thead");
+  const tbody = document.querySelector("#rankings tbody");
+  const backdrop = document.getElementById("backdrop");
+  const modalClose = document.getElementById("modalClose");
 
-let matchesIndex=null;
+  let matchesIndex = null;
 
-function normalise(s){
-  return s.replace(/\s+/g," ").trim().toUpperCase();
-}
+  function normalise(s){
+    return (s || "").toString().replace(/\s+/g," ").trim().toUpperCase();
+  }
+  function escapeHtml(s){
+    return (s ?? "").toString()
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
 
-function closeModal(){
-  document.getElementById("backdrop").style.display="none";
-}
+  function closeModal(){
+    backdrop.style.display = "none";
+    backdrop.setAttribute("aria-hidden","true");
+  }
+  modalClose.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", (e)=>{ if (e.target === backdrop) closeModal(); });
 
-function openModal(title,subtitle,html){
-  document.getElementById("modalTitle").textContent=title;
-  document.getElementById("modalSubtitle").textContent=subtitle;
-  document.getElementById("modalBody").innerHTML=html;
-  document.getElementById("backdrop").style.display="flex";
-}
+  function openModal(title, subtitle, html){
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalSubtitle").textContent = subtitle;
+    document.getElementById("modalBody").innerHTML = html;
+    backdrop.style.display = "flex";
+    backdrop.setAttribute("aria-hidden","false");
+  }
 
-async function load(){
-  try{
-    const rankings=await fetch("data/rankings_latest.json").then(r=>r.json());
-    matchesIndex=await fetch("data/matches_latest.json").then(r=>r.json());
+  function looksLikeResultCol(col){ return /^\d{2}\s*[A-Z]$/i.test(normalise(col)); }
 
-    const cols=Object.keys(rankings[0]);
-    cols.forEach(c=>{
-      const th=document.createElement("th");
-      th.textContent=c;
+  async function fetchJson(rel){
+    const url = new URL(rel, window.location.href);
+    const res = await fetch(url.toString(), { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load ${url} (${res.status} ${res.statusText})`);
+    return await res.json();
+  }
+
+  window.addEventListener("error", (e) => {
+    statusEl.textContent = "JavaScript error: " + (e?.message || "unknown");
+  });
+  window.addEventListener("unhandledrejection", (e) => {
+    statusEl.textContent = "Promise error: " + (e?.reason?.message || e?.reason || "unknown");
+  });
+
+  function classify(val){
+    const v = normalise(val);
+    if (!v) return "";
+    return "res-" + v;
+  }
+
+  function render(rankings){
+    const cols = Object.keys(rankings[0] || {});
+    thead.innerHTML = "";
+    tbody.innerHTML = "";
+
+    cols.forEach(c => {
+      const th = document.createElement("th");
+      th.textContent = c;
       thead.appendChild(th);
     });
 
-    rankings.forEach(row=>{
-      const tr=document.createElement("tr");
-      cols.forEach((c,i)=>{
-        const td=document.createElement("td");
-        const val=row[c]||"";
-        td.textContent=val;
+    rankings.forEach(row => {
+      const tr = document.createElement("tr");
+      cols.forEach((c, i) => {
+        const td = document.createElement("td");
+        const val = row[c] ?? "";
+        td.textContent = val;
 
-        if(/^\d{2}\s*[A-Z]$/i.test(c)){
-          td.classList.add("result-cell","res-"+val);
-          td.onclick=()=>{
-            const headerText=thead.children[i].innerText;
-            const colKey=matchesIndex.colToKey[normalise(headerText)];
-            const tourn=matchesIndex.tournaments[colKey];
-            if(!tourn) return;
+        if (looksLikeResultCol(c)) {
+          td.classList.add("result-cell");
+          const cls = classify(val);
+          if (cls) td.classList.add(cls);
 
-            const player=`${row.Initial}.${row.Surname}`.toUpperCase();
-            let team=player;
-            if(tourn.nqTeams){
-              const t=tourn.nqTeams.find(t=>t.players.includes(player));
-              if(t) team=t.team;
+          td.addEventListener("click", () => {
+            if (!matchesIndex) return;
+
+            const headerText = thead.children[i]?.innerText ?? c;
+            const headerNorm = normalise(headerText);
+
+            const colKey = matchesIndex.colToKey?.[headerNorm];
+            const tourn = colKey ? matchesIndex.tournaments?.[colKey] : null;
+
+            const initial = (row["Initial"] ?? "").toString().trim();
+            const surname = (row["Surname"] ?? "").toString().trim();
+            const playerKey = `${initial}.${surname}`.toUpperCase();
+
+            if (!tourn) {
+              openModal(`${initial}. ${surname}`, `${headerNorm} (${val})`, `<div class="card">No match detail found for <b>${escapeHtml(headerNorm)}</b>.</div>`);
+              return;
             }
 
-            let html=`<div class="card"><span class="pill">${val}</span><b>${team}</b></div>`;
+            const subtitle = `${tourn.year} ${tourn.tournament} (${val})`;
 
-            const matches=tourn.matches.filter(m=>m.winners.includes(player)||m.losers.includes(player));
-            ["Last 16","Quarter-Finals","Semi-Finals","Final"].forEach(r=>{
-              const ms=matches.filter(m=>m.round===r);
-              if(!ms.length) return;
-              html+=`<div class="round">${r}</div>`;
-              ms.forEach(m=>{
-                const won=m.winners.includes(player);
-                html+=`
-                  <div class="match">
-                    <span class="pill ${won?"pill-won":"pill-lost"}">${won?"Won":"Lost"}</span>
-                    <b>${won?"beat":"lost to"}</b> ${won?m.loserTeam:m.winnerTeam}<br>
-                    ${m.score}
-                  </div>`;
-              });
+            // Team for top card: NQ team if present, else infer from matches.
+            let team = `${initial}.${surname}`;
+            const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+            const hitNQ = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
+            if (hitNQ && hitNQ.team) team = hitNQ.team;
+
+            const matches = (tourn.matches || []).filter(m => {
+              const w = Array.isArray(m.winners) ? m.winners : [];
+              const l = Array.isArray(m.losers) ? m.losers : [];
+              return w.includes(playerKey) || l.includes(playerKey);
             });
 
-            openModal(
-              `${row.Initial}. ${row.Surname}`,
-              `${tourn.year} ${tourn.tournament} (${val})`,
-              html
-            );
-          };
+            if (!hitNQ && matches.length) {
+              for (const m of matches) {
+                const wt = (m.winnerTeam || "");
+                const lt = (m.loserTeam || "");
+                if (normalise(wt).includes(playerKey)) { team = wt; break; }
+                if (normalise(lt).includes(playerKey)) { team = lt; break; }
+              }
+            }
+
+            let html = `<div class="card"><span class="pill">${escapeHtml(val)}</span><b>${escapeHtml(team)}</b></div>`;
+
+            if (!matches.length) {
+              html += `<div class="match">No match lines found for this player in this tournament.</div>`;
+              openModal(`${initial}. ${surname}`, subtitle, html);
+              return;
+            }
+
+            const byRound = {};
+            for (const m of matches) {
+              const r = m.round || "UNK";
+              (byRound[r] ||= []).push(m);
+            }
+
+            const order = ["Last 16","Quarter-Finals","Semi-Finals","Final","UNK"];
+            for (const r of order) {
+              const list = byRound[r];
+              if (!list || !list.length) continue;
+              html += `<div class="round">${escapeHtml(r)}</div>`;
+              for (const m of list) {
+                const winners = Array.isArray(m.winners) ? m.winners : [];
+                const won = winners.includes(playerKey);
+                const opp = won ? (m.loserTeam || "") : (m.winnerTeam || "");
+                const score = (m.score || "").toString().trim();
+                html += `<div class="match">`
+                  + `<span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span>`
+                  + `<div><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(opp)}</div>`
+                  + (score ? `<div>${escapeHtml(score)}</div>` : ``)
+                  + `</div>`;
+              }
+            }
+
+            openModal(`${initial}. ${surname}`, subtitle, html);
+          });
         }
+
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
     });
-
-    statusEl.textContent="Loaded";
-  }catch(e){
-    statusEl.textContent=e.message;
   }
-}
 
-load();
+  (async () => {
+    try {
+      const rankings = await fetchJson("data/rankings_latest.json");
+      render(rankings);
+
+      try {
+        matchesIndex = await fetchJson("data/matches_latest.json");
+      } catch (e) {
+        matchesIndex = null;
+        console.warn("matches_latest.json unavailable:", e);
+      }
+
+      statusEl.textContent = "Loaded";
+    } catch (e) {
+      statusEl.textContent = e?.message || "Failed to load rankings data.";
+    }
+  })();
+})();
 </script>
 </body>
 </html>
