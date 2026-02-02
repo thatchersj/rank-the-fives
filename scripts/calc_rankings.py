@@ -206,13 +206,31 @@ def parse_match_line(line: str) -> dict | None:
     wteam = parts[0].strip()
     right = parts[1].strip()
 
-    # Split loser team from score at the first "3-0" / "2-3" etc.
+    # Split loser team from score.
+    # We support:
+    #  - normal results like "3-0 (12-1, 12-1, 12-4)"
+    #  - lines that only have set scores like "(12-6, 12-0, 12-0)"
+    #  - walkovers like "w/o" at the end
     score = ""
     lteam = right
-    ms = SCORE_START_RE.search(right)
-    if ms:
-        lteam = right[: ms.start()].strip()
-        score = right[ms.start() :].strip()
+
+    # Walkover / no-play markers at end (must be treated as score, not a name)
+    mwo = re.search(r"\b(w/o|wo|walkover)\b\.?$", right, flags=re.I)
+    if mwo:
+        lteam = right[: mwo.start()].strip()
+        score = mwo.group(1).lower().replace("walkover", "w/o")
+    else:
+        # Split at the first "3-0" / "2-3" etc.
+        ms = SCORE_START_RE.search(right)
+        if ms:
+            lteam = right[: ms.start()].strip()
+            score = right[ms.start() :].strip()
+        else:
+            # If no game-score token, split at first "(" to capture set scores
+            paren = right.find("(")
+            if paren != -1:
+                lteam = right[:paren].strip()
+                score = right[paren:].strip()
 
     # Normalise spacing around ampersand in display strings
     wteam = re.sub(r"\s*&\s*", " & ", wteam)
