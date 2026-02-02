@@ -57,7 +57,7 @@
     #rankings th:nth-child(1), #rankings td:nth-child(1){
       position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
       border-right:1px solid #ddd;
-      text-align: right;
+      text-align: center;;
       font-variant-numeric: tabular-nums;
       background: inherit;
     }
@@ -406,13 +406,8 @@
           if (!playerTeam) playerTeam = prettyPlayer;
 
           body += `<div class="match"><span class="pill">${escapeHtml(result)}</span><b>${escapeHtml((inNQ && nqTeamDisplay) ? nqTeamDisplay : playerTeam)}</b></div>`;
-</b>.</div>`;
-            } else {
-              body += `<div class="match">Marked as <b>NQ</b> (Non-Qualifier) for this tournament.</div>`;
-            }
-          }
 
-          if (matches.length === 0) {
+          if (matches.length === 0 && !inNQ) {
             body += `<div class="match">No match lines found for this player in this tournament.</div>`;
             openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
             return;
@@ -436,8 +431,7 @@
               const won = (m.winners || []).includes(playerKey);
               const side = won ? "Won" : "Lost";
               body += `<div class="match">` +
-                      `<span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span>` +
-                      `<div class="line"><b>${escapeHtml(won ? "beat" : "lost to")}</b> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
+                      `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><I>vs</I> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
                       (score ? `<div class="line">${score}</div>` : ``) +
                       `</div>`;
             }
