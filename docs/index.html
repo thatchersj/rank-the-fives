@@ -185,7 +185,16 @@
 
   <script>
     (function(){
-      const statusEl = document.getElementById("status");
+      const TWO_DP_COLS = new Set(["poss","rpa","pc","pc2"]);
+function formatMaybe2dp(col, val){
+  if (!TWO_DP_COLS.has(String(col).toLowerCase())) return val;
+  if (val === null || val === undefined || val === "") return val;
+  const num = Number(val);
+  if (!Number.isFinite(num)) return val;
+  return num.toFixed(2);
+}
+
+const statusEl = document.getElementById("status");
       const countEl = document.getElementById("count");
       const searchBox = document.getElementById("searchBox");
       const theadRow = document.getElementById("theadRow");
@@ -253,7 +262,8 @@
           cols.forEach(c => {
             const td = document.createElement("td");
             const val = row[c] ?? "";
-            td.textContent = val;
+            const displayVal = formatMaybe2dp(c, val);
+          td.textContent = displayVal;
 
             if (resultCols.has(c)) {
               td.classList.add("result-cell");
