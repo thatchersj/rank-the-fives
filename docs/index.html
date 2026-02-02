@@ -389,7 +389,22 @@ const statusEl = document.getElementById("status");
       }
 
       
-      function normaliseHeader(s){
+      
+function possiblePlayerKeys(initial, surname){
+  const ini = (initial || "").trim().toUpperCase();
+  const sur = (surname || "").trim().toUpperCase();
+  const keys = [];
+  function add(k){ if(k && !keys.includes(k)) keys.push(k); }
+  add(`${ini}|${sur}`);
+  // If initial is a full first name (e.g. SAHIL), also try first letter key (S|SHAH)
+  if (ini.length > 1) add(`${ini[0]}|${sur}`);
+  // If initial contains dots/spaces, normalise
+  add(`${ini.replace(/\./g,"").replace(/\s+/g,"")}|${sur}`);
+  if (ini.replace(/\./g,"").length > 0) add(`${ini.replace(/\./g,"")[0]}|${sur}`);
+  return keys;
+}
+
+function normaliseHeader(s){
         return (s ?? "").toString().replace(/\s+/g," ").trim().toUpperCase();
       }
 
@@ -503,6 +518,7 @@ const statusEl = document.getElementById("status");
           const initial = (tds[1]?.textContent || "").trim().toUpperCase();
           const surname = (tds[2]?.textContent || "").trim().toUpperCase();
           const playerKey = `${initial}|${surname}`;
+          const playerKeys = possiblePlayerKeys(initial, surname);
 
           const tourn = matchesData?.tournaments?.[colName];
           const tournFull = tourn?.tournament || colName;
@@ -514,15 +530,15 @@ const statusEl = document.getElementById("status");
             return;
           }
 
-          const inNQ = Array.isArray(tourn.nq) && tourn.nq.includes(playerKey);
+          const inNQ = Array.isArray(tourn.nq) && playerKeys.some(k => tourn.nq.includes(k));
           const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
-          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && t.players.includes(playerKey));
+          const hitNQTeam = nqTeams.find(t => Array.isArray(t.players) && playerKeys.some(k => t.players.includes(k)));
           const nqTeamDisplay = (hitNQTeam && hitNQTeam.team) ? hitNQTeam.team : null;
 
           const matches = (tourn.matches || []).filter(m => {
             const w = Array.isArray(m.winners) ? m.winners : [];
             const l = Array.isArray(m.losers) ? m.losers : [];
-            return w.includes(playerKey) || l.includes(playerKey);
+            return playerKeys.some(k => w.includes(k) || l.includes(k));
           });
 
           // Determine the player's team (player + partner) for this tournament
@@ -531,7 +547,8 @@ const statusEl = document.getElementById("status");
           let playerTeam = null;
           if (matches.length > 0) {
             const m0 = matches[0];
-            const won0 = (m0.winners || []).includes(playerKey);
+            const matchedKey0 = playerKeys.find(k => (m0.winners || []).includes(k) || (m0.losers || []).includes(k)) || playerKey;
+            const won0 = (m0.winners || []).includes(matchedKey0);
             playerTeam = won0 ? (m0.winnerTeam || null) : (m0.loserTeam || null);
           }
           if (!playerTeam) playerTeam = prettyPlayer;
@@ -557,7 +574,7 @@ const statusEl = document.getElementById("status");
             body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
             for (const m of list) {
               const score = escapeHtml(m.score || "");
-              const won = (m.winners || []).includes(playerKey);
+              const won = (m.winners || []).some(x => playerKeys.includes(x));
               body += `<div class="match">` +
                       `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
                       (score ? `<div class="line">${score}</div>` : ``) +
