@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-02T03:13:51Z",
+  "generatedAt": "2026-02-02T03:25:51Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -218,8 +218,8 @@
             "A|ABRAHAMS"
           ],
           "losers": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ],
           "raw": "V.Bhimjiyani & A.Abrahams beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-6, 12-2, 12-10)",
           "round": "L16",
@@ -377,7 +377,8 @@
       "comp": "Northern",
       "key": "25 N",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|LUMBARD",
         "A|MORRIS",
         "A|SAPOZHENKO",
@@ -413,8 +414,8 @@
         {
           "team": "Ab.Bhattacharya & Ar.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ]
         },
         {
@@ -644,7 +645,7 @@
       "comp": "London",
       "key": "24 L",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
         "A|VINEN",
         "E|SCOONES",
         "F|PRICKETT",
@@ -667,7 +668,7 @@
           "team": "F.Prickett & Ab.Bhattacharya",
           "players": [
             "F|PRICKETT",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -928,8 +929,8 @@
             "M|WISEMAN"
           ],
           "losers": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ],
           "raw": "J.Toop & M.Wiseman beat Ab.Bhattacharya & Ar.Bhattacharya 3-0 (12-0, 12-2, 12-2)",
           "round": "L16",
@@ -1128,9 +1129,9 @@
         "D|TAYLOR-WEST",
         "E|CALDWELL",
         "E|GOSNELL",
+        "GRANT|WILLIAMS",
         "G|BATTERSBY",
         "G|HOLLIDAY",
-        "G|WILLIAMS",
         "H|GARDNER",
         "L|HURSTHOUSE",
         "L|LLOYD-JONES",
@@ -1193,7 +1194,7 @@
           "team": "M.Hughes & Grant Williams",
           "players": [
             "M|HUGHES",
-            "G|WILLIAMS"
+            "GRANT|WILLIAMS"
           ]
         },
         {
@@ -1360,9 +1361,9 @@
       "comp": "London",
       "key": "23 L",
       "nq": [
+        "AB|BHATTACHARYA",
         "A|ABRAHAMS",
         "A|ANDERSON",
-        "A|BHATTACHARYA",
         "A|CAMERON-BLACKIE",
         "A|PHILLIPS",
         "A|TAYLOR",
@@ -1387,7 +1388,7 @@
         "O|DENBY",
         "R|SWALLOW",
         "R|TYLER",
-        "S|SHAH",
+        "SAHIL|SHAH",
         "T|CAMPBELL",
         "V|BALLINGAL",
         "V|KASSARDJIAN",
@@ -1439,7 +1440,7 @@
         {
           "team": "Ab.Bhattacharya & V.Kassardjian",
           "players": [
-            "A|BHATTACHARYA",
+            "AB|BHATTACHARYA",
             "V|KASSARDJIAN"
           ]
         },
@@ -1468,7 +1469,7 @@
           "team": "L.Brock & Sahil Shah",
           "players": [
             "L|BROCK",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ]
         },
         {
@@ -1651,8 +1652,8 @@
         "N|TURNBULL",
         "O|AVERY",
         "P|HOLLAND",
+        "SAAJAN|SHAH",
         "S|BURNELL",
-        "S|SHAH",
         "S|THATCHER",
         "T|GREGORY",
         "T|LEACH",
@@ -1771,7 +1772,7 @@
           "team": "J.Greenhouse & Saajan Shah",
           "players": [
             "J|GREENHOUSE",
-            "S|SHAH"
+            "SAAJAN|SHAH"
           ]
         }
       ],
@@ -1818,7 +1819,7 @@
           ],
           "losers": [
             "J|MARKS",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA"
           ],
           "raw": "H.Wiseman & T.Barker beat J.Marks & Ar.Bhattacharya 3-0 (12-5, 12-1, 12-2)",
           "round": "L16",
@@ -1881,7 +1882,7 @@
             "R|PERRIE"
           ],
           "losers": [
-            "S|SHAH",
+            "SAHIL|SHAH",
             "C|KOKSAL"
           ],
           "raw": "A.Theodossi & R.Perrie beat Sahil Shah & C.Koksal 3-0 (12-3, 12-6, 12-5)",
@@ -2232,7 +2233,7 @@
           ],
           "losers": [
             "A|ABRAHAMS",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ],
           "raw": "J.Toop & H.Wiseman beat A.Abrahams & Sahil Shah 3-0 (12-2, 12-2, 12-4)",
           "round": "QF",
@@ -2310,7 +2311,7 @@
       "comp": "London",
       "key": "22 L",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
         "A|RENNIE",
         "A|TAYLOR",
         "B|SWALLOW",
@@ -2338,9 +2339,9 @@
         "O|DENBY",
         "R|SWALLOW",
         "R|TYLER",
+        "SAHIL|SHAH",
         "S|BURNELL",
         "S|GORE",
-        "S|SHAH",
         "T|FARMER",
         "T|GREGORY",
         "W|SEATH"
@@ -2398,7 +2399,7 @@
         {
           "team": "Ab.Bhattacharya & E.Scoones",
           "players": [
-            "A|BHATTACHARYA",
+            "AB|BHATTACHARYA",
             "E|SCOONES"
           ]
         },
@@ -2448,7 +2449,7 @@
           "team": "J.Marks & Sahil Shah",
           "players": [
             "J|MARKS",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ]
         },
         {
@@ -2754,7 +2755,7 @@
             "N|CAPLIN"
           ],
           "losers": [
-            "A|BHATTACHARYA",
+            "AR|BHATTACHARYA",
             "T|COTTERELL"
           ],
           "raw": "H.Young & N.Caplin beat Ar.Bhattacharya & T.Cotterell 3-0 (12-4, 12-0, 12-0)",
@@ -2771,7 +2772,7 @@
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ],
           "raw": "T.Gallagher & I.Jochim beat T.McCahon & Sahil Shah 3-1 (12-2, 12-7, 9-12, 12-5)",
           "round": "L16",
@@ -2929,8 +2930,8 @@
       "comp": "Northern",
       "key": "22 N",
       "nq": [
+        "AB|BHATTACHARYA",
         "A|ABRAHAMS",
-        "A|BHATTACHARYA",
         "A|CLARK",
         "A|MORRIS",
         "B|ANWAR",
@@ -2992,7 +2993,7 @@
         {
           "team": "Ab.Bhattacharya & E.Evans",
           "players": [
-            "A|BHATTACHARYA",
+            "AB|BHATTACHARYA",
             "E|EVANS"
           ]
         },
@@ -3292,7 +3293,7 @@
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ],
           "raw": "V.Bhimjiyani & S.Tailor beat T.McCahon & Sahil Shah 3-2 (8-12, 12-6, 12-7, 10-12, 12-2)",
           "round": "QF",
@@ -3519,8 +3520,8 @@
             "N|CAPLIN"
           ],
           "losers": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ],
           "raw": "H.Young & N.Caplin beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-1, 12-2, 12-1)",
           "round": "L16",
@@ -3580,7 +3581,7 @@
           "score": "3-1 (12-9, 4-12, 12-8, 15-14)",
           "winners": [
             "T|MCCAHON",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ],
           "losers": [
             "R|PERRIE",
@@ -3664,7 +3665,7 @@
           ],
           "losers": [
             "T|MCCAHON",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ],
           "raw": "J.Toop & M.Wiseman beat T.McCahon & Sahil Shah 3-0 (12-0, 12-2, 12-4)",
           "round": "QF",
@@ -4427,7 +4428,7 @@
         "C|LUMBARD",
         "E|SCOONES",
         "F|PRICKETT",
-        "G|WILLIAMS",
+        "GUY|WILLIAMS",
         "H|ASQUITH",
         "H|BLOFIELD",
         "I|ADEBEKUN",
@@ -4482,7 +4483,7 @@
         {
           "team": "Guy.Williams & H.Blofield",
           "players": [
-            "G|WILLIAMS",
+            "GUY|WILLIAMS",
             "H|BLOFIELD"
           ]
         },
@@ -4606,8 +4607,8 @@
             "T|BARKER"
           ],
           "losers": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ],
           "raw": "J.Toop & T.Barker beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-0, 12-0)",
           "round": "QF",
@@ -4802,8 +4803,8 @@
             "S|TAILOR"
           ],
           "losers": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ],
           "raw": "E.Taylor & S.Tailor beat Ar.Bhattacharya & Ab.Bhattacharya 3-0 (12-2, 12-1, 12-1)",
           "round": "L16",
@@ -5022,8 +5023,8 @@
         "D|HUMES",
         "E|EVANS",
         "E|SCOONES",
+        "GRANT|WILLIAMS",
         "G|MCLOUGHLIN",
-        "G|WILLIAMS",
         "H|ASQUITH",
         "H|YOUNG",
         "I|JOCHIM",
@@ -5141,7 +5142,7 @@
         {
           "team": "Grant Williams & M.Hughes",
           "players": [
-            "G|WILLIAMS",
+            "GRANT|WILLIAMS",
             "M|HUGHES"
           ]
         },
@@ -5295,8 +5296,8 @@
       "comp": "London",
       "key": "18 L",
       "nq": [
+        "AB|BHATTACHARYA",
         "A|ABRAHAMS",
-        "A|BHATTACHARYA",
         "A|LUMBARD",
         "A|RENNIE",
         "A|TAYLOR",
@@ -5321,8 +5322,8 @@
         "N|CAPLIN",
         "P|SATHIYAMOORTHY",
         "R|MORGAN",
+        "SAHIL|SHAH",
         "S|KUNDU",
-        "S|SHAH",
         "S|WELTI",
         "T|CAMPBELL",
         "T|MCCAHON",
@@ -5382,7 +5383,7 @@
           "team": "M.Lewin & Sahil Shah",
           "players": [
             "M|LEWIN",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ]
         },
         {
@@ -5410,7 +5411,7 @@
           "team": "M.Tavra & Ab.Bhattacharya",
           "players": [
             "M|TAVRA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -5563,8 +5564,9 @@
       "comp": "Kinnaird",
       "key": "18 K",
       "nq": [
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|ABRAHAMS",
-        "A|BHATTACHARYA",
         "A|KNIGHT",
         "A|LUMBARD",
         "C|BALLINGALL",
@@ -5580,10 +5582,10 @@
         "N|GILL",
         "P|THOMPSON",
         "R|MORGAN",
+        "SAHIL|SHAH",
         "S|BURNELL",
         "S|CASS",
         "S|CHAPMAN",
-        "S|SHAH",
         "T|BARKER",
         "T|BETTS",
         "T|GREGORY",
@@ -5645,14 +5647,14 @@
           "team": "T.Thurnham & Sahil Shah",
           "players": [
             "T|THURNHAM",
-            "S|SHAH"
+            "SAHIL|SHAH"
           ]
         },
         {
           "team": "Ab.Bhattacharya & Ar.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ]
         },
         {
@@ -5940,9 +5942,10 @@
       "comp": "Northern",
       "key": "18 N",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|LUMBARD",
-        "B|BRUNSKILL",
+        "BRUNSKILL|BRUNSKILL",
         "C|BALLINGALL",
         "C|COOLEY",
         "D|REDMOND",
@@ -5953,20 +5956,20 @@
         "H|WINTOUR",
         "I|WEAVER",
         "J|ZAZA",
+        "KINWOOD|KINWOOD",
+        "KYNASTON|KYNASTON",
         "K|HIRD",
-        "K|KINWOOD",
-        "K|KYNASTON",
-        "L|LEGEAIS",
+        "LEGEAIS|LEGEAIS",
         "M|LI",
         "M|VANWYK",
+        "NG|NG",
         "N|BUNYAN",
-        "N|NG",
         "P|BOUGHTON",
         "P|SATHIYAMOORTHY",
         "R|MORGAN",
+        "SCHOFIELD|SCHOFIELD",
+        "SONGTHAMMAKUL|SONGTHAMMAKUL",
         "S|GUPTA",
-        "S|SCHOFIELD",
-        "S|SONGTHAMMAKUL",
         "T|BROMLEY-DAVENPORT",
         "T|CASTLING",
         "T|STUBBS",
@@ -5976,8 +5979,8 @@
         {
           "team": "Ab.Bhattacharya & Ar.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ]
         },
         {
@@ -6018,7 +6021,7 @@
         {
           "team": "Songthammakul & J Zaza",
           "players": [
-            "S|SONGTHAMMAKUL",
+            "SONGTHAMMAKUL|SONGTHAMMAKUL",
             "J|ZAZA"
           ]
         },
@@ -6026,21 +6029,21 @@
           "team": "G.Mcloughlin & Kinwood",
           "players": [
             "G|MCLOUGHLIN",
-            "K|KINWOOD"
+            "KINWOOD|KINWOOD"
           ]
         },
         {
           "team": "G.Garrett & Ng",
           "players": [
             "G|GARRETT",
-            "N|NG"
+            "NG|NG"
           ]
         },
         {
           "team": "Brunskill & Schofield",
           "players": [
-            "B|BRUNSKILL",
-            "S|SCHOFIELD"
+            "BRUNSKILL|BRUNSKILL",
+            "SCHOFIELD|SCHOFIELD"
           ]
         },
         {
@@ -6067,8 +6070,8 @@
         {
           "team": "Kynaston & Legeais",
           "players": [
-            "K|KYNASTON",
-            "L|LEGEAIS"
+            "KYNASTON|KYNASTON",
+            "LEGEAIS|LEGEAIS"
           ]
         },
         {
@@ -6096,7 +6099,7 @@
             "S|COOLEY"
           ],
           "losers": [
-            "S|BALAJI",
+            "SA|BALAJI",
             "L|MACLEAN"
           ],
           "raw": "T.Dunbar & S.Cooley beat Sa.Balaji & L.Maclean 3-0 (12-1, 12-0, 12-3)",
@@ -6224,10 +6227,10 @@
         "R|MORGAN",
         "R|PERRIE",
         "R|TYLER",
+        "SAHIL|SHAH",
         "S|BURNELL",
         "S|KELLY",
         "S|MCLOUGHLIN",
-        "S|SHAH",
         "S|TAILOR",
         "T|GREGORY",
         "V|BHIMJIYANI"
@@ -6313,7 +6316,7 @@
         {
           "team": "Sahil Shah & A.Abrahams",
           "players": [
-            "S|SHAH",
+            "SAHIL|SHAH",
             "A|ABRAHAMS"
           ]
         }
@@ -6771,30 +6774,30 @@
         "F|WATT",
         "G|GARRETT",
         "G|THOMASON",
+        "HINWOOD|HINWOOD",
         "H|HARDMAN",
-        "H|HINWOOD",
         "H|LEWIS",
         "H|THISTLETHWAYTE",
-        "J|JEBB",
+        "JEBB|JEBB",
         "J|LAWRENCE",
         "J|ZAZA",
         "K|NWUBA",
         "K|WALTON",
-        "L|LAMPRIERE-JOHNSTON",
-        "L|LINDSAY",
-        "M|MATTINSON",
+        "LAMPRIEREJOHNSTON|LAMPRIERE-JOHNSTON",
+        "LINDSAY|LINDSAY",
+        "MATTINSON|MATTINSON",
         "M|MORRIS",
         "M|PUGH",
         "N|BUNYAN",
         "N|TURNBULL",
         "R|MORGAN",
         "R|ORCHARD",
-        "S|BALAJI",
+        "SONGTHAMMAKUL|SONGTHAMMAKUL",
+        "STAPLETON|STAPLETON",
+        "SU|BALAJI",
         "S|BURNELL",
         "S|MCLOUGHLIN",
         "S|SIMMONS",
-        "S|SONGTHAMMAKUL",
-        "S|STAPLETON",
         "S|UJOODIA",
         "T|BROMLEY-DAVENPORT",
         "T|GALLAGHER",
@@ -6835,7 +6838,7 @@
           "team": "R Orchard & Mattinson",
           "players": [
             "R|ORCHARD",
-            "M|MATTINSON"
+            "MATTINSON|MATTINSON"
           ]
         },
         {
@@ -6855,15 +6858,15 @@
         {
           "team": "Songthammakul & Stapleton",
           "players": [
-            "S|SONGTHAMMAKUL",
-            "S|STAPLETON"
+            "SONGTHAMMAKUL|SONGTHAMMAKUL",
+            "STAPLETON|STAPLETON"
           ]
         },
         {
           "team": "Lindsay & Lampriere-Johnston",
           "players": [
-            "L|LINDSAY",
-            "L|LAMPRIERE-JOHNSTON"
+            "LINDSAY|LINDSAY",
+            "LAMPRIEREJOHNSTON|LAMPRIERE-JOHNSTON"
           ]
         },
         {
@@ -6905,7 +6908,7 @@
           "team": "N.Turnbull & Su.Balaji",
           "players": [
             "N|TURNBULL",
-            "S|BALAJI"
+            "SU|BALAJI"
           ]
         },
         {
@@ -6925,8 +6928,8 @@
         {
           "team": "Hinwood & Jebb",
           "players": [
-            "H|HINWOOD",
-            "J|JEBB"
+            "HINWOOD|HINWOOD",
+            "JEBB|JEBB"
           ]
         },
         {
@@ -6979,7 +6982,7 @@
             "R|HOULDEN"
           ],
           "losers": [
-            "G|WILLIAMS",
+            "GUY|WILLIAMS",
             "T|WALTERS"
           ],
           "raw": "L.Brock & R.Houlden beat Guy.Williams & T.Walters 3-0 (12-6, ret)",
@@ -7282,7 +7285,7 @@
         "M|ROWSE",
         "O|ROWSE",
         "R|MORGAN",
-        "S|BALAJI",
+        "SU|BALAJI",
         "S|SIMMONS",
         "S|WELTI",
         "S|YICK",
@@ -7337,7 +7340,7 @@
           "team": "A.Stewart & Su.Balaji",
           "players": [
             "A|STEWART",
-            "S|BALAJI"
+            "SU|BALAJI"
           ]
         },
         {
@@ -7441,8 +7444,8 @@
             "E|ROSE"
           ],
           "losers": [
-            "G|WILLIAMS",
-            "G|WILLIAMS"
+            "GRANT|WILLIAMS",
+            "GUY|WILLIAMS"
           ],
           "raw": "L.Brock & E.Rose beat Grant.Williams & Guy.Williams 3-0 (12-6, 12-7, 12-5)",
           "round": "L16",
@@ -7641,7 +7644,7 @@
         "R|TYLER",
         "S|COTTY",
         "T|WELTI",
-        "W|WHITE"
+        "WHITE|WHITE"
       ],
       "nqTeams": [
         {
@@ -7654,7 +7657,7 @@
         {
           "team": "White & S.Cotty",
           "players": [
-            "W|WHITE",
+            "WHITE|WHITE",
             "S|COTTY"
           ]
         },
@@ -7691,7 +7694,7 @@
           ],
           "losers": [
             "E|TAYLOR",
-            "G|WILLIAMS"
+            "GUY|WILLIAMS"
           ],
           "raw": "S.Cooley & T.Dunbar beat E.Taylor & Guy.Williams 3-0 (12-0, 12-1, 12-0)",
           "round": "QF",
@@ -7812,9 +7815,9 @@
         "J|ONEILL",
         "J|PATEL",
         "K|HIRD",
-        "L|LOW",
+        "LOW|LOW",
         "N|TURNBULL",
-        "P|PRAKASH",
+        "PRAKASH|PRAKASH",
         "S|TAILOR",
         "S|WELTI",
         "S|YICK",
@@ -7889,8 +7892,8 @@
         {
           "team": "Low & Prakash",
           "players": [
-            "L|LOW",
-            "P|PRAKASH"
+            "LOW|LOW",
+            "PRAKASH|PRAKASH"
           ]
         }
       ],
@@ -8136,8 +8139,8 @@
             "S|COOLEY"
           ],
           "losers": [
-            "G|WILLIAMS",
-            "G|WILLIAMS"
+            "GRANT|WILLIAMS",
+            "GUY|WILLIAMS"
           ],
           "raw": "T.Dunbar & S.Cooley beat Grant.Williams & Guy.Williams 3-0 (12-8, 12-0, 12-2)",
           "round": "L16",
@@ -8185,7 +8188,7 @@
           ],
           "losers": [
             "G|HOSKINS",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA"
           ],
           "raw": "A.Theodossi & R.Perrie beat G.Hoskins & Ab.Bhattacharya 3-0 (12-2, 12-2, 12-1)",
           "round": "L16",
@@ -8376,8 +8379,8 @@
       "key": "15 N",
       "nq": [
         "A|WELLESLEY",
+        "FOX|FOX",
         "F|ADAIR",
-        "F|FOX",
         "G|HOSKINS",
         "G|LEWIS",
         "H|FLOWERS",
@@ -8394,7 +8397,7 @@
         "T|GALLAGHER",
         "T|KIRKBY",
         "T|WELD",
-        "W|WHITE"
+        "WHITE|WHITE"
       ],
       "nqTeams": [
         {
@@ -8428,7 +8431,7 @@
         {
           "team": "Fox & L.Lloyd-Jones",
           "players": [
-            "F|FOX",
+            "FOX|FOX",
             "L|LLOYD-JONES"
           ]
         },
@@ -8463,7 +8466,7 @@
         {
           "team": "White & S.Cotty",
           "players": [
-            "W|WHITE",
+            "WHITE|WHITE",
             "S|COTTY"
           ]
         }
@@ -8605,8 +8608,8 @@
         "N|CAPLIN",
         "R|HOULDEN",
         "S|SIMMONS",
+        "TOM|FLETCHER",
         "T|BARKER",
-        "T|FLETCHER",
         "T|GALLAGHER",
         "T|GREGORY"
       ],
@@ -8635,7 +8638,7 @@
         {
           "team": "Tom Fletcher & T.Gregory",
           "players": [
-            "T|FLETCHER",
+            "TOM|FLETCHER",
             "T|GREGORY"
           ]
         },
@@ -8803,7 +8806,8 @@
       "comp": "Kinnaird",
       "key": "14 K",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|MORRIS",
         "A|NICE",
         "A|RENNIE",
@@ -8891,8 +8895,8 @@
         {
           "team": "Ar.Bhattacharya & Ab.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -8973,7 +8977,7 @@
             "H|WISEMAN"
           ],
           "losers": [
-            "G|WILLIAMS",
+            "GUY|WILLIAMS",
             "S|WELTI"
           ],
           "raw": "E.Taylor & H.Wiseman beat Guy Williams & S.Welti 3-0 (12-0, 12-6, 12-3)",
@@ -8989,7 +8993,7 @@
             "D|MEW"
           ],
           "losers": [
-            "G|WILLIAMS",
+            "GRANT|WILLIAMS",
             "M|HUGHES"
           ],
           "raw": "R.Tyler & D.Mew beat Grant Williams & M.Hughes 3-0 (12-3, 12-6, 12-1)",
@@ -9180,7 +9184,7 @@
       "comp": "Northern",
       "key": "14 N",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
         "A|MITCHELL",
         "A|MORRIS",
         "A|PATTEN",
@@ -9206,18 +9210,19 @@
         "S|SIMMONS",
         "S|WELTI",
         "S|YICK",
+        "TIM|FLETCHER",
+        "TOM|FLETCHER",
         "T|BREESE",
         "T|COTTERELL",
-        "T|FLETCHER",
         "T|WELTI",
-        "W|WARBURG"
+        "WARBURG|WARBURG"
       ],
       "nqTeams": [
         {
           "team": "Tom Fletcher & Tim Fletcher",
           "players": [
-            "T|FLETCHER",
-            "T|FLETCHER"
+            "TOM|FLETCHER",
+            "TIM|FLETCHER"
           ]
         },
         {
@@ -9252,7 +9257,7 @@
           "team": "N.Bunyan & Ab.Bhattacharya",
           "players": [
             "N|BUNYAN",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -9322,7 +9327,7 @@
           "team": "J.Holroyd & Warburg",
           "players": [
             "J|HOLROYD",
-            "W|WARBURG"
+            "WARBURG|WARBURG"
           ]
         }
       ],
@@ -9337,7 +9342,7 @@
           ],
           "losers": [
             "R|WORTH",
-            "G|WILLIAMS"
+            "GUY|WILLIAMS"
           ],
           "raw": "S.Cooley & T.Dunbar beat R.Worth & Guy.Williams 2-0 (12-0 12-2)",
           "round": "QF",
@@ -9447,7 +9452,8 @@
       "comp": "London",
       "key": "13 L",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|RENNIE",
         "A|TANSEY",
         "A|TAYLOR",
@@ -9481,8 +9487,8 @@
         {
           "team": "Ab.Bhattacharya & Ar.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA",
+            "AR|BHATTACHARYA"
           ]
         },
         {
@@ -10038,7 +10044,7 @@
       "comp": "Northern",
       "key": "13 N",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
         "A|MORRIS",
         "B|HART",
         "C|AUSTIN",
@@ -10047,32 +10053,33 @@
         "D|LEACH",
         "F|ADAIR",
         "F|EARLAM",
+        "GUY|WILLIAMS",
         "G|LEWIS",
         "G|PANAYI",
-        "G|WILLIAMS",
+        "HENDERSON|HENDERSON",
         "H|BLOFIELD",
         "H|BROMLEY-DAVENPORT",
         "H|FLOWERS",
-        "H|HENDERSON",
         "J|DORAN",
         "M|HULSE",
         "M|PRITCHARD",
         "M|YATES",
-        "P|PEEL",
-        "P|PHILLIPS",
-        "Q|QUIRK",
+        "PEEL|PEEL",
+        "PHILLIPS|PHILLIPS",
+        "QUIRK|QUIRK",
         "R|MALIK",
         "R|WILSON",
+        "STYLES|STYLES",
         "S|KUNDU",
         "S|SIMMONS",
-        "S|STYLES",
         "S|WELTI",
+        "TIM|FLETCHER",
+        "TOM|FLETCHER",
         "T|BREESE",
-        "T|FLETCHER",
         "T|HUSSELBEE",
         "T|WELTI",
-        "W|GIBBONS",
-        "W|WHITE"
+        "WHITE|WHITE",
+        "W|GIBBONS"
       ],
       "nqTeams": [
         {
@@ -10106,22 +10113,22 @@
         {
           "team": "Guy Williams & H.Blofield",
           "players": [
-            "G|WILLIAMS",
+            "GUY|WILLIAMS",
             "H|BLOFIELD"
           ]
         },
         {
           "team": "Tom Fletcher & Tim Fletcher",
           "players": [
-            "T|FLETCHER",
-            "T|FLETCHER"
+            "TOM|FLETCHER",
+            "TIM|FLETCHER"
           ]
         },
         {
           "team": "H.Bromley-Davenport & Styles",
           "players": [
             "H|BROMLEY-DAVENPORT",
-            "S|STYLES"
+            "STYLES|STYLES"
           ]
         },
         {
@@ -10134,8 +10141,8 @@
         {
           "team": "White & Peel",
           "players": [
-            "W|WHITE",
-            "P|PEEL"
+            "WHITE|WHITE",
+            "PEEL|PEEL"
           ]
         },
         {
@@ -10163,7 +10170,7 @@
           "team": "R.Wilson & Ab.Bhattacharya",
           "players": [
             "R|WILSON",
-            "A|BHATTACHARYA"
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -10176,7 +10183,7 @@
         {
           "team": "Quirk & M.Hulse",
           "players": [
-            "Q|QUIRK",
+            "QUIRK|QUIRK",
             "M|HULSE"
           ]
         },
@@ -10190,8 +10197,8 @@
         {
           "team": "Phillips & Henderson",
           "players": [
-            "P|PHILLIPS",
-            "H|HENDERSON"
+            "PHILLIPS|PHILLIPS",
+            "HENDERSON|HENDERSON"
           ]
         },
         {
@@ -10325,7 +10332,7 @@
       "nq": [
         "A|CRAWFORD",
         "A|TANSEY",
-        "C|CHOKSI",
+        "CHOKSI|CHOKSI",
         "C|COOLEY",
         "D|PATEL",
         "D|REDMOND",
@@ -10346,7 +10353,7 @@
         "R|MORGAN",
         "R|PATTISON",
         "R|WILSON",
-        "S|SHAH",
+        "SHAH|SHAH",
         "S|TAILOR",
         "S|WARREN-THOMAS",
         "S|WILLIAMS",
@@ -10377,8 +10384,8 @@
         {
           "team": "Choksi & Shah",
           "players": [
-            "C|CHOKSI",
-            "S|SHAH"
+            "CHOKSI|CHOKSI",
+            "SHAH|SHAH"
           ]
         },
         {
@@ -10419,8 +10426,8 @@
         {
           "team": "Shah & Shah",
           "players": [
-            "S|SHAH",
-            "S|SHAH"
+            "SHAH|SHAH",
+            "SHAH|SHAH"
           ]
         },
         {
@@ -10502,7 +10509,7 @@
           ],
           "losers": [
             "S|COOLEY",
-            "G|WILLIAMS"
+            "GUY|WILLIAMS"
           ],
           "raw": "P.Cohen & P.White beat S.Cooley & Guy Williams 3-0 (12-4, 12-7, 12-5)",
           "round": "QF",
@@ -10580,7 +10587,8 @@
       "comp": "Kinnaird",
       "key": "12 K",
       "nq": [
-        "A|BHATTACHARYA",
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA",
         "A|KNIGHT",
         "A|PEEL",
         "A|ROWLES",
@@ -10616,8 +10624,8 @@
         {
           "team": "Ar.Bhattacharya & Ab.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ]
         },
         {
@@ -10737,7 +10745,7 @@
           ],
           "losers": [
             "S|WELTI",
-            "G|WILLIAMS"
+            "GUY|WILLIAMS"
           ],
           "raw": "T.Dunbar & S.Cooley beat S.Welti & Guy.Williams 3-0 (12-1, 12-0, 12-1)",
           "round": "L16",
@@ -10769,7 +10777,7 @@
           ],
           "losers": [
             "M|HUGHES",
-            "G|WILLIAMS"
+            "GRANT|WILLIAMS"
           ],
           "raw": "G.Campbell & D.Foster beat M.Hughes & Grant.Williams 3-0 (12-9, 12-8, 12-1)",
           "round": "L16",
@@ -10976,13 +10984,14 @@
       "key": "12 N",
       "nq": [
         "A|MORRIS",
-        "B|BUNTING",
-        "C|CROFT",
+        "BUNTING|BUNTING",
+        "CROFT|CROFT",
         "C|JONES",
         "C|SELF",
         "D|REDMOND",
         "E|CHRISTIE",
-        "G|WILLIAMS",
+        "GRANT|WILLIAMS",
+        "GUY|WILLIAMS",
         "H|BLOFIELD",
         "H|BROMLEY-DAVENPORT",
         "H|RAVI",
@@ -10993,19 +11002,19 @@
         "N|BUNYAN",
         "P|BOUGHTON",
         "P|WORTH",
+        "RICHARDS|RICHARDS",
         "R|MUCKLOW",
-        "R|RICHARDS",
         "R|SALMON",
         "R|WILSON",
         "R|WORTH",
+        "SANSOM|SANSOM",
+        "STYLES|STYLES",
         "S|KUNDU",
-        "S|SANSOM",
         "S|SIMMONS",
-        "S|STYLES",
         "S|WELTI",
         "T|BARKER",
         "T|STUBBS",
-        "W|WHITE"
+        "WHITE|WHITE"
       ],
       "nqTeams": [
         {
@@ -11025,8 +11034,8 @@
         {
           "team": "Styles & Croft",
           "players": [
-            "S|STYLES",
-            "C|CROFT"
+            "STYLES|STYLES",
+            "CROFT|CROFT"
           ]
         },
         {
@@ -11046,7 +11055,7 @@
         {
           "team": "Grant Williams & M.Rimini",
           "players": [
-            "G|WILLIAMS",
+            "GRANT|WILLIAMS",
             "M|RIMINI"
           ]
         },
@@ -11060,14 +11069,14 @@
         {
           "team": "Bunting & A.Morris",
           "players": [
-            "B|BUNTING",
+            "BUNTING|BUNTING",
             "A|MORRIS"
           ]
         },
         {
           "team": "Guy Williams & S.Welti",
           "players": [
-            "G|WILLIAMS",
+            "GUY|WILLIAMS",
             "S|WELTI"
           ]
         },
@@ -11089,7 +11098,7 @@
           "team": "H.Blofield & White",
           "players": [
             "H|BLOFIELD",
-            "W|WHITE"
+            "WHITE|WHITE"
           ]
         },
         {
@@ -11102,8 +11111,8 @@
         {
           "team": "Richards & Sansom",
           "players": [
-            "R|RICHARDS",
-            "S|SANSOM"
+            "RICHARDS|RICHARDS",
+            "SANSOM|SANSOM"
           ]
         },
         {
@@ -11438,14 +11447,15 @@
       "comp": "London",
       "key": "25 L",
       "nq": [
-        "A|BHATTACHARYA"
+        "AB|BHATTACHARYA",
+        "AR|BHATTACHARYA"
       ],
       "nqTeams": [
         {
           "team": "Ar.Bhattacharya & Ab.Bhattacharya",
           "players": [
-            "A|BHATTACHARYA",
-            "A|BHATTACHARYA"
+            "AR|BHATTACHARYA",
+            "AB|BHATTACHARYA"
           ]
         }
       ],
