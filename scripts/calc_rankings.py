@@ -838,6 +838,65 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
     round_rank = {"L16": 0, "QF": 1, "SF": 2, "F": 3}
 
     for year, _, tkey, tinfo in tourn_list:
+
+        # --- Tournament participation bonuses (V2 tweak) ---
+        # Entry bonus: everyone who enters gets a pseudo-win vs a 1400-rated opponent.
+        # Qualify bonus: main-draw players (non-NQ) get an additional pseudo-win vs the
+        # average NQ rating in that tournament.
+        #
+        # Applied before match updates to reflect selection + qualification strength.
+        all_players = set()
+        nq_players = set()
+        main_players = set()
+
+        # Collect main-draw participants from matches
+        for mm in list(tinfo.get('matches', []) or []):
+            for k in (mm.get('winners', []) or []):
+                if k and '|' in k:
+                    all_players.add(k)
+                    main_players.add(k)
+            for k in (mm.get('losers', []) or []):
+                if k and '|' in k:
+                    all_players.add(k)
+                    main_players.add(k)
+
+        # Collect NQ participants (teams)
+        for team in list(tinfo.get('nonQualifiers', []) or []):
+            parts = [x.strip() for x in re.split(r"\s*&\s*", str(team)) if x.strip()]
+            for k in parts:
+                if k and '|' in k:
+                    all_players.add(k)
+                    nq_players.add(k)
+
+        # Entry bonus (equivalent to a win vs 1400)
+        for pk in sorted(all_players):
+            st = get_state(pk, year)
+            r = float(st['r'])
+            e = _elo_expected(r, 1400.0)
+            k_eff = _k_eff(float(st['sigma']))
+            delta = k_eff * (1.0 - e)
+            st['r'] = r + delta
+            st['sigma'] = _sigma_after_match(st['sigma'])
+            st['last_year'] = year
+
+        # Average NQ strength for qualify bonus
+        nq_rs = []
+        for pk in nq_players:
+            st = get_state(pk, year)
+            nq_rs.append(float(st['r']))
+        avg_nq = (sum(nq_rs) / len(nq_rs)) if nq_rs else 1400.0
+
+        # Qualify bonus (equivalent to a win vs average NQ)
+        for pk in sorted(main_players - nq_players):
+            st = get_state(pk, year)
+            r = float(st['r'])
+            e = _elo_expected(r, avg_nq)
+            k_eff = _k_eff(float(st['sigma']))
+            delta = k_eff * (1.0 - e)
+            st['r'] = r + delta
+            st['sigma'] = _sigma_after_match(st['sigma'])
+            st['last_year'] = year
+
         ms = list(tinfo.get("matches", []))
         ms.sort(key=lambda m: round_rank.get(m.get("round"), 99))
         for m in ms:
