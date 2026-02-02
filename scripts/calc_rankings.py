@@ -914,13 +914,20 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
                     all_players.add(k)
                     main_players.add(k)
 
-        # Collect NQ participants (teams)
-        for team in list(tinfo.get("nonQualifiers", []) or []):
-            parts = [x.strip() for x in re.split(r"\s*&\s*", str(team)) if x.strip()]
-            for k in parts:
-                if k and "|" in k:
-                    all_players.add(k)
-                    nq_players.add(k)
+        # Collect NQ participants
+        # matches_latest.json provides:
+        #   - nq: flat list of player keys (Initial|SURNAME)
+        #   - nqTeams: list of {team: 'A.Bloggs & C.Doe', players:[...]}
+        for pk in list(tinfo.get("nq", []) or []):
+            if pk and "|" in str(pk):
+                all_players.add(str(pk))
+                nq_players.add(str(pk))
+
+        for team in list(tinfo.get("nqTeams", []) or []):
+            for pk in list(team.get("players", []) or []):
+                if pk and "|" in str(pk):
+                    all_players.add(str(pk))
+                    nq_players.add(str(pk))
 
         # Entry bonus (equivalent to a win vs 1400)
         for pk in sorted(all_players):
@@ -1110,7 +1117,7 @@ def main() -> None:
             elo_df = elo_df.sort_values(["Elo", "Surname", "Initial"], ascending=[False, True, True]).reset_index(drop=True)
             elo_df.insert(0, "EloRank", elo_df.index + 1)
             # Merge Elo into the latest official table
-            out = out.merge(elo_df[["Initial", "Surname", "Elo", "EloSigma", "EloRank"]], on=["Initial", "Surname"], how="left")
+            out = out.merge(elo_df[["Initial", "Surname", "Elo", "EloSigma", "EloSkill", "EloForm"]], on=["Initial", "Surname"], how="left")
 
         # Write Elo files
         if elo_df is not None:
@@ -1133,7 +1140,7 @@ def main() -> None:
             return (yy, order)
         tour_cols = sorted(tour_cols, key=_tour_sort_key)
         meta_cols = [c for c in ["POSS","RPA","PC","PC2","Played","MissedLast"] if c in out.columns]
-        elo_cols = [c for c in ["EloRank","Elo","EloSigma"] if c in out.columns]
+        elo_cols = [c for c in ["EloRank","Elo","EloSigma","EloSkill","EloForm"] if c in out.columns]
         keep = elo_cols + ["Initial","Surname"] + meta_cols + tour_cols
         # Keep RANK3 as internal numeric rank in CSV (some scripts may rely on it)
         if "RANK3" in out.columns:
@@ -1150,23 +1157,33 @@ def main() -> None:
     records_df = out.copy()
     records_df.insert(0, "Rank", records_df["RANK3"].astype(int))
 
-    # Choose tournament columns in chronological order
+    # Choose tournament columns (most recent first)
     tour_cols = [c for c in records_df.columns if re.match(r"^\d{2} [NKL]$", str(c))]
     def _tour_sort_key(c):
         yy = int(str(c).split(' ')[0])
         comp = str(c).split(' ')[1]
         order = {'N':0,'K':1,'L':2}.get(comp, 9)
         return (yy, order)
-    tour_cols = sorted(tour_cols, key=_tour_sort_key)
+    tour_cols = sorted(tour_cols, key=_tour_sort_key, reverse=True)
 
-    meta_cols = [c for c in ["POSS","RPA","PC","PC2","Played","MissedLast"] if c in records_df.columns]
-    elo_cols = [c for c in ["EloRank","Elo","EloSigma"] if c in records_df.columns]
+    # Official metrics
+    meta_cols = [c for c in ["POSS","RPA","PC","PC2"] if c in records_df.columns]
 
-    # Final column order
-    keep = ["Rank"] + elo_cols + ["Initial","Surname"] + meta_cols + tour_cols
+    # Elo fields (EloSigma retained for UI pill colouring but hidden from header)
+    elo_cols = [c for c in ["Elo", "EloSkill", "EloForm", "EloSigma"] if c in records_df.columns]
+
+    # Final column order (keep EloSkill/EloForm after PC2 as requested)
+    keep = ["Rank", "Elo", "Initial", "Surname"] + meta_cols
+    for c in ["EloSkill", "EloForm"]:
+        if c in records_df.columns:
+            keep.append(c)
+    if "EloSigma" in records_df.columns:
+        keep.append("EloSigma")
+
+    keep = keep + tour_cols
 
     # Ensure we keep only those columns (drop internal RANK/RANK2/RANK3 etc)
-    records_df = records_df[keep]
+    records_df = records_df[[c for c in keep if c in records_df.columns]]
 
     json_path = args.outdir / "rankings_latest.json"
     json_path.write_text(records_df.to_json(orient="records"), encoding="utf-8")
@@ -1187,11 +1204,13 @@ def main() -> None:
                 if er:
                     r["Elo"] = er.get("Elo")
                     r["EloSigma"] = er.get("EloSigma")
-                    r["EloRank"] = er.get("EloRank")
+                    r["EloSkill"] = er.get("EloSkill")
+                    r["EloForm"] = er.get("EloForm")
                 else:
                     r["Elo"] = None
                     r["EloSigma"] = None
-                    r["EloRank"] = None
+                    r["EloSkill"] = None
+                    r["EloForm"] = None
             
             # Re-order snapshot columns to match the latest table ordering
             ordered_records = []

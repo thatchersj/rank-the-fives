@@ -56,7 +56,7 @@
     }
     #rankings tbody tr:nth-child(even) td{ background:#fcfcfc; }
 
-    /* Sticky first 5 columns (Rank, EloRank, Elo, Initial, Surname) */
+    /* Sticky first 4 columns (Rank, Elo, Initial, Surname) */
     #rankings th:nth-child(1), #rankings td:nth-child(1){
       position: sticky; left: 0; z-index: 6; min-width:60px; max-width:60px;
       border-right:1px solid #ddd;
@@ -64,47 +64,25 @@
       background: inherit;
     }
     #rankings th:nth-child(2), #rankings td:nth-child(2){
-      position: sticky; left: 60px; z-index: 6; min-width:70px; max-width:70px;
+      position: sticky; left: 60px; z-index: 6; min-width:80px; max-width:80px;
       border-right:1px solid #ddd;
       background: inherit;
       font-variant-numeric: tabular-nums;
-      text-align: center;
     }
     #rankings th:nth-child(3), #rankings td:nth-child(3){
-      position: sticky; left: 130px; z-index: 6; min-width:90px; max-width:90px;
+      position: sticky; left: 140px; z-index: 6; min-width:70px; max-width:70px;
       border-right:1px solid #ddd;
       background: inherit;
-      text-align: center;
+      font-variant-numeric: tabular-nums;
     }
     #rankings th:nth-child(4), #rankings td:nth-child(4){
-      position: sticky; left: 220px; z-index: 6; min-width:60px; max-width:60px;
-      border-right:1px solid #ddd;
-      background: inherit;
-      text-align: center;
-    }
-    #rankings th:nth-child(5), #rankings td:nth-child(5){
-      position: sticky; left: 280px; z-index: 6; min-width:190px; max-width:190px;
+      position: sticky; left: 210px; z-index: 6; min-width:190px; max-width:190px;
       border-right:1px solid #ddd;
       font-weight:600;
       background: inherit;
-      text-align: left;
     }
 
-    #rankings td:nth-child(1), #rankings td:nth-child(2), #rankings td:nth-child(3), #rankings td:nth-child(4), #rankings td:nth-child(5),
-    #rankings th:nth-child(1), #rankings th:nth-child(2), #rankings th:nth-child(3), #rankings th:nth-child(4), #rankings th:nth-child(5){
-      background: white;
-    }
-    #rankings tbody tr:nth-child(even) td:nth-child(1),
-    #rankings tbody tr:nth-child(even) td:nth-child(2),
-    #rankings tbody tr:nth-child(even) td:nth-child(3),
-    #rankings tbody tr:nth-child(even) td:nth-child(4),
-    #rankings tbody tr:nth-child(even) td:nth-child(5){
-      background: #fcfcfc;
-    }
-
-    .result-cell{ text-align:center; font-weight:600; }
-
-    /* Colour coding (works on mobile because it's inline classes on TD) */
+/* Colour coding (works on mobile because it's inline classes on TD) */
     .res-W{ background:#c6efce !important; color:#006100 !important; }   /* Winner */
     .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }   /* Final */
     .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }  /* Semi */
@@ -287,7 +265,27 @@ function looksLikeResultColumn(colName) {
       }
 
       function render(data) {
-        const cols = Object.keys(data[0] || {}).filter(c => c !== "EloSigma");
+        // Build a stable column order:
+        // Rank, Elo, Initial, Surname, POSS/RPA/PC/PC2, EloSkill/EloForm, then tournament columns (most recent first)
+        const allCols = Object.keys(data[0] || {});
+        const base = ["Rank","Elo","Initial","Surname","POSS","RPA","PC","PC2","EloSkill","EloForm"];
+        const baseCols = base.filter(c => allCols.includes(c));
+
+        const tourCols = allCols
+          .filter(c => looksLikeResultColumn(c))
+          .sort((a,b) => {
+            const pa = a.trim().replace(/\s+/g,' ').split(' ');
+            const pb = b.trim().replace(/\s+/g,' ').split(' ');
+            const ya = parseInt(pa[0],10); const yb = parseInt(pb[0],10);
+            const oa = ({N:0,K:1,L:2})[(pa[1]||'').toUpperCase()] ?? 9;
+            const ob = ({N:0,K:1,L:2})[(pb[1]||'').toUpperCase()] ?? 9;
+            // most recent first
+            if (ya !== yb) return yb - ya;
+            return ob - oa;
+          });
+
+        // Keep EloSigma available for pill colour but don't show as a column
+        const cols = [...baseCols, ...tourCols].filter(c => c !== "EloSigma");
         window.__CURRENT_COLS__ = cols;
         theadRow.innerHTML = "";
         tbody.innerHTML = "";
@@ -318,6 +316,17 @@ function looksLikeResultColumn(colName) {
               pill.className = `pill elo-pill ${uncertaintyClass(row["EloSigma"])}`;
               pill.textContent = (val === null || val === undefined || val === "") ? "" : String(Math.round(Number(val)));
               td.appendChild(pill);
+            } else if (c === "EloSkill") {
+              const num = Number(val);
+              td.textContent = Number.isFinite(num) ? String(Math.round(num)) : "";
+            } else if (c === "EloForm") {
+              const num = Number(val);
+              if (Number.isFinite(num)) {
+                const r = Math.round(num);
+                td.textContent = (r > 0 ? "+" : "") + String(r);
+              } else {
+                td.textContent = "";
+              }
             } else {
               td.textContent = displayVal;
             }
