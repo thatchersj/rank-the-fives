@@ -672,10 +672,19 @@ function looksLikeResultColumn(colName) {
           const peakEloText = (peakElo !== null && Number.isFinite(peakElo)) ? Math.round(peakElo).toString() : '';
           const sparkVals = series.filter(p => p.key !== '__current__').map(p => p.form).filter(v => Number.isFinite(Number(v)));
           const sparkSvg = buildSparkline(sparkVals, {w:200,h:44,pad:4});
+          const idxSkill = headers.indexOf('EloSkill');
+          const currentSkill = (idxSkill >= 0) ? Number((tds[idxSkill]?.textContent || "").trim()) : NaN;
+          const skillText = Number.isFinite(currentSkill) ? Math.round(currentSkill).toString() : '';
+          const formText = Number.isFinite(currentForm) ? ((currentForm>=0?'+':'') + Math.round(currentForm).toString()) : '';
+
           const eloPanelHtml =
             `<div class="eloPanel">`
             + `<div class="eloRow">`
-            + `<div><div class="muted">Elo</div><div><b class="eloValue" data-current="${escapeHtml(curEloText)}" data-peak="${escapeHtml(peakEloText)}" data-peaklabel="${escapeHtml(peakLabel)}" data-showing="current">${escapeHtml(curEloText)}</b> <span class="muted eloSub">Current</span></div></div>`
+            + `<div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">`
+            +   `<div><div class="muted">Elo</div><div><b class="eloValue" data-current="${escapeHtml(curEloText)}" data-peak="${escapeHtml(peakEloText)}" data-peaklabel="${escapeHtml(peakLabel)}" data-showing="current">${escapeHtml(curEloText)}</b> <span class="muted eloSub">Current</span></div></div>`
+            +   `<div><div class="muted">Skill</div><div><b>${escapeHtml(skillText)}</b></div></div>`
+            +   `<div><div class="muted">Form</div><div><b>${escapeHtml(formText)}</b></div></div>`
+            + `</div>`
             + `<button class="peakBtn" type="button" data-peak-toggle="1">Show peak</button>`
             + `</div>`
             + `<div class="sparkWrap"><div class="muted">Form (EloForm)</div>${sparkSvg}</div>`
@@ -685,8 +694,9 @@ function looksLikeResultColumn(colName) {
           const tournFull = tourn?.tournament || colName;
 
           let body = "";
+          body += eloPanelHtml;
           if (!tourn) {
-            body = `<div class="match">No match detail found for ${escapeHtml(colName)}.</div>`;
+            body += `<div class="match">No match detail found for ${escapeHtml(colName)}.</div>`;
             openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
             return;
           }
