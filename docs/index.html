@@ -338,6 +338,10 @@
         backdrop.setAttribute("aria-hidden", "true");
       }
 
+      function normaliseColumn(s){
+        return (s ?? '').toString().replace(/\s+/g,' ').trim().toUpperCase();
+      }
+
       function escapeHtml(s) {
         return (s ?? "").toString()
           .replace(/&/g, "&amp;")
@@ -347,7 +351,97 @@
           .replace(/'/g, "&#039;");
       }
 
-      function attachCellClicks(matchesData) {
+      
+      function getMatchIndex(){
+        return (typeof matchIndex !== 'undefined' && matchIndex) ? matchIndex
+          : (typeof matchesIndex !== 'undefined' && matchesIndex) ? matchesIndex
+          : (window.matchIndex || window.matchesIndex || null);
+      }
+
+      function looksLikeTournamentCol(colText){
+        const s = (typeof normaliseColumn === 'function' ? normaliseColumn(colText) : (colText||'').toString().replace(/\s+/g,' ').trim().toUpperCase());
+        return /^\d{2}\s*[A-Z]$/.test(s);
+      }
+
+      function openTournamentDraw(colText){
+        const mi = getMatchIndex();
+        if (!mi || !mi.colToKey || !mi.tournaments) return;
+
+        const norm = (typeof normaliseColumn === 'function') ? normaliseColumn(colText) : (colText||'').toString().replace(/\s+/g,' ').trim().toUpperCase();
+        const key = mi.colToKey[norm] || mi.colToKey[norm.replace(/\s+/g,'')] || mi.colToKey[norm.replace(/\s+/g,' ')];
+        const tourn = key ? mi.tournaments[key] : null;
+        if (!tourn) return;
+
+        const title = `${tourn.year} ${tourn.tournament} Draw`;
+        const subtitle = `Column: ${norm}`;
+
+        const order = ["Last 16","Quarter-Finals","Semi-Finals","Final"];
+        const byRound = {};
+        for (const m of (tourn.matches || [])){
+          const r = m.round || "Other";
+          (byRound[r] ||= []).push(m);
+        }
+
+        let body = '';
+
+        const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
+        if (nqTeams.length){
+          body += `<div class="card"><div style="font-weight:800;font-size:18px;margin-bottom:6px">Non-Qualifiers</div>`;
+          body += `<div style="display:flex;flex-wrap:wrap;gap:8px">`;
+          for (const t of nqTeams){
+            if (!t.team) continue;
+            body += `<span class="pill">${escapeHtml(t.team)}</span>`;
+          }
+          body += `</div></div>`;
+        }
+
+        for (const r of order){
+          const list = byRound[r] || [];
+          if (!list.length) continue;
+          body += `<div class="round">${escapeHtml(r)}</div>`;
+          for (const m of list){
+            const wTeam = m.winnerTeam || '';
+            const lTeam = m.loserTeam || '';
+            const score = (m.score || '').toString().trim();
+            body += `<div class="match">
+              <div><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>
+              ${score ? `<div>${escapeHtml(score)}</div>` : ''}
+            </div>`;
+          }
+        }
+
+        const others = Object.keys(byRound).filter(r => !order.includes(r));
+        for (const r of others){
+          const list = byRound[r] || [];
+          if (!list.length) continue;
+          body += `<div class="round">${escapeHtml(r)}</div>`;
+          for (const m of list){
+            const wTeam = m.winnerTeam || '';
+            const lTeam = m.loserTeam || '';
+            const score = (m.score || '').toString().trim();
+            body += `<div class="match">
+              <div><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>
+              ${score ? `<div>${escapeHtml(score)}</div>` : ''}
+            </div>`;
+          }
+        }
+
+        if (!body) body = `<div class="card">No draw data found for this tournament.</div>`;
+
+        if (typeof openModal === 'function') {
+          openModal(title, subtitle, body);
+        } else {
+          const mt = document.getElementById('modalTitle');
+          const ms = document.getElementById('modalSubtitle');
+          const mb = document.getElementById('modalBody');
+          const bd = document.getElementById('modalBackdrop') || document.getElementById('backdrop');
+          if (mt) mt.textContent = title;
+          if (ms) ms.textContent = subtitle;
+          if (mb) mb.innerHTML = body;
+          if (bd) { bd.style.display = 'flex'; bd.setAttribute('aria-hidden','false'); }
+        }
+      }
+function attachCellClicks(matchesData) {
         const table = document.getElementById("rankings");
         const tbody = table.querySelector("tbody");
         const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent);
