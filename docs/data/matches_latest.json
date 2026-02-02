@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-02T02:58:47Z",
+  "generatedAt": "2026-02-02T03:13:51Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -291,15 +291,15 @@
         },
         {
           "winnerTeam": "J.Toop & M.Wiseman",
-          "loserTeam": "V.Bhimjiyani & A.Abrahams w/o",
-          "score": "",
+          "loserTeam": "V.Bhimjiyani & A.Abrahams",
+          "score": "w/o",
           "winners": [
             "J|TOOP",
             "M|WISEMAN"
           ],
           "losers": [
             "V|BHIMJIYANI",
-            "A|WO"
+            "A|ABRAHAMS"
           ],
           "raw": "J.Toop & M.Wiseman beat V.Bhimjiyani & A.Abrahams w/o",
           "round": "QF",
@@ -1970,15 +1970,15 @@
         },
         {
           "winnerTeam": "R.Houlden & H.Young",
-          "loserTeam": "E.Taylor & N.Caplin w/o",
-          "score": "",
+          "loserTeam": "E.Taylor & N.Caplin",
+          "score": "w/o",
           "winners": [
             "R|HOULDEN",
             "H|YOUNG"
           ],
           "losers": [
             "E|TAYLOR",
-            "N|WO"
+            "N|CAPLIN"
           ],
           "raw": "R.Houlden & H.Young beat E.Taylor & N.Caplin w/o",
           "round": "SF",
@@ -2272,15 +2272,15 @@
         },
         {
           "winnerTeam": "J.Toop & H.Wiseman",
-          "loserTeam": "S.Cooley & T.Dunbar w/o",
-          "score": "",
+          "loserTeam": "S.Cooley & T.Dunbar",
+          "score": "w/o",
           "winners": [
             "J|TOOP",
             "H|WISEMAN"
           ],
           "losers": [
             "S|COOLEY",
-            "T|WO"
+            "T|DUNBAR"
           ],
           "raw": "J.Toop & H.Wiseman beat S.Cooley & T.Dunbar w/o",
           "round": "SF",
@@ -3380,15 +3380,15 @@
         },
         {
           "winnerTeam": "J.Ho & R.Houlden",
-          "loserTeam": "J.Toop & H.Wiseman w/o",
-          "score": "",
+          "loserTeam": "J.Toop & H.Wiseman",
+          "score": "w/o",
           "winners": [
             "J|HO",
             "R|HOULDEN"
           ],
           "losers": [
             "J|TOOP",
-            "H|WO"
+            "H|WISEMAN"
           ],
           "raw": "J.Ho & R.Houlden beat J.Toop & H.Wiseman w/o",
           "round": "F",
@@ -5822,15 +5822,15 @@
         },
         {
           "winnerTeam": "T.Dunbar & S.Cooley",
-          "loserTeam": "V.Bhimjiyani & J.Patel w/o",
-          "score": "",
+          "loserTeam": "V.Bhimjiyani & J.Patel",
+          "score": "w/o",
           "winners": [
             "T|DUNBAR",
             "S|COOLEY"
           ],
           "losers": [
             "V|BHIMJIYANI",
-            "J|WO"
+            "J|PATEL"
           ],
           "raw": "T.Dunbar & S.Cooley beat V.Bhimjiyani & J.Patel w/o",
           "round": "QF",
@@ -7578,15 +7578,15 @@
         },
         {
           "winnerTeam": "J.Toop & M.Wiseman",
-          "loserTeam": "A.Theodossi & R.Perrie w/o",
-          "score": "",
+          "loserTeam": "A.Theodossi & R.Perrie",
+          "score": "w/o",
           "winners": [
             "J|TOOP",
             "M|WISEMAN"
           ],
           "losers": [
             "A|THEODOSSI",
-            "R|WO"
+            "R|PERRIE"
           ],
           "raw": "J.Toop & M.Wiseman beat A.Theodossi & R.Perrie w/o",
           "round": "SF",
@@ -10301,15 +10301,15 @@
         },
         {
           "winnerTeam": "T.Dunbar & S.Cooley",
-          "loserTeam": "P.Dunbar & G.Campbell w/o",
-          "score": "",
+          "loserTeam": "P.Dunbar & G.Campbell",
+          "score": "w/o",
           "winners": [
             "T|DUNBAR",
             "S|COOLEY"
           ],
           "losers": [
             "P|DUNBAR",
-            "G|WO"
+            "G|CAMPBELL"
           ],
           "raw": "T.Dunbar & S.Cooley beat P.Dunbar & G.Campbell w/o",
           "round": "F",
