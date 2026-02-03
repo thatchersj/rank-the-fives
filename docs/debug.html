@@ -1,0 +1,1033 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Elo Debugger — Eton Fives Rankings</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; }
+    header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    h1 { margin:0; font-size:20px; }
+    a { color: inherit; }
+    .wrap { display:grid; grid-template-columns: 360px 1fr; gap:16px; align-items:start; }
+    @media (max-width: 980px){ .wrap{ grid-template-columns: 1fr; } }
+    .card { border:1px solid #ddd; border-radius:12px; padding:12px; background:#fff; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    label { font-size:12px; color:#444; display:block; margin-bottom:4px; }
+    input, select, button, textarea { font: inherit; }
+    input[type="number"], input[type="text"], select { width: 100%; padding:8px; border:1px solid #ccc; border-radius:8px; }
+    button { padding:8px 10px; border:1px solid #ccc; border-radius:10px; background:#f7f7f7; cursor:pointer; }
+    button.primary { background:#111; color:#fff; border-color:#111; }
+    button.danger { background:#fff0f0; border-color:#ffb3b3; }
+    .muted { color:#666; font-size:12px; }
+    .small { font-size:12px; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .grid3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .setpill { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px; border:1px solid #e5e5e5; border-radius:10px; margin-top:8px; }
+    .setpill strong { font-size:13px; }
+    table { width:100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border-bottom:1px solid #eee; padding:8px 6px; vertical-align:top; }
+    th { text-align:left; position:sticky; top:0; background:#fff; z-index:1; }
+    .kpi { font-size: 12px; color:#333; }
+    .kpi b { font-weight:700; }
+    .twoCol { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
+    @media (max-width: 980px){ .twoCol{ grid-template-columns: 1fr; } }
+    .hr { height:1px; background:#eee; margin:10px 0; }
+    .note { background:#f6faff; border:1px solid #d7e8ff; padding:10px; border-radius:10px; }
+    .badge { display:inline-block; padding:2px 8px; border:1px solid #ddd; border-radius:999px; font-size:12px; background:#fafafa; }
+  </style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Elo Debugger</h1>
+    <div class="muted">Pick a historic match or create a synthetic match, then compare Elo deltas across saved parameter sets.</div>
+  </div>
+  <div class="row">
+    <a href="./index.html" class="badge">← Back to rankings</a>
+  </div>
+</header>
+
+<div class="wrap" style="margin-top:12px;">
+  <aside class="card">
+    <div class="row" style="justify-content:space-between;">
+      <div><strong>Parameter sets</strong><div class="muted">Saved in this browser session.</div></div>
+      <button id="btnReset" class="danger" title="Clear all saved sets">Clear</button>
+    </div>
+    <div id="setList"></div>
+
+    <div class="hr"></div>
+    <div><strong>Edit / create</strong></div>
+    <div class="muted">Change values, then save as a named set. Default matches the site’s current Elo settings.</div>
+
+    <div class="grid2" style="margin-top:10px;">
+      <div>
+        <label>K base</label>
+        <input id="p_kBase" type="number" step="0.1">
+      </div>
+      <div>
+        <label>Kinnaird K mult</label>
+        <input id="p_kKinnaird" type="number" step="0.01">
+      </div>
+
+      <div>
+        <label>Skill share (α)</label>
+        <input id="p_skillShare" type="number" step="0.01" min="0" max="1">
+      </div>
+      <div>
+        <label>Form half-life (years)</label>
+        <input id="p_formHL" type="number" step="0.1" min="0.1">
+      </div>
+
+      <div>
+        <label>Sigma new</label>
+        <input id="p_sigNew" type="number" step="1">
+      </div>
+      <div>
+        <label>Sigma est floor</label>
+        <input id="p_sigEst" type="number" step="1">
+      </div>
+
+      <div>
+        <label>Sigma max</label>
+        <input id="p_sigMax" type="number" step="1">
+      </div>
+      <div>
+        <label>Inactive +sigma / year</label>
+        <input id="p_sigInact" type="number" step="1">
+      </div>
+
+      <div>
+        <label>Sigma after match ×</label>
+        <input id="p_sigAfter" type="number" step="0.01" min="0.1" max="1">
+      </div>
+      <div>
+        <label>K_eff factor denom</label>
+        <input id="p_kDenom" type="number" step="1">
+      </div>
+
+      <div>
+        <label>Entry bonus opponent Elo</label>
+        <input id="p_entryOpp" type="number" step="1">
+      </div>
+      <div>
+        <label>Qualify bonus uses avg NQ (on/off)</label>
+        <select id="p_qualUseAvg">
+          <option value="1">On</option>
+          <option value="0">Off (use entryOpp)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <div><strong>Round weights</strong></div>
+    <div class="grid2" style="margin-top:10px;">
+      <div><label>L16</label><input id="p_wL16" type="number" step="0.01"></div>
+      <div><label>QF</label><input id="p_wQF" type="number" step="0.01"></div>
+      <div><label>SF</label><input id="p_wSF" type="number" step="0.01"></div>
+      <div><label>F</label><input id="p_wF" type="number" step="0.01"></div>
+    </div>
+
+    <div class="hr"></div>
+    <div><strong>Passenger split</strong> <span class="muted">(doubles attribution)</span></div>
+    <div class="grid2" style="margin-top:10px;">
+      <div>
+        <label>Mode</label>
+        <select id="p_passMode">
+          <option value="fixed">Fixed 60/40 (legacy)</option>
+          <option value="prop">Proportional (gap-based)</option>
+        </select>
+      </div>
+      <div>
+        <label>Fixed lower-share</label>
+        <input id="p_passFixedLow" type="number" step="0.01" min="0" max="0.5">
+      </div>
+      <div>
+        <label>Max bias (prop mode)</label>
+        <input id="p_passMaxBias" type="number" step="0.01" min="0" max="0.49">
+      </div>
+      <div>
+        <label>Diff scale (Elo) (prop mode)</label>
+        <input id="p_passDiffScale" type="number" step="1" min="1">
+      </div>
+    </div>
+
+    <div class="hr"></div>
+    <div class="row">
+      <div style="flex:1;">
+        <label>Set name</label>
+        <input id="setName" type="text" placeholder="e.g. Default / High K / Fast decay">
+      </div>
+      <div style="align-self:flex-end;">
+        <button id="btnSave" class="primary">Save set</button>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:10px;">
+      <div class="small"><b>Tip:</b> Create two or three parameter sets (e.g. “Default”, “High K”, “Fast form decay”), then switch matches to see how they behave.</div>
+    </div>
+  </aside>
+
+  <main class="card">
+    <div class="twoCol">
+      <section>
+        <div class="row" style="justify-content:space-between;">
+          <div><strong>Historic match</strong><div class="muted">Pick any recorded match from TournamentResults.</div></div>
+          <span class="badge" id="dataStatus">Loading…</span>
+        </div>
+        <div class="grid2" style="margin-top:10px;">
+          <div>
+            <label>Tournament</label>
+            <select id="selTourn"></select>
+          </div>
+          <div>
+            <label>Match</label>
+            <select id="selMatch"></select>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div><strong>Synthetic match</strong><div class="muted">Create a match using players’ Elo at a chosen point in history.</div></div>
+        <div class="grid2" style="margin-top:10px;">
+          <div>
+            <label>As of tournament</label>
+            <select id="synAsOf"></select>
+          </div>
+          <div>
+            <label>State</label>
+            <select id="synState">
+              <option value="start">Start of tournament (after decay & inactivity, before bonuses)</option>
+              <option value="end">End of tournament (after all matches)</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:10px;">
+          <div>
+            <label>Winners (Player 1)</label>
+            <select id="synW1"></select>
+          </div>
+          <div>
+            <label>Winners (Player 2)</label>
+            <select id="synW2"></select>
+          </div>
+          <div>
+            <label>Losers (Player 1)</label>
+            <select id="synL1"></select>
+          </div>
+          <div>
+            <label>Losers (Player 2)</label>
+            <select id="synL2"></select>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:10px;">
+          <div>
+            <label>Round</label>
+            <select id="synRound">
+              <option value="L16">L16</option>
+              <option value="QF">QF</option>
+              <option value="SF">SF</option>
+              <option value="F">F</option>
+            </select>
+          </div>
+          <div>
+            <label>Score flags</label>
+            <select id="synFlags">
+              <option value="">Normal</option>
+              <option value="wo">Walkover (w/o)</option>
+              <option value="ret">Retirement (ret)</option>
+            </select>
+          </div>
+          <div style="align-self:end;">
+            <button id="btnRunSynthetic" class="primary" style="width:100%;">Run synthetic</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="hr"></div>
+
+    <section>
+      <div class="row" style="justify-content:space-between;">
+        <div><strong>Delta breakdown</strong><div class="muted">Shows per-player deltas for each saved parameter set.</div></div>
+        <div class="row">
+          <button id="btnUseHistoric" class="primary">Use selected historic match</button>
+        </div>
+      </div>
+      <div id="summary" class="muted" style="margin-top:8px;">Select a match to view deltas.</div>
+
+      <div style="margin-top:10px; overflow:auto;">
+        <table id="outTable">
+          <thead>
+            <tr>
+              <th>Parameter set</th>
+              <th>Win P(win)</th>
+              <th>K_pair</th>
+              <th>Pair Δ</th>
+              <th>Winners Δ (p1 / p2)</th>
+              <th>Losers Δ (p1 / p2)</th>
+              <th class="mono">Notes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="note" style="margin-top:10px;">
+        <div class="small"><b>What you’re seeing:</b> “Pair Δ” is the raw Elo delta before splitting across teammates and across Skill/Form. Shares depend on the passenger settings. Skill/Form split uses α.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+/** -------- Session param sets -------- */
+const STORAGE_KEY = "eloDebugParamSets_v1";
+function loadSets(){
+  try{ return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "[]"); }catch(e){ return []; }
+}
+function saveSets(sets){
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sets));
+}
+function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+
+/** -------- Defaults (should match calc_rankings.py) -------- */
+const DEFAULTS = {
+  name: "Default (site)",
+  kBase: 12.0,
+  kKinnaird: 1.12,
+  skillShare: 0.15,
+  formHL: 1.5,
+  sigNew: 350.0,
+  sigEst: 120.0,
+  sigMax: 400.0,
+  sigInact: 50.0,
+  sigAfter: 0.85,
+  kDenom: 300.0,
+  entryOpp: 1400.0,
+  qualUseAvg: 1,
+  wL16: 1.00,
+  wQF: 1.06,
+  wSF: 1.12,
+  wF: 1.18,
+  passMode: "fixed",
+  passFixedLow: 0.60, // in legacy code lower-rated winner gets 0.60, higher-rated gets 0.40
+  passMaxBias: 0.20,
+  passDiffScale: 200
+};
+
+/** -------- Data loading -------- */
+let TOURN_ORDER = []; // [{year, comp, key, compShort}]
+let MATCHES = null;   // matches_latest.json object
+let MATCH_INDEX = {}; // {tkey: [matchObj...]} in order
+
+function parseTournamentResults(text){
+  const lines = text.split(/\r?\n/);
+  const out = [];
+  const reHead = /^\s*(\d{4})\s+(Northern|Kinnaird|London)\s*$/i;
+  for(const line of lines){
+    const m = line.match(reHead);
+    if(!m) continue;
+    const year = parseInt(m[1],10);
+    const comp = m[2][0].toUpperCase() + m[2].slice(1).toLowerCase();
+    const yy = String(year).slice(-2);
+    const compShort = comp==="Northern" ? "N" : (comp==="Kinnaird" ? "K" : "L");
+    out.push({year, comp, key: `${yy} ${compShort}`, compShort});
+  }
+  // TournamentResults.txt is newest-first; we keep both orders.
+  return out;
+}
+function compFromShort(c){
+  if(c==="N") return "Northern";
+  if(c==="K") return "Kinnaird";
+  if(c==="L") return "London";
+  return "";
+}
+function tournMult(params, comp){ 
+  if(comp==="Kinnaird") return params.kKinnaird;
+  return 1.0;
+}
+const COMP_ORDER = {Northern:0, Kinnaird:1, London:2};
+function tIndex(year, comp){
+  return year + ( (COMP_ORDER[comp] ?? 99) / 3.0 );
+}
+
+async function loadAll(){
+  const [trTxt, matchesJson] = await Promise.all([
+    fetch("./data/TournamentResults.txt").then(r=>r.text()),
+    fetch("./data/matches_latest.json").then(r=>r.json())
+  ]);
+  TOURN_ORDER = parseTournamentResults(trTxt);
+  MATCHES = matchesJson;
+  // Build match index using tournament keys in matches file
+  MATCH_INDEX = {};
+  for(const [tkey, tinfo] of Object.entries(MATCHES.tournaments || {})){
+    MATCH_INDEX[tkey] = (tinfo.matches || []).map((m, idx)=>({ ...m, _idx: idx, _tkey: tkey, _year: tinfo.year, _comp: tinfo.comp }));
+  }
+  // Populate UI
+  populateTournamentSelects();
+  document.getElementById("dataStatus").textContent = "Loaded";
+}
+
+function populateTournamentSelects(){
+  // Build a chronological list from TournamentResults (oldest->newest) for simulation, but UI dropdown newest-first is nicer.
+  const tournUI = [...TOURN_ORDER]; // newest-first as in file
+  const selT = document.getElementById("selTourn");
+  const synAsOf = document.getElementById("synAsOf");
+  selT.innerHTML = "";
+  synAsOf.innerHTML = "";
+
+  for(const t of tournUI){
+    // only include tournaments we have matches for
+    if(!MATCH_INDEX[t.key]) continue;
+    const opt = document.createElement("option");
+    opt.value = t.key;
+    opt.textContent = `${t.year} ${t.comp}`;
+    selT.appendChild(opt);
+
+    const opt2 = document.createElement("option");
+    opt2.value = t.key;
+    opt2.textContent = `${t.year} ${t.comp}`;
+    synAsOf.appendChild(opt2);
+  }
+  selT.addEventListener("change", ()=>populateMatchSelect(selT.value));
+  populateMatchSelect(selT.value);
+
+  synAsOf.addEventListener("change", ()=>populatePlayerSelects());
+  populatePlayerSelects();
+}
+
+function populateMatchSelect(tkey){
+  const selM = document.getElementById("selMatch");
+  selM.innerHTML = "";
+  const matches = MATCH_INDEX[tkey] || [];
+  matches.forEach((m, i)=>{
+    const opt = document.createElement("option");
+    const lab = `${m.round || ""} — ${m.winnerTeam} def ${m.loserTeam} (${m.score || ""})`;
+    opt.value = String(i);
+    opt.textContent = lab.length>120 ? lab.slice(0,117)+"…" : lab;
+    selM.appendChild(opt);
+  });
+}
+
+/** -------- Elo engine (JS mirror of calc_rankings.py core) -------- */
+function eloExpected(rA, rB){
+  return 1.0 / (1.0 + Math.pow(10.0, (rB - rA)/400.0));
+}
+function sigmaAfterMatch(params, sigma){
+  return Math.max(params.sigEst, sigma * params.sigAfter);
+}
+function kEff(params, sigma){
+  return params.kBase * (1.0 + sigma / params.kDenom);
+}
+function decayForm(params, st, t_idx){
+  if(st.last_t == null){ st.last_t = t_idx; return; }
+  const dt = t_idx - st.last_t;
+  if(dt <= 0){ st.last_t = t_idx; return; }
+  const hl = params.formHL;
+  if(hl <= 0){ st.last_t = t_idx; return; }
+  const factor = Math.pow(2.0, -dt / hl);
+  st.form = st.form * factor;
+  st.last_t = t_idx;
+}
+function applyInactivity(params, st, currentYear){
+  if(st.last_year == null){ st.last_year = currentYear; return; }
+  const gap = currentYear - st.last_year;
+  if(gap <= 0){ st.last_year = currentYear; return; }
+  let s = st.sigma;
+  for(let i=0;i<gap;i++) s = Math.min(params.sigMax, s + params.sigInact);
+  st.sigma = s;
+  st.last_year = currentYear;
+}
+function rating(st, params){
+  return st.skill + st.form;
+}
+function applyDelta(params, st, delta){
+  const a = params.skillShare;
+  st.skill += a * delta;
+  st.form  += (1.0 - a) * delta;
+}
+
+// passenger split helper
+function splitShares(params, r1, r2){
+  if(params.passMode === "prop"){
+    const diff = Math.abs(r1 - r2);
+    const scale = Math.min(diff / Math.max(1, params.passDiffScale), 1.0);
+    const bias = params.passMaxBias * scale;
+    // stronger gets more for win, less for loss -> represent as "strongShareWin" and "strongShareLoss"
+    const strongShareWin = 0.5 + bias;
+    const weakShareWin = 0.5 - bias;
+    return { mode:"prop", strongShareWin, weakShareWin };
+  }
+  // fixed legacy: lower-rated winner gets params.passFixedLow, higher gets 1-low
+  const lowWin = params.passFixedLow;
+  const highWin = 1.0 - lowWin;
+  return { mode:"fixed", lowWin, highWin };
+}
+
+function roundWeight(params, roundCode){
+  if(roundCode==="QF") return params.wQF;
+  if(roundCode==="SF") return params.wSF;
+  if(roundCode==="F") return params.wF;
+  return params.wL16;
+}
+
+// retirement coeff mirroring python's simple parse (we'll approximate)
+function retirementCoeff(score){
+  if(!score || !String(score).toLowerCase().includes("ret")) return 1.0;
+  // best effort: parse leading "X-Y" sets
+  const m = String(score).match(/(\d+)\s*[-–]\s*(\d+)/);
+  if(!m) return 0.50;
+  const sw = parseInt(m[1],10), sl = parseInt(m[2],10);
+  const target = 3;
+  if(sw >= target) return 1.0;
+  const progress = Math.max(0, Math.min(1, sw/target));
+  return Math.max(0.25, Math.min(1.0, 0.25 + 0.75*progress));
+}
+
+function computeTournamentParticipants(tinfo){
+  // entrants: anyone in matches + nq list + nqTeams
+  const all = new Set();
+  const nq = new Set();
+  (tinfo.matches || []).forEach(m=>{
+    (m.winners||[]).forEach(p=>all.add(p));
+    (m.losers||[]).forEach(p=>all.add(p));
+  });
+  (tinfo.nq || []).forEach(p=>{ all.add(p); nq.add(p); });
+  (tinfo.nqTeams || []).forEach(team=>{
+    (team.players || []).forEach(p=>{ all.add(p); nq.add(p); });
+  });
+  const main = new Set([...all].filter(p=>!nq.has(p)));
+  return {all, nq, main};
+}
+
+function makeInitialState(params, pkey, year, comp){
+  const [ini, sur] = pkey.split("|");
+  return {
+    skill: 1500.0,
+    form: 0.0,
+    sigma: params.sigNew,
+    last_year: year,
+    last_t: tIndex(year, comp),
+    Initial: ini,
+    Surname: sur
+  };
+}
+
+function getState(players, params, pkey, year, comp){
+  if(!players.has(pkey)) players.set(pkey, makeInitialState(params, pkey, year, comp));
+  const st = players.get(pkey);
+  decayForm(params, st, tIndex(year, comp));
+  applyInactivity(params, st, year);
+  return st;
+}
+
+// Simulate all tournaments for one parameter set, returning state snapshots and match deltas
+function simulate(params){
+  const players = new Map();
+  const tournList = [];
+  for(const [tkey, tinfo] of Object.entries(MATCHES.tournaments || {})){
+    const y = parseInt(tinfo.year,10);
+    const comp = String(tinfo.comp||"");
+    tournList.push({ y, o: (COMP_ORDER[comp] ?? 99), tkey, tinfo });
+  }
+  tournList.sort((a,b)=> (a.y-b.y) || (a.o-b.o) || a.tkey.localeCompare(b.tkey));
+
+  const stateStart = {}; // tkey -> Map snapshot of {pkey: {skill,form,sigma}}
+  const stateEnd = {};
+  const deltas = {}; // tkey -> matchIdx -> breakdown
+
+  for(const item of tournList){
+    const {tkey, tinfo, y} = item;
+    const comp = String(tinfo.comp||"");
+    const tourMult = tournMult(params, comp);
+
+    // ensure all participants have had decay/inactivity applied and capture start state
+    const {all, nq, main} = computeTournamentParticipants(tinfo);
+    for(const p of all){
+      getState(players, params, p, y, comp);
+    }
+    // snapshot start
+    stateStart[tkey] = {};
+    for(const [p, st] of players.entries()){
+      stateStart[tkey][p] = {skill: st.skill, form: st.form, sigma: st.sigma};
+    }
+
+    // Entry bonus: win vs entryOpp
+    for(const p of all){
+      const st = getState(players, params, p, y, comp);
+      const r = rating(st, params);
+      const e = eloExpected(r, params.entryOpp);
+      const sigmaPair = st.sigma; // approximate for pseudo-match
+      const k_pair = kEff(params, sigmaPair) * 1.0 * 1.0 * tourMult;
+      const delta = k_pair * (1.0 - e);
+      applyDelta(params, st, delta);
+      st.sigma = sigmaAfterMatch(params, st.sigma);
+      st.last_year = y;
+    }
+
+    // Qualify bonus: main draw gets win vs avg NQ rating
+    let avgNQ = params.entryOpp;
+    if(params.qualUseAvg){
+      const nqRatings = [];
+      for(const p of nq){
+        const st = getState(players, params, p, y, comp);
+        nqRatings.push(rating(st, params));
+      }
+      if(nqRatings.length) avgNQ = nqRatings.reduce((a,b)=>a+b,0)/nqRatings.length;
+    }
+    for(const p of main){
+      const st = getState(players, params, p, y, comp);
+      const r = rating(st, params);
+      const e = eloExpected(r, avgNQ);
+      const sigmaPair = st.sigma;
+      const k_pair = kEff(params, sigmaPair) * 1.0 * 1.0 * tourMult;
+      const delta = k_pair * (1.0 - e);
+      applyDelta(params, st, delta);
+      st.sigma = sigmaAfterMatch(params, st.sigma);
+      st.last_year = y;
+    }
+
+    // Match updates
+    const matches = tinfo.matches || [];
+    deltas[tkey] = {};
+    matches.forEach((m, idx)=>{
+      const wt = roundWeight(params, m.round || "L16");
+      let coeff = 1.0;
+      const score = m.score || "";
+      const sl = String(score).toLowerCase();
+      if(/\b(w\/o|wo|walkover)\b/.test(sl)) coeff *= 0.25;
+      if(/\bret\b/.test(sl)) coeff *= retirementCoeff(score);
+
+      const winKeys = m.winners || [];
+      const loseKeys = m.losers || [];
+      if(winKeys.length!==2 || loseKeys.length!==2) return;
+
+      const stW = winKeys.map(k=>getState(players, params, k, y, comp));
+      const stL = loseKeys.map(k=>getState(players, params, k, y, comp));
+
+      const rw = rating(stW[0], params) + rating(stW[1], params);
+      const rl = rating(stL[0], params) + rating(stL[1], params);
+      const sigmaPair = (stW[0].sigma + stW[1].sigma + stL[0].sigma + stL[1].sigma)/4.0;
+      const k_pair = kEff(params, sigmaPair) * wt * coeff * tourMult;
+      const e = eloExpected(rw, rl);
+      const pairDelta = k_pair * (1.0 - e);
+
+      // passenger split
+      const rw1 = rating(stW[0], params), rw2 = rating(stW[1], params);
+      const rl1 = rating(stL[0], params), rl2 = rating(stL[1], params);
+      let wShare1=0.5, wShare2=0.5, lShare1=0.5, lShare2=0.5, note="";
+      const psW = splitShares(params, rw1, rw2);
+      if(psW.mode==="prop"){
+        const w1Stronger = rw1>=rw2;
+        const strongWin = psW.strongShareWin, weakWin = psW.weakShareWin;
+        wShare1 = w1Stronger ? strongWin : weakWin;
+        wShare2 = w1Stronger ? weakWin : strongWin;
+        note += `passenger(prop) bias=${(strongWin-0.5).toFixed(2)}; `;
+      }else{
+        // fixed: lower-rated winner gets lowWin
+        const lowIs1 = rw1<=rw2;
+        wShare1 = lowIs1 ? psW.lowWin : psW.highWin;
+        wShare2 = lowIs1 ? psW.highWin : psW.lowWin;
+        note += `passenger(fixed) low=${psW.lowWin.toFixed(2)}; `;
+      }
+      // losers: in prop mode, stronger loses less
+      if(psW.mode==="prop"){
+        const l1Stronger = rl1>=rl2;
+        const strongLoss = 1.0 - psW.strongShareWin; // if stronger gets more in win, they get less in loss
+        const weakLoss = 1.0 - psW.weakShareWin;
+        lShare1 = l1Stronger ? strongLoss : weakLoss;
+        lShare2 = l1Stronger ? weakLoss : strongLoss;
+      }else{
+        // fixed legacy: higher-rated loser loses more (mirrors python)
+        const highIs1 = rl1>=rl2;
+        lShare1 = highIs1 ? psW.lowWin : psW.highWin;
+        lShare2 = highIs1 ? psW.highWin : psW.lowWin;
+      }
+
+      // capture pre ratings
+      const pre = {
+        w1:{r:rw1, skill:stW[0].skill, form:stW[0].form, sigma:stW[0].sigma},
+        w2:{r:rw2, skill:stW[1].skill, form:stW[1].form, sigma:stW[1].sigma},
+        l1:{r:rl1, skill:stL[0].skill, form:stL[0].form, sigma:stL[0].sigma},
+        l2:{r:rl2, skill:stL[1].skill, form:stL[1].form, sigma:stL[1].sigma},
+      };
+
+      // apply deltas
+      applyDelta(params, stW[0], pairDelta * wShare1);
+      applyDelta(params, stW[1], pairDelta * wShare2);
+      applyDelta(params, stL[0], -pairDelta * lShare1);
+      applyDelta(params, stL[1], -pairDelta * lShare2);
+
+      // sigma update
+      [...stW, ...stL].forEach(st=>{
+        st.sigma = sigmaAfterMatch(params, st.sigma);
+        st.last_year = y;
+      });
+
+      // post ratings
+      const post = {
+        w1:{r:rating(stW[0],params), skill:stW[0].skill, form:stW[0].form, sigma:stW[0].sigma},
+        w2:{r:rating(stW[1],params), skill:stW[1].skill, form:stW[1].form, sigma:stW[1].sigma},
+        l1:{r:rating(stL[0],params), skill:stL[0].skill, form:stL[0].form, sigma:stL[0].sigma},
+        l2:{r:rating(stL[1],params), skill:stL[1].skill, form:stL[1].form, sigma:stL[1].sigma},
+      };
+
+      deltas[tkey][idx] = {
+        tkey, idx,
+        comp, year:y, round:m.round||"L16",
+        wt, coeff, tourMult,
+        pairDelta, pWin: e,
+        winKeys, loseKeys,
+        shares:{wShare1,wShare2,lShare1,lShare2},
+        pre, post,
+        note: note.trim()
+      };
+    });
+
+    // snapshot end
+    stateEnd[tkey] = {};
+    for(const [p, st] of players.entries()){
+      stateEnd[tkey][p] = {skill: st.skill, form: st.form, sigma: st.sigma};
+    }
+  }
+
+  return { stateStart, stateEnd, deltas };
+}
+
+/** -------- UI wiring -------- */
+let PARAM_SETS = [];
+let CACHE = new Map(); // setId -> simulation result
+let ACTIVE_MATCH = null; // {kind:'historic'|'synthetic', ...}
+
+function getEditorParams(){
+  const p = {
+    kBase: parseFloat(document.getElementById("p_kBase").value),
+    kKinnaird: parseFloat(document.getElementById("p_kKinnaird").value),
+    skillShare: parseFloat(document.getElementById("p_skillShare").value),
+    formHL: parseFloat(document.getElementById("p_formHL").value),
+    sigNew: parseFloat(document.getElementById("p_sigNew").value),
+    sigEst: parseFloat(document.getElementById("p_sigEst").value),
+    sigMax: parseFloat(document.getElementById("p_sigMax").value),
+    sigInact: parseFloat(document.getElementById("p_sigInact").value),
+    sigAfter: parseFloat(document.getElementById("p_sigAfter").value),
+    kDenom: parseFloat(document.getElementById("p_kDenom").value),
+    entryOpp: parseFloat(document.getElementById("p_entryOpp").value),
+    qualUseAvg: parseInt(document.getElementById("p_qualUseAvg").value,10),
+    wL16: parseFloat(document.getElementById("p_wL16").value),
+    wQF: parseFloat(document.getElementById("p_wQF").value),
+    wSF: parseFloat(document.getElementById("p_wSF").value),
+    wF: parseFloat(document.getElementById("p_wF").value),
+    passMode: document.getElementById("p_passMode").value,
+    passFixedLow: parseFloat(document.getElementById("p_passFixedLow").value),
+    passMaxBias: parseFloat(document.getElementById("p_passMaxBias").value),
+    passDiffScale: parseFloat(document.getElementById("p_passDiffScale").value)
+  };
+  return p;
+}
+function setEditorFromParams(p){
+  document.getElementById("p_kBase").value = p.kBase;
+  document.getElementById("p_kKinnaird").value = p.kKinnaird;
+  document.getElementById("p_skillShare").value = p.skillShare;
+  document.getElementById("p_formHL").value = p.formHL;
+  document.getElementById("p_sigNew").value = p.sigNew;
+  document.getElementById("p_sigEst").value = p.sigEst;
+  document.getElementById("p_sigMax").value = p.sigMax;
+  document.getElementById("p_sigInact").value = p.sigInact;
+  document.getElementById("p_sigAfter").value = p.sigAfter;
+  document.getElementById("p_kDenom").value = p.kDenom;
+  document.getElementById("p_entryOpp").value = p.entryOpp;
+  document.getElementById("p_qualUseAvg").value = String(p.qualUseAvg ?? 1);
+  document.getElementById("p_wL16").value = p.wL16;
+  document.getElementById("p_wQF").value = p.wQF;
+  document.getElementById("p_wSF").value = p.wSF;
+  document.getElementById("p_wF").value = p.wF;
+  document.getElementById("p_passMode").value = p.passMode || "fixed";
+  document.getElementById("p_passFixedLow").value = p.passFixedLow;
+  document.getElementById("p_passMaxBias").value = p.passMaxBias;
+  document.getElementById("p_passDiffScale").value = p.passDiffScale;
+}
+
+function renderSetList(){
+  const el = document.getElementById("setList");
+  el.innerHTML = "";
+  if(!PARAM_SETS.length){
+    el.innerHTML = '<div class="muted" style="margin-top:8px;">No saved sets yet. Save “Default (site)” to start.</div>';
+    return;
+  }
+  for(const s of PARAM_SETS){
+    const div = document.createElement("div");
+    div.className = "setpill";
+    div.innerHTML = `<div><strong>${escapeHtml(s.name)}</strong><div class="muted small">K=${s.params.kBase}, K(K)=${s.params.kKinnaird}, α=${s.params.skillShare}, HL=${s.params.formHL}</div></div>`;
+    const right = document.createElement("div");
+    right.className="row";
+    const btnUse = document.createElement("button");
+    btnUse.textContent = "Load";
+    btnUse.title = "Load into editor";
+    btnUse.onclick = ()=>{ setEditorFromParams(s.params); document.getElementById("setName").value = s.name; };
+    const btnDel = document.createElement("button");
+    btnDel.textContent = "Delete";
+    btnDel.className="danger";
+    btnDel.onclick = ()=>{
+      PARAM_SETS = PARAM_SETS.filter(x=>x.id!==s.id);
+      saveSets(PARAM_SETS);
+      CACHE.delete(s.id);
+      renderSetList();
+      renderOutput();
+    };
+    right.appendChild(btnUse);
+    right.appendChild(btnDel);
+    div.appendChild(right);
+    el.appendChild(div);
+  }
+}
+
+function ensureDefaultSet(){
+  if(PARAM_SETS.length) return;
+  const d = {id: uid(), name: DEFAULTS.name, params: {...DEFAULTS}};
+  PARAM_SETS.push(d);
+  saveSets(PARAM_SETS);
+}
+
+function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+function populatePlayerSelects(){
+  // Use a broad list of players from matches data (union across tournaments)
+  const players = new Set();
+  for(const tinfo of Object.values(MATCHES.tournaments || {})){
+    const {all} = computeTournamentParticipants(tinfo);
+    for(const p of all) players.add(p);
+  }
+  const list = [...players].sort();
+  const selects = ["synW1","synW2","synL1","synL2"].map(id=>document.getElementById(id));
+  for(const sel of selects){
+    sel.innerHTML = "";
+    for(const p of list){
+      const opt = document.createElement("option");
+      opt.value = p;
+      opt.textContent = p.replace("|",".");
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function historicSelection(){
+  const tkey = document.getElementById("selTourn").value;
+  const midx = parseInt(document.getElementById("selMatch").value,10);
+  const m = (MATCH_INDEX[tkey] || [])[midx];
+  if(!m) return null;
+  return { kind:"historic", tkey, midx, match:m };
+}
+
+function syntheticSelection(){
+  const tkey = document.getElementById("synAsOf").value;
+  const state = document.getElementById("synState").value; // start|end
+  const winKeys = [document.getElementById("synW1").value, document.getElementById("synW2").value];
+  const loseKeys = [document.getElementById("synL1").value, document.getElementById("synL2").value];
+  const round = document.getElementById("synRound").value;
+  const flags = document.getElementById("synFlags").value;
+  return { kind:"synthetic", tkey, state, winKeys, loseKeys, round, flags };
+}
+
+function computeSyntheticDelta(sim, params, syn){
+  // Take player states at chosen tournament state, then compute delta for one match without mutating sim.
+  const tinfo = MATCHES.tournaments[syn.tkey];
+  if(!tinfo) return null;
+  const year = parseInt(tinfo.year,10);
+  const comp = String(tinfo.comp||"");
+  const tourMult = tournMult(params, comp);
+  const snap = (syn.state==="end" ? sim.stateEnd[syn.tkey] : sim.stateStart[syn.tkey]) || {};
+  function stFrom(pkey){
+    const s = snap[pkey] || {skill:1500, form:0, sigma: params.sigNew};
+    return { skill:s.skill, form:s.form, sigma:s.sigma };
+  }
+  const stW = syn.winKeys.map(stFrom);
+  const stL = syn.loseKeys.map(stFrom);
+  const rw = (stW[0].skill+stW[0].form) + (stW[1].skill+stW[1].form);
+  const rl = (stL[0].skill+stL[0].form) + (stL[1].skill+stL[1].form);
+  const sigmaPair = (stW[0].sigma + stW[1].sigma + stL[0].sigma + stL[1].sigma)/4.0;
+  const wt = roundWeight(params, syn.round);
+  let coeff = 1.0;
+  if(syn.flags==="wo") coeff *= 0.25;
+  if(syn.flags==="ret") coeff *= retirementCoeff("2-1 ret");
+  const k_pair = kEff(params, sigmaPair) * wt * coeff * tourMult;
+  const e = eloExpected(rw, rl);
+  const pairDelta = k_pair * (1.0 - e);
+
+  // passenger shares
+  const rw1 = stW[0].skill+stW[0].form, rw2 = stW[1].skill+stW[1].form;
+  const rl1 = stL[0].skill+stL[0].form, rl2 = stL[1].skill+stL[1].form;
+  const ps = splitShares(params, rw1, rw2);
+  let wShare1=0.5,wShare2=0.5,lShare1=0.5,lShare2=0.5,note="";
+  if(ps.mode==="prop"){
+    const w1Stronger = rw1>=rw2;
+    wShare1 = w1Stronger ? ps.strongShareWin : ps.weakShareWin;
+    wShare2 = w1Stronger ? ps.weakShareWin : ps.strongShareWin;
+    const l1Stronger = rl1>=rl2;
+    const strongLoss = 1.0 - ps.strongShareWin, weakLoss = 1.0 - ps.weakShareWin;
+    lShare1 = l1Stronger ? strongLoss : weakLoss;
+    lShare2 = l1Stronger ? weakLoss : strongLoss;
+    note = `passenger(prop)`;
+  }else{
+    const lowIs1 = rw1<=rw2;
+    wShare1 = lowIs1 ? ps.lowWin : ps.highWin;
+    wShare2 = lowIs1 ? ps.highWin : ps.lowWin;
+    const highIs1 = rl1>=rl2;
+    lShare1 = highIs1 ? ps.lowWin : ps.highWin;
+    lShare2 = highIs1 ? ps.highWin : ps.lowWin;
+    note = `passenger(fixed)`;
+  }
+
+  return {
+    tkey: syn.tkey, idx: -1, year, comp, round: syn.round,
+    wt, coeff, tourMult, pairDelta, pWin: e,
+    winKeys: syn.winKeys, loseKeys: syn.loseKeys,
+    shares:{wShare1,wShare2,lShare1,lShare2},
+    pre:{
+      w1:{r:rw1, skill:stW[0].skill, form:stW[0].form, sigma:stW[0].sigma},
+      w2:{r:rw2, skill:stW[1].skill, form:stW[1].form, sigma:stW[1].sigma},
+      l1:{r:rl1, skill:stL[0].skill, form:stL[0].form, sigma:stL[0].sigma},
+      l2:{r:rl2, skill:stL[1].skill, form:stL[1].form, sigma:stL[1].sigma},
+    },
+    post:null,
+    note
+  };
+}
+
+function renderOutput(){
+  const tbody = document.querySelector("#outTable tbody");
+  tbody.innerHTML = "";
+  if(!ACTIVE_MATCH){
+    document.getElementById("summary").textContent = "Select a match (historic or synthetic) to view deltas.";
+    return;
+  }
+  document.getElementById("summary").innerHTML = `<span class="badge">${ACTIVE_MATCH.kind==="historic" ? "Historic" : "Synthetic"}</span> ${escapeHtml(ACTIVE_MATCH.title)}`;
+
+  for(const set of PARAM_SETS){
+    // simulate (cached)
+    let sim = CACHE.get(set.id);
+    if(!sim || sim._hash !== JSON.stringify(set.params)){
+      sim = simulate(set.params);
+      sim._hash = JSON.stringify(set.params);
+      CACHE.set(set.id, sim);
+    }
+
+    let b = null;
+    if(ACTIVE_MATCH.kind==="historic"){
+      b = (sim.deltas[ACTIVE_MATCH.tkey] || {})[ACTIVE_MATCH.midx] || null;
+    }else{
+      b = computeSyntheticDelta(sim, set.params, ACTIVE_MATCH.syn);
+    }
+    if(!b){
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td><b>${escapeHtml(set.name)}</b></td><td colspan="6" class="muted">No breakdown available (match not found / incomplete teams).</td>`;
+      tbody.appendChild(tr);
+      continue;
+    }
+
+    const w1 = b.winKeys[0], w2=b.winKeys[1], l1=b.loseKeys[0], l2=b.loseKeys[1];
+    const pairDelta = b.pairDelta;
+    const wD1 = pairDelta * b.shares.wShare1;
+    const wD2 = pairDelta * b.shares.wShare2;
+    const lD1 = -pairDelta * b.shares.lShare1;
+    const lD2 = -pairDelta * b.shares.lShare2;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><b>${escapeHtml(set.name)}</b><div class="muted small">${escapeHtml(b.year+" "+b.comp)} · ${escapeHtml(b.round)}</div></td>
+      <td>${(b.pWin*100).toFixed(1)}%</td>
+      <td>${b.pairDelta ? ( (Math.abs(pairDelta) / Math.abs(1.0-b.pWin+1e-9)) ? b.pairDelta.toFixed(2) : b.pairDelta.toFixed(2) ) : b.pairDelta.toFixed(2)}<div class="muted small">K_pair=${( (pairDelta)/(1.0-b.pWin) ).toFixed(2)}</div></td>
+      <td><b>${pairDelta.toFixed(2)}</b><div class="muted small">wt=${b.wt.toFixed(2)}, coeff=${b.coeff.toFixed(2)}, tour=${b.tourMult.toFixed(2)}</div></td>
+      <td>
+        <div><span class="mono">${escapeHtml(w1)}</span> → <b>${wD1.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(w2)}</span> → <b>${wD2.toFixed(2)}</b></div>
+        <div class="muted small">shares ${b.shares.wShare1.toFixed(2)} / ${b.shares.wShare2.toFixed(2)}</div>
+      </td>
+      <td>
+        <div><span class="mono">${escapeHtml(l1)}</span> → <b>${lD1.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(l2)}</span> → <b>${lD2.toFixed(2)}</b></div>
+        <div class="muted small">shares ${b.shares.lShare1.toFixed(2)} / ${b.shares.lShare2.toFixed(2)}</div>
+      </td>
+      <td class="mono small">${escapeHtml(b.note || "")}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function setActiveMatchHistoric(sel){
+  const m = sel.match;
+  const title = `${sel.tkey} ${m.round||""}: ${m.winnerTeam} def ${m.loserTeam} (${m.score||""})`;
+  ACTIVE_MATCH = {kind:"historic", tkey: sel.tkey, midx: sel.midx, title};
+  renderOutput();
+}
+function setActiveMatchSynthetic(syn){
+  const title = `${syn.tkey} ${syn.round}: ${syn.winKeys.map(x=>x.replace("|",".")).join(" & ")} vs ${syn.loseKeys.map(x=>x.replace("|",".")).join(" & ")} (${syn.state})`;
+  ACTIVE_MATCH = {kind:"synthetic", syn, title};
+  renderOutput();
+}
+
+function hookUI(){
+  // init sets
+  PARAM_SETS = loadSets();
+  ensureDefaultSet();
+  saveSets(PARAM_SETS);
+  renderSetList();
+  setEditorFromParams(PARAM_SETS[0].params);
+  document.getElementById("setName").value = PARAM_SETS[0].name;
+
+  document.getElementById("btnSave").addEventListener("click", ()=>{
+    const name = (document.getElementById("setName").value || "").trim() || "Unnamed";
+    const params = getEditorParams();
+    // overwrite if same name exists
+    const existing = PARAM_SETS.find(s=>s.name===name);
+    if(existing){
+      existing.params = params;
+      CACHE.delete(existing.id);
+    }else{
+      PARAM_SETS.push({id: uid(), name, params});
+    }
+    saveSets(PARAM_SETS);
+    renderSetList();
+    renderOutput();
+  });
+
+  document.getElementById("btnReset").addEventListener("click", ()=>{
+    if(!confirm("Clear all saved parameter sets for this session?")) return;
+    PARAM_SETS = [];
+    CACHE.clear();
+    saveSets(PARAM_SETS);
+    ensureDefaultSet();
+    saveSets(PARAM_SETS);
+    renderSetList();
+    renderOutput();
+  });
+
+  document.getElementById("btnUseHistoric").addEventListener("click", ()=>{
+    const sel = historicSelection();
+    if(!sel) return;
+    setActiveMatchHistoric(sel);
+  });
+
+  document.getElementById("btnRunSynthetic").addEventListener("click", ()=>{
+    const syn = syntheticSelection();
+    setActiveMatchSynthetic(syn);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+  hookUI();
+  try{
+    await loadAll();
+    // default active match
+    const sel = historicSelection();
+    if(sel) setActiveMatchHistoric(sel);
+  }catch(e){
+    console.error(e);
+    document.getElementById("dataStatus").textContent = "Load error";
+    document.getElementById("dataStatus").style.background = "#fff0f0";
+  }
+});
+</script>
+</body>
+</html>
