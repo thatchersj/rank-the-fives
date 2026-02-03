@@ -693,6 +693,13 @@ COMP_ORDER = {"Northern": 0, "Kinnaird": 1, "London": 2}
 # Rationale: the Kinnaird is the national championship and should move ratings slightly more.
 ELO_TOURNAMENT_K_MULT = {"Northern": 1.00, "Kinnaird": 1.12, "London": 1.00}
 
+# Passenger-effect split parameters (doubles)
+# We split the team Elo delta between partners based on their current rating gap.
+# When partners are similarly rated, the split is ~50/50.
+# For large gaps, the split approaches (0.5 +/- PASSENGER_MAX_BIAS).
+PASSENGER_MAX_BIAS = 0.20      # max deviation from 50/50 (i.e. up to 70/30)
+PASSENGER_DIFF_SCALE = 200.0   # rating-gap scale at which we reach max bias
+
 ELO_FORM_HALFLIFE_YEARS = 1.5  # Form decays toward 0 with this half-life (years)
 ELO_SKILL_SHARE = 0.15        # Fraction of each Elo update that is permanently added to Skill
 
@@ -871,16 +878,41 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
         e = _elo_expected(r_w, r_l)
         delta = k_pair * (1.0 - e)
 
-        # Passenger counter split using CURRENT total ratings (Skill+Form)
+        # Passenger-effect split using CURRENT total ratings (Skill+Form)
+        # Make the split proportional to the partner rating gap:
+        #  - near-equal partners split ~50/50
+        #  - big gaps approach 70/30 (configurable via PASSENGER_MAX_BIAS)
+        # Direction: stronger partner gains more for wins, and loses less for losses.
+        def _split_shares(r_a: float, r_b: float, stronger_gets_more: bool) -> tuple[float, float]:
+            diff = abs(float(r_a) - float(r_b))
+            scale = min(diff / float(PASSENGER_DIFF_SCALE), 1.0)
+            bias = float(PASSENGER_MAX_BIAS) * scale
+            # stronger share is 0.5 +/- bias
+            strong_share = 0.5 + bias if stronger_gets_more else 0.5 - bias
+            weak_share = 1.0 - strong_share
+            return (strong_share, weak_share)
+
         rw1, rw2 = _rating(st_w[0]), _rating(st_w[1])
-        low_i, high_i = (0, 1) if rw1 <= rw2 else (1, 0)
-        _apply_delta(st_w[low_i],  delta * 0.60)
-        _apply_delta(st_w[high_i], delta * 0.40)
+        # winners: stronger gets more
+        if rw1 >= rw2:
+            s_share, w_share = _split_shares(rw1, rw2, stronger_gets_more=True)
+            _apply_delta(st_w[0], delta * s_share)
+            _apply_delta(st_w[1], delta * w_share)
+        else:
+            s_share, w_share = _split_shares(rw2, rw1, stronger_gets_more=True)
+            _apply_delta(st_w[1], delta * s_share)
+            _apply_delta(st_w[0], delta * w_share)
 
         rl1, rl2 = _rating(st_l[0]), _rating(st_l[1])
-        high_i_l, low_i_l = (0, 1) if rl1 >= rl2 else (1, 0)
-        _apply_delta(st_l[high_i_l], -delta * 0.60)
-        _apply_delta(st_l[low_i_l],  -delta * 0.40)
+        # losers: stronger loses less
+        if rl1 >= rl2:
+            s_share, w_share = _split_shares(rl1, rl2, stronger_gets_more=False)
+            _apply_delta(st_l[0], -delta * s_share)
+            _apply_delta(st_l[1], -delta * w_share)
+        else:
+            s_share, w_share = _split_shares(rl2, rl1, stronger_gets_more=False)
+            _apply_delta(st_l[1], -delta * s_share)
+            _apply_delta(st_l[0], -delta * w_share)
 
         for st in st_w + st_l:
             st["sigma"] = _sigma_after_match(st["sigma"])

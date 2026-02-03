@@ -97,8 +97,6 @@ font-variant-numeric: tabular-nums;
       background: #fff;
 }
 
-/* Colour coding (works on mob
-
     /* Sticky column layering & row striping fixes (mobile / horizontal scroll) */
     #rankings thead th { position: sticky; top: 0; z-index: 20; background: #f5f5f5; }
     #rankings thead th:nth-child(-n+4){ z-index: 30; } /* top-left corner cells above everything */
@@ -107,7 +105,8 @@ font-variant-numeric: tabular-nums;
     /* subtle separation so overlapping is visually clean */
     #rankings th:nth-child(-n+4), #rankings td:nth-child(-n+4){ box-shadow: 2px 0 0 rgba(0,0,0,0.06); }
 
-ile because it's inline classes on TD) */
+
+/* Colour coding (works on mobile because it's inline classes on TD) */
     .res-W{ background:#c6efce !important; color:#006100 !important; }   /* Winner */
     .res-F{ background:#d9e1f2 !important; color:#1f4e79 !important; }   /* Final */
     .res-SF{ background:#fff2cc !important; color:#7f6000 !important; }  /* Semi */
@@ -592,9 +591,7 @@ function looksLikeResultColumn(colName) {
           const r = m.round || "Other";
           (byRound[r] ||= []).push(m);
         }
-
         let body = "";
-          body += eloPanelHtml;
         let first = 1;
 
         const nqTeams = Array.isArray(tourn.nqTeams) ? tourn.nqTeams : [];
@@ -734,9 +731,7 @@ function looksLikeResultColumn(colName) {
 
           const tourn = matchesData?.tournaments?.[colName];
           const tournFull = tourn?.tournament || colName;
-
-          let body = "";
-          body += eloPanelHtml;
+        let body = "";
           if (!tourn) {
             body += `<div class="match">No match detail found for ${escapeHtml(colName)}.</div>`;
             openMatchModal(`${initial}. ${surname}`, `${tournFull} (${result})`, body);
@@ -925,59 +920,58 @@ document.addEventListener('fullscreenchange', () => {
 // ------------------------
 // Help modal (Rank / Elo tabs)
 // ------------------------
-const helpBackdrop = document.getElementById('helpModalBackdrop');
-const helpClose = document.getElementById('helpModalClose');
-const tabRank = document.getElementById('tabRank');
-const tabElo = document.getElementById('tabElo');
-const panelRank = document.getElementById('panelRank');
-const panelElo = document.getElementById('panelElo');
+// Note: the Help modal markup sits after this script tag in the HTML.
+// So we must wire up its elements after the DOM is fully parsed.
+function wireHelpModal(){
+  const helpBackdrop = document.getElementById('helpModalBackdrop');
+  const helpClose = document.getElementById('helpModalClose');
+  const tabRank = document.getElementById('tabRank');
+  const tabElo = document.getElementById('tabElo');
+  const panelRank = document.getElementById('panelRank');
+  const panelElo = document.getElementById('panelElo');
 
-function openHelp(){
-  if(!helpBackdrop) return;
-  helpBackdrop.style.display='flex';
-  helpBackdrop.setAttribute('aria-hidden','false');
-  // default to Rank tab
-  switchHelpTab('rank');
-}
-function closeHelp(){
-  if(!helpBackdrop) return;
-  helpBackdrop.style.display='none';
-  helpBackdrop.setAttribute('aria-hidden','true');
-}
-
-function switchHelpTab(which){
-  const isRank = (which === 'rank');
-  if(tabRank){
-    tabRank.setAttribute('aria-selected', isRank ? 'true' : 'false');
+  function switchHelpTab(which){
+    const isRank = (which === 'rank');
+    if(tabRank) tabRank.setAttribute('aria-selected', isRank ? 'true' : 'false');
+    if(tabElo) tabElo.setAttribute('aria-selected', isRank ? 'false' : 'true');
+    if(panelRank) panelRank.classList.toggle('active', isRank);
+    if(panelElo) panelElo.classList.toggle('active', !isRank);
   }
-  if(tabElo){
-    tabElo.setAttribute('aria-selected', isRank ? 'false' : 'true');
+
+  function openHelp(){
+    if(!helpBackdrop) return;
+    helpBackdrop.style.display='flex';
+    helpBackdrop.setAttribute('aria-hidden','false');
+    switchHelpTab('rank');
   }
-  if(panelRank) panelRank.classList.toggle('active', isRank);
-  if(panelElo) panelElo.classList.toggle('active', !isRank);
-}
+  function closeHelp(){
+    if(!helpBackdrop) return;
+    helpBackdrop.style.display='none';
+    helpBackdrop.setAttribute('aria-hidden','true');
+  }
 
-if(helpBtn){
-  helpBtn.addEventListener('click', openHelp);
-}
-if(helpClose){
-  helpClose.addEventListener('click', closeHelp);
-}
-if(helpBackdrop){
-  helpBackdrop.addEventListener('click', (e)=>{ if(e.target===helpBackdrop) closeHelp(); });
-}
-if(tabRank) tabRank.addEventListener('click', ()=>switchHelpTab('rank'));
-if(tabElo) tabElo.addEventListener('click', ()=>switchHelpTab('elo'));
+  if(helpBtn) helpBtn.addEventListener('click', openHelp);
+  if(helpClose) helpClose.addEventListener('click', closeHelp);
+  if(helpBackdrop) helpBackdrop.addEventListener('click', (e)=>{ if(e.target===helpBackdrop) closeHelp(); });
+  if(tabRank) tabRank.addEventListener('click', ()=>switchHelpTab('rank'));
+  if(tabElo) tabElo.addEventListener('click', ()=>switchHelpTab('elo'));
 
-// ESC closes help (and exits fullscreen CSS mode if open)
-document.addEventListener('keydown', (e)=>{
-  if(e.key==='Escape'){
-    closeHelp();
-    if(!document.fullscreenElement){
-      setFullscreenMode(false);
+  // ESC closes help (and exits fullscreen CSS mode if open)
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape'){
+      closeHelp();
+      if(!document.fullscreenElement){
+        setFullscreenMode(false);
+      }
     }
-  }
-});
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireHelpModal);
+} else {
+  wireHelpModal();
+}
 
 </script>
 
@@ -994,8 +988,6 @@ document.addEventListener('keydown', (e)=>{
     </div>
   </div>
 
-</body>
-</html
   <!-- Help modal -->
   <div class="modal-backdrop" id="helpModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal" id="helpModal">
@@ -1109,12 +1101,13 @@ document.addEventListener('keydown', (e)=>{
   </ul>
 
   <h3>Passenger effect split (doubles)</h3>
-  <p>The team Elo delta is split unevenly to reduce “passenger” inflation:</p>
+  <p>The match produces a <b>team</b> Elo delta, then we split it between partners based on their current rating gap:</p>
   <ul>
-    <li>Winners: weaker partner gets <b>60%</b>, stronger gets <b>40%</b></li>
-    <li>Losers: stronger partner loses <b>60%</b>, weaker loses <b>40%</b></li>
+    <li><b>Near-equal partners</b>: split is ~<b>50/50</b>.</li>
+    <li><b>Big gaps</b>: split smoothly approaches up to <b>70/30</b> (configurable).</li>
+    <li><b>Direction</b>: the <b>stronger partner gains more</b> for wins and <b>loses less</b> for losses.</li>
   </ul>
-  <p class="muted">Rationale: winning with a much stronger partner should not over-credit the weaker player, and losing as the stronger partner should cost more.</p>
+  <p class="muted">Parameters: max bias = <code>PASSENGER_MAX_BIAS=0.20</code> (so 50/50 → 70/30), reaching max bias at a rating gap of <code>PASSENGER_DIFF_SCALE=200</code>. Rationale: we don’t want good players penalised for partnering weaker players, but we still want to avoid over-crediting a weak “passenger” when the gap is large.</p>
 
   <h3>Tournament bonuses (applied before matches)</h3>
   <ul>
@@ -1133,4 +1126,5 @@ document.addEventListener('keydown', (e)=>{
     </div>
   </div>
 
->
+</body>
+</html>
