@@ -11,11 +11,11 @@
     h1 { margin:0; font-size: 24px; }
     .meta { color:#555; font-size: 14px; min-height: 20px; }
     .actions { display:flex; gap:12px; flex-wrap:wrap; }
-    .actions a {
+    .actions a, .actions button {
       appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
       background:white; cursor:pointer; text-decoration:none; color:#111; font-size:14px;
     }
-    .actions a:hover { background:#f6f6f6; }
+    .actions a:hover, .actions button:hover { background:#f6f6f6; }
     .note { margin: 12px 0 14px; color:#666; font-size: 14px; line-height:1.4; }
     .small { font-size: 12px; color:#666; margin-top:6px; }
     .controls { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 0 0 12px; }
@@ -158,6 +158,20 @@ ile because it's inline classes on TD) */
     .eloRow{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
     .muted{ color:#666; font-size:12px; }
     .peakBtn{ appearance:none; border:1px solid #ccc; background:#fff; border-radius:999px; padding:6px 10px; font-size:12px; cursor:pointer; }
+
+    /* Help modal tabs */
+    .tabs{ display:flex; gap:8px; padding: 0 16px 12px; border-bottom: 1px solid #eee; }
+    .tabbtn{
+      appearance:none; border:1px solid #ccc; background:#fff;
+      border-radius: 999px; padding: 8px 12px; font-size: 13px; cursor:pointer;
+    }
+    .tabbtn[aria-selected="true"]{ border-color:#111; }
+    .tabpanel{ display:none; padding: 12px 16px 16px; }
+    .tabpanel.active{ display:block; }
+    .tabpanel h3{ margin: 10px 0 6px; font-size: 15px; }
+    .tabpanel ul{ margin: 6px 0 10px 18px; }
+    .tabpanel code{ background:#f2f2f2; padding:2px 6px; border-radius:6px; }
+
     .peakBtn:hover{ background:#f6f6f6; }
     .sparkWrap{ margin-top:8px; }
     .sparkSvg{ width: 200px; height: 44px; display:block; }
@@ -178,7 +192,10 @@ ile because it's inline classes on TD) */
         href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
         target="_blank" rel="noopener"
       >Submit new results</a>
-    </div>
+    
+      <button id="fsBtn" type="button" title="Full screen" aria-label="Toggle full screen">⛶</button>
+      <button id="helpBtn" type="button" title="Help" aria-label="Help">?</button>
+</div>
   </header>
 
   <div class="note">
@@ -192,7 +209,7 @@ ile because it's inline classes on TD) */
     <span class="small" id="count"></span>
   </div>
 
-  <div class="table-wrap">
+  <div class="table-wrap" id="tableWrap">
     <table id="rankings">
       <thead><tr id="theadRow"></tr></thead>
       <tbody></tbody>
@@ -842,7 +859,111 @@ function looksLikeResultColumn(colName) {
         }
       })();
     })();
-  </script>
+  
+
+// ------------------------
+// Full screen toggle (mobile landscape helper)
+// ------------------------
+const fsBtn = document.getElementById('fsBtn');
+const helpBtn = document.getElementById('helpBtn');
+const tableWrap = document.getElementById('tableWrap');
+
+function setFullscreenMode(on){
+  document.body.classList.toggle('fullscreen-mode', !!on);
+  fsBtn.textContent = on ? '×' : '⛶';
+  fsBtn.title = on ? 'Exit full screen' : 'Full screen';
+  fsBtn.setAttribute('aria-label', fsBtn.title);
+}
+
+async function toggleFullscreen(){
+  const isFs = !!document.fullscreenElement;
+  if (!isFs) {
+    // Prefer the Fullscreen API when available, but also apply CSS fallback.
+    setFullscreenMode(true);
+    try{
+      if (tableWrap && tableWrap.requestFullscreen) await tableWrap.requestFullscreen();
+      else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+    }catch(e){
+      // Ignore; CSS fullscreen-mode still helps on mobile.
+    }
+  } else {
+    try{
+      await document.exitFullscreen();
+    }catch(e){
+      // ignore
+    }
+    setFullscreenMode(false);
+  }
+}
+
+if (fsBtn){
+  fsBtn.addEventListener('click', toggleFullscreen);
+}
+
+// Keep CSS state in sync if user exits fullscreen via OS gesture.
+document.addEventListener('fullscreenchange', () => {
+  const on = !!document.fullscreenElement;
+  setFullscreenMode(on);
+});
+
+// ------------------------
+// Help modal (Rank / Elo tabs)
+// ------------------------
+const helpBackdrop = document.getElementById('helpModalBackdrop');
+const helpClose = document.getElementById('helpModalClose');
+const tabRank = document.getElementById('tabRank');
+const tabElo = document.getElementById('tabElo');
+const panelRank = document.getElementById('panelRank');
+const panelElo = document.getElementById('panelElo');
+
+function openHelp(){
+  if(!helpBackdrop) return;
+  helpBackdrop.style.display='flex';
+  helpBackdrop.setAttribute('aria-hidden','false');
+  // default to Rank tab
+  switchHelpTab('rank');
+}
+function closeHelp(){
+  if(!helpBackdrop) return;
+  helpBackdrop.style.display='none';
+  helpBackdrop.setAttribute('aria-hidden','true');
+}
+
+function switchHelpTab(which){
+  const isRank = (which === 'rank');
+  if(tabRank){
+    tabRank.setAttribute('aria-selected', isRank ? 'true' : 'false');
+  }
+  if(tabElo){
+    tabElo.setAttribute('aria-selected', isRank ? 'false' : 'true');
+  }
+  if(panelRank) panelRank.classList.toggle('active', isRank);
+  if(panelElo) panelElo.classList.toggle('active', !isRank);
+}
+
+if(helpBtn){
+  helpBtn.addEventListener('click', openHelp);
+}
+if(helpClose){
+  helpClose.addEventListener('click', closeHelp);
+}
+if(helpBackdrop){
+  helpBackdrop.addEventListener('click', (e)=>{ if(e.target===helpBackdrop) closeHelp(); });
+}
+if(tabRank) tabRank.addEventListener('click', ()=>switchHelpTab('rank'));
+if(tabElo) tabElo.addEventListener('click', ()=>switchHelpTab('elo'));
+
+// ESC closes help (and exits fullscreen CSS mode if open)
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape'){
+    closeHelp();
+    if(!document.fullscreenElement){
+      setFullscreenMode(false);
+    }
+  }
+});
+
+</script>
 
   <div class="modal-backdrop" id="matchModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal" id="matchModal">
@@ -858,4 +979,141 @@ function looksLikeResultColumn(colName) {
   </div>
 
 </body>
-</html>
+</html
+  <!-- Help modal -->
+  <div class="modal-backdrop" id="helpModalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" id="helpModal">
+      <header>
+        <div>
+          <h2 id="helpModalTitle">Help</h2>
+          <div class="small" id="helpModalSub">How rankings and Elo are calculated</div>
+        </div>
+        <button class="close" id="helpModalClose" type="button">Close</button>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Help tabs">
+        <button class="tabbtn" id="tabRank" role="tab" aria-selected="true" aria-controls="panelRank" type="button">Rank</button>
+        <button class="tabbtn" id="tabElo" role="tab" aria-selected="false" aria-controls="panelElo" type="button">Elo</button>
+      </div>
+
+      <div class="tabpanel active" id="panelRank" role="tabpanel" aria-labelledby="tabRank">
+  <h3>Overview</h3>
+  <p>The official ranking is computed over a rolling <b>7-year window</b>. Each tournament result is first mapped to two point values:</p>
+  <ul>
+    <li><b>RPA points</b> (reward for progress)</li>
+    <li><b>POSS points</b> (possible / participation weighting)</li>
+  </ul>
+  <p>These are then time-decayed, totalled, and ratioed to form the percentage score:
+    <b>PC = 100 × RPA / POSS</b>.</p>
+
+  <h3>Step 1 — Map each finish to points (tournament-specific)</h3>
+  <p>Finish codes are: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b> (where applicable), <b>NQ</b>, <b>DNS</b>, <b>NA</b>.</p>
+  <ul>
+    <li><b>Kinnaird</b><br/>
+      RPA: W 15, F 13.5, SF 9.6, QF 5.6, L16 2, (NQ/DNS/NA → 0)<br/>
+      POSS: W 15, F 15, SF 12, QF 8, L16 4, NQ 2, DNS 1, NA 0
+    </li>
+    <li><b>Northern</b> and <b>London</b><br/>
+      RPA: W 10, F 8, SF 5.2, QF 3, (NQ/DNS/NA → 0)<br/>
+      POSS: W 10, F 10, SF 8, QF 6, NQ 2, DNS 1, NA 0
+    </li>
+  </ul>
+  <p class="muted">These tables compensate for competition structure (e.g. Kinnaird has an L16 stage in the model). There is no additional “prestige multiplier” by tournament name.</p>
+
+  <h3>Step 2 — Apply time decay (7-year window)</h3>
+  <p>Each tournament result is aged as <code>age = LastHeldYear − ResultYear</code> and given a decay weight:</p>
+  <p><code>[1.00, 0.85, 0.70, 0.55, 0.40, 0.25, 0.10]</code> for ages 0–6; ages ≥7 get weight 0.</p>
+
+  <h3>Step 3 — Total and ratio</h3>
+  <ul>
+    <li><code>RPA = Σ(decay × rpa_points)</code></li>
+    <li><code>POSS = Σ(decay × poss_points)</code></li>
+    <li><code>PC = 100 × RPA / POSS</code></li>
+  </ul>
+
+  <h3>Step 4 — Participation / inactivity penalty (PC2)</h3>
+  <p>A large penalty is applied if either:</p>
+  <ul>
+    <li>the player has played <b>&lt; 3 tournaments</b> in-window (excluding DNS/NA), or</li>
+    <li>the player has missed <b>3+ consecutive tournaments</b> since first appearing (DNS streak)</li>
+  </ul>
+  <p>In those cases: <code>PC2 = PC / 1000</code>. Otherwise: <code>PC2 = PC</code>.</p>
+
+  <h3>Sorting / tie-breaks</h3>
+  <p>Final ordering is by <b>PC2</b> (desc), then <b>POSS</b> (desc), with stable tie-breaking for a deterministic list.</p>
+</div>
+
+<div class="tabpanel" id="panelElo" role="tabpanel" aria-labelledby="tabElo">
+  <h3>Overview</h3>
+  <p>Elo is an experimental rating designed to reflect <b>quality of opposition</b> and <b>recent form</b>, while staying stable with low tournament volume.</p>
+  <p>Each player has two components:</p>
+  <ul>
+    <li><b>EloSkill</b> — long-run ability (moves slowly)</li>
+    <li><b>EloForm</b> — current momentum (moves quickly and decays toward 0)</li>
+  </ul>
+  <p><b>Elo = EloSkill + EloForm</b>.</p>
+
+  <h3>Core parameters</h3>
+  <ul>
+    <li>Baseline (μ): <code>1500</code></li>
+    <li>Base K: <code>12</code></li>
+    <li>Uncertainty (σ): new <code>350</code>, floor <code>120</code>, cap <code>400</code></li>
+    <li>Skill/Form split: <code>ELO_SKILL_SHARE = 0.15</code> (15% of each update to Skill; 85% to Form)</li>
+    <li>Form half-life: <code>1.5 years</code> (decays between tournaments)</li>
+  </ul>
+
+  <h3>Form decay (recency without mean reversion)</h3>
+  <p>Between tournaments, only Form decays:</p>
+  <p><code>Form ← Form × 2^(−Δt / 1.5)</code>, where Δt is measured in “tournament-time”
+     (Northern / Kinnaird / London are treated as ~⅓-year steps).</p>
+  <p class="muted">Skill does not mean-revert; older dominance persists via Skill. What fades is the extra “edge” in Form unless reinforced.</p>
+
+  <h3>Uncertainty and effective K</h3>
+  <ul>
+    <li>Inactivity: σ increases by <code>+50</code> per inactive year (up to 400).</li>
+    <li>After each match/bonus update: <code>σ ← max(120, 0.85 × σ)</code>.</li>
+    <li>Effective K: <code>K_eff = 12 × (1 + σ/300)</code>.</li>
+  </ul>
+  <p class="muted">Rationale: long-absent players are treated as more uncertain, so results move them more, but σ quickly tightens again as they play.</p>
+
+  <h3>Round weighting</h3>
+  <p>Match updates are weighted by round:</p>
+  <ul>
+    <li>L16: 1.00</li>
+    <li>QF: 1.06</li>
+    <li>SF: 1.12</li>
+    <li>F: 1.18</li>
+  </ul>
+
+  <h3>Walkovers / retirements</h3>
+  <ul>
+    <li>Walkover (<code>w/o</code>, <code>wo</code>, “walkover”): coefficient <code>0.25</code></li>
+    <li>Retirements (<code>ret</code>): coefficient scales from ~<code>0.25</code> (early) up to <code>1.0</code> (near-win), based on the scoreline; defaults to 0.50 if unclear.</li>
+  </ul>
+
+  <h3>Passenger effect split (doubles)</h3>
+  <p>The team Elo delta is split unevenly to reduce “passenger” inflation:</p>
+  <ul>
+    <li>Winners: weaker partner gets <b>60%</b>, stronger gets <b>40%</b></li>
+    <li>Losers: stronger partner loses <b>60%</b>, weaker loses <b>40%</b></li>
+  </ul>
+  <p class="muted">Rationale: winning with a much stronger partner should not over-credit the weaker player, and losing as the stronger partner should cost more.</p>
+
+  <h3>Tournament bonuses (applied before matches)</h3>
+  <ul>
+    <li><b>Entry bonus</b>: every entrant gets a pseudo-win vs a <code>1400</code>-rated opponent (using K_eff).</li>
+    <li><b>Qualification bonus</b>: players who reach the main draw (non-NQ) get a pseudo-win vs the <b>average Elo of that tournament’s non-qualifiers</b>.</li>
+  </ul>
+  <p class="muted">Rationale: entering majors is informative; qualifying should matter, and the bonus scales with how strong the NQ pool is.</p>
+
+  <h3>What Elo is optimising for</h3>
+  <ul>
+    <li>Strong recent wins (especially late rounds) can move a player quickly via Form.</li>
+    <li>Repeated historical dominance accumulates in Skill.</li>
+    <li>Ratings reflect opposition quality, not just finishing position.</li>
+  </ul>
+</div>
+    </div>
+  </div>
+
+>
