@@ -689,6 +689,10 @@ ELO_SIGMA_MAX = 400.0
 ROUND_WT = {"L16": 1.00, "QF": 1.06, "SF": 1.12, "F": 1.18}
 COMP_ORDER = {"Northern": 0, "Kinnaird": 1, "London": 2}
 
+# Tournament importance multipliers (applied to Elo K for both bonuses + matches)
+# Rationale: the Kinnaird is the national championship and should move ratings slightly more.
+ELO_TOURNAMENT_K_MULT = {"Northern": 1.00, "Kinnaird": 1.12, "London": 1.00}
+
 ELO_FORM_HALFLIFE_YEARS = 1.5  # Form decays toward 0 with this half-life (years)
 ELO_SKILL_SHARE = 0.15        # Fraction of each Elo update that is permanently added to Skill
 
@@ -852,6 +856,7 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
             coeff = _retirement_coeff(score)
 
         wt = ROUND_WT.get(round_code, 1.0)
+        tour_mult = float(ELO_TOURNAMENT_K_MULT.get(comp, 1.0))
 
         st_w = [get_state(k, year, comp) for k in win_keys]
         st_l = [get_state(k, year, comp) for k in lose_keys]
@@ -861,7 +866,7 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
         r_l = _rating(st_l[0]) + _rating(st_l[1])
 
         sigma_pair = (float(st_w[0]["sigma"]) + float(st_w[1]["sigma"]) + float(st_l[0]["sigma"]) + float(st_l[1]["sigma"])) / 4.0
-        k_pair = _k_eff(sigma_pair) * wt * coeff
+        k_pair = _k_eff(sigma_pair) * wt * coeff * tour_mult
 
         e = _elo_expected(r_w, r_l)
         delta = k_pair * (1.0 - e)
@@ -897,6 +902,7 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
 
     for year, _, tkey, tinfo in tourn_list:
         comp = str(tinfo.get("comp", ""))
+        tour_mult = float(ELO_TOURNAMENT_K_MULT.get(comp, 1.0))
 
         # --- Tournament participation bonuses (applied before match updates) ---
         all_players: set[str] = set()
@@ -934,7 +940,7 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
             st = get_state(pk, year, comp)
             r = _rating(st)
             e = _elo_expected(r, 1400.0)
-            k_eff = _k_eff(float(st["sigma"]))
+            k_eff = _k_eff(float(st["sigma"])) * tour_mult
             d = k_eff * (1.0 - e)
             _apply_delta(st, d)
             st["sigma"] = _sigma_after_match(st["sigma"])
@@ -952,7 +958,7 @@ def compute_elo_v2(matches: dict) -> tuple[pd.DataFrame, dict]:
             st = get_state(pk, year, comp)
             r = _rating(st)
             e = _elo_expected(r, avg_nq)
-            k_eff = _k_eff(float(st["sigma"]))
+            k_eff = _k_eff(float(st["sigma"])) * tour_mult
             d = k_eff * (1.0 - e)
             _apply_delta(st, d)
             st["sigma"] = _sigma_after_match(st["sigma"])

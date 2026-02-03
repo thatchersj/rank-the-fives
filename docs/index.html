@@ -31,6 +31,21 @@
       -webkit-overflow-scrolling: touch;
     }
 
+    /* Full-screen table mode (mobile landscape helper) */
+    body.fullscreen-mode{ margin:0; }
+    body.fullscreen-mode > header,
+    body.fullscreen-mode > .note,
+    body.fullscreen-mode > .controls{ display:none; }
+    body.fullscreen-mode .table-wrap{
+      position: fixed; inset: 0;
+      max-height: 100vh;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background: white;
+    }
+    body.fullscreen-mode .modal{ max-height: 95vh; }
+
     table { border-collapse: separate; border-spacing: 0; }
     #rankings{ width: max-content; min-width:100%; background:white; }
     #rankings thead th{
@@ -881,8 +896,9 @@ async function toggleFullscreen(){
     // Prefer the Fullscreen API when available, but also apply CSS fallback.
     setFullscreenMode(true);
     try{
-      if (tableWrap && tableWrap.requestFullscreen) await tableWrap.requestFullscreen();
-      else if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
+      // IMPORTANT: request fullscreen on the document element so modal dialogs (which live under <body>)
+      // remain visible and usable in fullscreen mode.
+      if (document.documentElement.requestFullscreen) await document.documentElement.requestFullscreen();
     }catch(e){
       // Ignore; CSS fullscreen-mode still helps on mobile.
     }
@@ -1060,6 +1076,7 @@ document.addEventListener('keydown', (e)=>{
     <li>Uncertainty (σ): new <code>350</code>, floor <code>120</code>, cap <code>400</code></li>
     <li>Skill/Form split: <code>ELO_SKILL_SHARE = 0.15</code> (15% of each update to Skill; 85% to Form)</li>
     <li>Form half-life: <code>1.5 years</code> (decays between tournaments)</li>
+    <li>Tournament K multiplier: <b>Kinnaird</b> uses <code>× 1.12</code> (Northern/London: × 1.00)</li>
   </ul>
 
   <h3>Form decay (recency without mean reversion)</h3>
@@ -1101,8 +1118,8 @@ document.addEventListener('keydown', (e)=>{
 
   <h3>Tournament bonuses (applied before matches)</h3>
   <ul>
-    <li><b>Entry bonus</b>: every entrant gets a pseudo-win vs a <code>1400</code>-rated opponent (using K_eff).</li>
-    <li><b>Qualification bonus</b>: players who reach the main draw (non-NQ) get a pseudo-win vs the <b>average Elo of that tournament’s non-qualifiers</b>.</li>
+	    <li><b>Entry bonus</b>: every entrant gets a pseudo-win vs a <code>1400</code>-rated opponent (using <code>K_eff</code>, with the tournament K multiplier applied).</li>
+	    <li><b>Qualification bonus</b>: players who reach the main draw (non-NQ) get a pseudo-win vs the <b>average Elo of that tournament’s non-qualifiers</b> (also with the tournament K multiplier applied).</li>
   </ul>
   <p class="muted">Rationale: entering majors is informative; qualifying should matter, and the bonus scales with how strong the NQ pool is.</p>
 
