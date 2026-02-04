@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Rank Progression</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 12px; }
+    h1 { margin: 0 0 8px 0; }
+    .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+    .control { font-size: 12px; }
+    select, button { padding: 4px; }
+    canvas { max-height: 70vh; }
+  </style>
+</head>
+<body>
+<h1>Rank Progression</h1>
+<div class="controls">
+<div class="control"><label>Players</label><br/><select id="playerSelect" multiple size="6"></select></div>
+<div class="control"><label>Series</label><br/><select id="seriesSelect" multiple size="6">
+<option value="official">Official (PC2)</option><option value="pc">PC</option>
+<option value="elo">Elo</option><option value="eloskill">EloSkill</option>
+<option value="eloform">EloForm</option></select></div>
+<div class="control"><label>Y axis</label><br/><select id="modeSelect">
+<option value="rank">Rank</option><option value="rating">Rating</option></select></div>
+<div class="control"><label>From</label><br/><select id="fromSelect"></select></div>
+<div class="control"><label>To</label><br/><select id="toSelect"></select></div>
+<div class="control"><br/><button onclick="updateChart()">Update</button></div>
+</div>
+<canvas id="chart"></canvas>
+<script>
+let snapshots=[], chart;
+fetch("./data/rankings_snapshots.json").then(r=>r.json()).then(d=>{snapshots=d.snapshots;init();});
+function init(){
+ const players=new Set(); snapshots.forEach(s=>Object.keys(s.players).forEach(p=>players.add(p)));
+ const ps=document.getElementById("playerSelect");
+ [...players].sort().forEach(p=>{const o=document.createElement("option");o.value=p;o.textContent=p.replace("|",".");ps.appendChild(o);});
+ const f=fromSelect,t=toSelect;
+ snapshots.forEach((s,i)=>{const o=document.createElement("option");o.value=i;o.textContent=s.label;f.appendChild(o);t.appendChild(o.cloneNode(true));});
+ f.value=0; t.value=snapshots.length-1;
+}
+function sel(el){return [...el.selectedOptions].map(o=>o.value);}
+function updateChart(){
+ const players=sel(playerSelect), series=sel(seriesSelect);
+ if(!players.length||!series.length) return;
+ const from=+fromSelect.value,to=+toSelect.value,mode=modeSelect.value;
+ const labels=snapshots.slice(from,to+1).map(s=>s.label), datasets=[];
+ players.forEach(p=>series.forEach(s=>{
+  const data=snapshots.slice(from,to+1).map(sn=>{
+   const r=sn.players[p]; if(!r) return null;
+   if(mode==="rank"){ if(s==="official") return r.rank;
+    const arr=Object.values(sn.players).filter(x=>x[s]).sort((a,b)=>b[s]-a[s]);
+    return arr.findIndex(x=>x===r)+1;}
+   return s==="official"?r.pc2:r[s];
+  });
+  datasets.push({label:p.replace("|",".")+" – "+s,data,borderWidth:2,spanGaps:false});
+ }));
+ if(chart) chart.destroy();
+ chart=new Chart(chartCanvas={getContext:()=>document.getElementById("chart").getContext("2d")},{
+  type:"line", data:{labels,datasets},
+  options:{interaction:{mode:"index",intersect:false},
+   scales:{y:mode==="rank"?{reverse:true}:{}}
+ }});
+}
+</script>
+</body></html>
