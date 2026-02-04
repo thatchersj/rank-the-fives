@@ -624,7 +624,7 @@ function simulate(params){
         const strongWin = psW.strongShareWin, weakWin = psW.weakShareWin;
         wShare1 = w1Stronger ? strongWin : weakWin;
         wShare2 = w1Stronger ? weakWin : strongWin;
-        note += `passenger(prop) bias=${(strongWin-0.5).toFixed(2)}; `;
+        note += `passenger(prop) biasW=${(strongWin-0.5).toFixed(2)}; `;
       }else{
         // fixed: lower-rated winner gets lowWin
         const lowIs1 = rw1<=rw2;
@@ -632,18 +632,21 @@ function simulate(params){
         wShare2 = lowIs1 ? psW.highWin : psW.lowWin;
         note += `passenger(fixed) low=${psW.lowWin.toFixed(2)}; `;
       }
-      // losers: in prop mode, stronger loses less
-      if(psW.mode==="prop"){
+      // losers: in prop mode, stronger loses less (computed per losing pair)
+      const psL = splitShares(params, rl1, rl2);
+      if(psL.mode==="prop"){
         const l1Stronger = rl1>=rl2;
-        const strongLoss = 1.0 - psW.strongShareWin; // if stronger gets more in win, they get less in loss
-        const weakLoss = 1.0 - psW.weakShareWin;
+        const biasL = psL.strongShareWin - 0.5;
+        const strongLoss = 0.5 - biasL;
+        const weakLoss = 0.5 + biasL;
         lShare1 = l1Stronger ? strongLoss : weakLoss;
         lShare2 = l1Stronger ? weakLoss : strongLoss;
+        note += `biasL=${biasL.toFixed(2)}; `;
       }else{
         // fixed legacy: higher-rated loser loses more (mirrors python)
         const highIs1 = rl1>=rl2;
-        lShare1 = highIs1 ? psW.lowWin : psW.highWin;
-        lShare2 = highIs1 ? psW.highWin : psW.lowWin;
+        lShare1 = highIs1 ? psL.lowWin : psL.highWin;
+        lShare2 = highIs1 ? psL.highWin : psL.lowWin;
       }
 
       // capture pre ratings
@@ -858,26 +861,31 @@ function computeSyntheticDelta(sim, params, syn){
   // passenger shares
   const rw1 = stW[0].skill+stW[0].form, rw2 = stW[1].skill+stW[1].form;
   const rl1 = stL[0].skill+stL[0].form, rl2 = stL[1].skill+stL[1].form;
-  const ps = splitShares(params, rw1, rw2);
+  const psW = splitShares(params, rw1, rw2);
+  const psL = splitShares(params, rl1, rl2);
   let wShare1=0.5,wShare2=0.5,lShare1=0.5,lShare2=0.5,note="";
-  if(ps.mode==="prop"){
+  if(psW.mode==="prop"){
     const w1Stronger = rw1>=rw2;
-    wShare1 = w1Stronger ? ps.strongShareWin : ps.weakShareWin;
-    wShare2 = w1Stronger ? ps.weakShareWin : ps.strongShareWin;
+    wShare1 = w1Stronger ? psW.strongShareWin : psW.weakShareWin;
+    wShare2 = w1Stronger ? psW.weakShareWin : psW.strongShareWin;
+    const biasW = psW.strongShareWin - 0.5;
     const l1Stronger = rl1>=rl2;
-    const strongLoss = 1.0 - ps.strongShareWin, weakLoss = 1.0 - ps.weakShareWin;
+    const biasL = psL.strongShareWin - 0.5;
+    const strongLoss = 0.5 - biasL;
+    const weakLoss = 0.5 + biasL;
     lShare1 = l1Stronger ? strongLoss : weakLoss;
     lShare2 = l1Stronger ? weakLoss : strongLoss;
-    note = `passenger(prop)`;
+    note = `passenger(prop) biasW=${biasW.toFixed(2)} biasL=${biasL.toFixed(2)}`;
   }else{
     const lowIs1 = rw1<=rw2;
-    wShare1 = lowIs1 ? ps.lowWin : ps.highWin;
-    wShare2 = lowIs1 ? ps.highWin : ps.lowWin;
+    wShare1 = lowIs1 ? psW.lowWin : psW.highWin;
+    wShare2 = lowIs1 ? psW.highWin : psW.lowWin;
     const highIs1 = rl1>=rl2;
-    lShare1 = highIs1 ? ps.lowWin : ps.highWin;
-    lShare2 = highIs1 ? ps.highWin : ps.lowWin;
+    lShare1 = highIs1 ? psL.lowWin : psL.highWin;
+    lShare2 = highIs1 ? psL.highWin : psL.lowWin;
     note = `passenger(fixed)`;
   }
+
 
   return {
     tkey: syn.tkey, idx: -1, year, comp, round: syn.round,
@@ -940,13 +948,13 @@ function renderOutput(){
       <td>${b.pairDelta ? ( (Math.abs(pairDelta) / Math.abs(1.0-b.pWin+1e-9)) ? b.pairDelta.toFixed(2) : b.pairDelta.toFixed(2) ) : b.pairDelta.toFixed(2)}<div class="muted small">K_pair=${( (pairDelta)/(1.0-b.pWin) ).toFixed(2)}</div></td>
       <td><b>${pairDelta.toFixed(2)}</b><div class="muted small">wt=${b.wt.toFixed(2)}, coeff=${b.coeff.toFixed(2)}, tour=${b.tourMult.toFixed(2)}</div></td>
       <td>
-        <div><span class="mono">${escapeHtml(w1)}</span> → <b>${wD1.toFixed(2)}</b></div>
-        <div><span class="mono">${escapeHtml(w2)}</span> → <b>${wD2.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(w1)}</span> <span class="muted small">(Elo ${b.pre.w1.r.toFixed(0)})</span> → <b>${wD1.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(w2)}</span> <span class="muted small">(Elo ${b.pre.w2.r.toFixed(0)})</span> → <b>${wD2.toFixed(2)}</b></div>
         <div class="muted small">shares ${b.shares.wShare1.toFixed(2)} / ${b.shares.wShare2.toFixed(2)}</div>
       </td>
       <td>
-        <div><span class="mono">${escapeHtml(l1)}</span> → <b>${lD1.toFixed(2)}</b></div>
-        <div><span class="mono">${escapeHtml(l2)}</span> → <b>${lD2.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(l1)}</span> <span class="muted small">(Elo ${b.pre.l1.r.toFixed(0)})</span> → <b>${lD1.toFixed(2)}</b></div>
+        <div><span class="mono">${escapeHtml(l2)}</span> <span class="muted small">(Elo ${b.pre.l2.r.toFixed(0)})</span> → <b>${lD2.toFixed(2)}</b></div>
         <div class="muted small">shares ${b.shares.lShare1.toFixed(2)} / ${b.shares.lShare2.toFixed(2)}</div>
       </td>
       <td class="mono small">${escapeHtml(b.note || "")}</td>
