@@ -1,0 +1,113 @@
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #dbe2ea;
+  --border-strong: #c7d2df;
+  --accent: #2563eb;
+  --accent-strong: #1d4ed8;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+}
+
+* { box-sizing: border-box; }
+
+body.app-shell {
+  background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+  color: var(--text);
+  margin: 0;
+  padding: 24px;
+}
+
+body.app-shell > :not(.modal-backdrop):not(.drawer-backdrop):not(.player-drawer):not(script) {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1, h2, h3 { letter-spacing: -0.02em; color: var(--text); }
+
+.meta, .muted, .small { color: var(--muted) !important; }
+
+.table-wrap,
+.card,
+.legendBox,
+.advanced,
+.modal,
+.player-drawer,
+.note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+button,
+.actions a,
+.actions button,
+.tabbtn,
+.peakBtn,
+.drawer-actions button,
+.close,
+.badge,
+.chip {
+  border-color: var(--border-strong) !important;
+  background: var(--surface);
+}
+
+button:hover,
+.actions a:hover,
+.actions button:hover,
+.tabbtn:hover,
+.peakBtn:hover,
+.drawer-actions button:hover,
+.close:hover {
+  background: var(--surface-2) !important;
+}
+
+button.primary,
+.segmented button[aria-pressed="true"] {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-color: var(--accent) !important;
+}
+
+button.primary:hover,
+.segmented button[aria-pressed="true"]:hover {
+  background: var(--accent-strong) !important;
+  border-color: var(--accent-strong) !important;
+}
+
+input,
+select,
+textarea {
+  border-color: var(--border-strong) !important;
+  background: #fff;
+}
+
+input:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.25);
+  outline-offset: 1px;
+}
+
+#rankings thead th,
+table thead th {
+  background: #f8fafc !important;
+}
+
+#rankings tbody tr:hover td {
+  background: #f8fbff !important;
+}
+
+.actions { gap: 8px !important; }
+
+@media (max-width: 900px) {
+  body.app-shell { padding: 14px; }
+}

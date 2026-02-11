@@ -4,12 +4,14 @@
   <meta charset="utf-8"/>
   <title>Rank Progression</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="./styles.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 12px; }
     h1 { margin: 0 0 10px 0; font-size: 34px; letter-spacing: -0.5px; }
 
     .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom: 12px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
     .control { font-size: 12px; }
     label { display:block; margin-bottom:6px; color:#333; }
     select, button, input { font: inherit; }
@@ -18,6 +20,8 @@
 
     .multi { width: min(520px, 92vw); height: 170px; }
     .row2 { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
+    .advanced { border:1px solid #eee; border-radius: 14px; padding: 8px 10px; margin: 8px 0 10px; }
+    .advGrid { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
 
     .legendRow { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; margin: 8px 0 6px 0; }
     .legendBox { border:1px solid #eee; border-radius: 14px; padding: 10px 12px; background:#fff; }
@@ -46,8 +50,12 @@
     }
   </style>
 </head>
-<body>
+<body class="app-shell">
   <h1>Rank Progression</h1>
+
+  <div class="topbar" style="margin-bottom:8px;">
+    <a href="./index.html" style="font-size:13px; text-decoration:none; border:1px solid #ddd; border-radius:999px; padding:4px 10px;">← Back to table</a>
+  </div>
 
   <div class="controls">
     <div class="control">
@@ -130,6 +138,14 @@ let charts = [];
 let CURRENT_SLICE = [];
 let CURRENT_MAPS = [];
 
+function getQ(name){ return new URL(window.location.href).searchParams.get(name); }
+function setQ(name, value){
+  const u = new URL(window.location.href);
+  if (value === null || value === undefined || value === "") u.searchParams.delete(name);
+  else u.searchParams.set(name, String(value));
+  history.replaceState(null, "", u.toString());
+}
+
 // Map displayed name ("R.Houlden") -> internal key ("R|Houlden")
 const LABEL_TO_KEY = new Map();
 
@@ -189,6 +205,7 @@ fetch("./data/rankings_snapshots.json")
 
 function initControls(){
   const ps = document.getElementById("playerSelect");
+  const seriesSel = document.getElementById("seriesSelect");
   ps.innerHTML = "";
 
   LABEL_TO_KEY.clear();
@@ -217,6 +234,35 @@ function initControls(){
   from.value = 0;
   to.value = Math.max(0, META.length - 1);
 
+  const modeQ = (getQ('mode') || '').toLowerCase();
+  if (modeQ === 'rating') document.getElementById('modeSelect').value = 'rating';
+
+  const playersQ = (getQ('players') || '').split(',').map(s=>s.trim()).filter(Boolean);
+  if (playersQ.length){
+    [...ps.options].forEach(o => { o.selected = playersQ.includes(o.value); });
+  }
+
+  const seriesQ = (getQ('series') || '').split(',').map(s=>s.trim()).filter(Boolean);
+  if (seriesQ.length){
+    [...seriesSel.options].forEach(o => { o.selected = seriesQ.includes(o.value); });
+  }
+
+  const fromQ = getQ('from');
+  const toQ = getQ('to');
+  if (fromQ){
+    const i = META.findIndex(m => m.label === fromQ || SNAPSHOTS[m.idx]?.key === fromQ);
+    if (i >= 0) from.value = String(i);
+  }
+  if (toQ){
+    const i = META.findIndex(m => m.label === toQ || SNAPSHOTS[m.idx]?.key === toQ);
+    if (i >= 0) to.value = String(i);
+  }
+
+  const splitP = getQ('splitPlayers');
+  const splitS = getQ('splitSeries');
+  if (splitP === '1') document.getElementById('splitPlayers').checked = true;
+  if (splitS === '1') document.getElementById('splitSeries').checked = true;
+
   document.getElementById("btnUpdate").addEventListener("click", updateAll);
 
   // immediate re-render
@@ -224,8 +270,10 @@ function initControls(){
   document.getElementById("splitSeries").addEventListener("change", updateAll);
   document.getElementById("modeSelect").addEventListener("change", updateAll);
 
-  const seriesSel = document.getElementById("seriesSelect");
-  [...seriesSel.options].forEach(o => { if(o.value === "official") o.selected = true; });
+  const hasSelectedSeries = [...seriesSel.options].some(o => o.selected);
+  if (!hasSelectedSeries) {
+    [...seriesSel.options].forEach(o => { if(o.value === "official") o.selected = true; });
+  }
 
   updateAll();
 }
@@ -429,12 +477,18 @@ function updateAll(){
   const series = selectedValues(document.getElementById("seriesSelect"));
   const mode = document.getElementById("modeSelect").value;
 
+  setQ('players', players.join(','));
+  setQ('series', series.join(','));
+  setQ('mode', mode);
+
   buildLegends(players, series);
   clearCharts();
   if(!players.length || !series.length) return;
 
   const fromV = Number(document.getElementById("fromSelect").value);
   const toV = Number(document.getElementById("toSelect").value);
+  setQ('from', SNAPSHOTS[fromV]?.key || "");
+  setQ('to', SNAPSHOTS[toV]?.key || "");
   const lo = Math.min(fromV, toV), hi = Math.max(fromV, toV);
 
   const slice = SNAPSHOTS.slice(lo, hi + 1);
@@ -455,6 +509,8 @@ function updateAll(){
 
   const splitP = document.getElementById("splitPlayers").checked;
   const splitS = document.getElementById("splitSeries").checked;
+  setQ('splitPlayers', splitP ? '1' : null);
+  setQ('splitSeries', splitS ? '1' : null);
 
   const chartCount = (splitP && splitS) ? (players.length * series.length) :
                      (splitP ? players.length : (splitS ? series.length : 1));

@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Eton Fives Rankings</title>
+  <link rel="stylesheet" href="./styles.css" />
 
 
   <style>
@@ -24,6 +25,12 @@
       appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
       background:white; font-size:14px; min-width: 220px;
     }
+    .segmented { display:inline-flex; border:1px solid #ccc; border-radius:10px; overflow:hidden; }
+    .segmented button {
+      appearance:none; border:0; background:#fff; padding:10px 12px; cursor:pointer; font-size:14px;
+    }
+    .segmented button + button { border-left:1px solid #ddd; }
+    .segmented button[aria-pressed="true"] { background:#111; color:#fff; }
 
     .table-wrap{
       border:1px solid #ddd; border-radius:14px; overflow:auto;
@@ -193,10 +200,35 @@ font-variant-numeric: tabular-nums;
     .sparkWrap{ margin-top:8px; }
     .sparkSvg{ width: 200px; height: 44px; display:block; }
 
+    /* Player drawer */
+    .drawer-backdrop{
+      position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+      display:none; z-index: 900;
+    }
+    .player-drawer{
+      position: fixed; top: 0; right: 0; height: 100vh; width: min(440px, 95vw);
+      background:#fff; border-left:1px solid #ddd; box-shadow: -8px 0 24px rgba(0,0,0,.12);
+      transform: translateX(100%); transition: transform .2s ease; z-index: 901;
+      display:flex; flex-direction:column;
+    }
+    .player-drawer.open { transform: translateX(0); }
+    .player-drawer header { padding: 12px 14px; border-bottom:1px solid #eee; }
+    .player-drawer .body { padding: 12px 14px 16px; overflow:auto; }
+    .metric-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+    .metric { border:1px solid #eee; border-radius:10px; padding:8px; background:#fafafa; }
+    .metric .k { font-size:12px; color:#666; }
+    .metric .v { font-weight:700; }
+    .recent-strip { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .chip { border:1px solid #ddd; border-radius:999px; padding:2px 8px; font-size:12px; background:#fff; }
+    .drawer-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .drawer-actions button { appearance:none; border:1px solid #ccc; border-radius:10px; background:#fff; padding:8px 10px; cursor:pointer; }
+    .compare-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center; }
+    .compare-row select { flex:1 1 220px; min-width: 180px; }
+
   </style>
 </head>
 
-<body>
+<body class="app-shell">
   <header>
     <div>
       <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1><a href="./debug.html" style="font-size:12px; padding:4px 8px; border:1px solid #ddd; border-radius:999px; text-decoration:none;">🧪 Debug</a><a href="./graph.html" style="font-size:12px; padding:4px 8px; border:1px solid #ddd; border-radius:999px; text-decoration:none;">📈 Graph</a></div>
@@ -223,6 +255,10 @@ font-variant-numeric: tabular-nums;
   <div class="controls">
     <select id="snapshotSelect" aria-label="As of tournament"></select>
     <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
+    <div class="segmented" role="group" aria-label="View mode">
+      <button id="viewTableBtn" type="button" aria-pressed="true">Table</button>
+      <button id="viewTrendsBtn" type="button" aria-pressed="false">Trends</button>
+    </div>
     <span class="small" id="count"></span>
   </div>
 
@@ -258,9 +294,38 @@ function displayResultValue(val){
 const statusEl = document.getElementById("status");
       const countEl = document.getElementById("count");
       const searchBox = document.getElementById("searchBox");
+      const snapshotSelect = document.getElementById('snapshotSelect');
+      const viewTableBtn = document.getElementById('viewTableBtn');
+      const viewTrendsBtn = document.getElementById('viewTrendsBtn');
       const theadRow = document.getElementById("theadRow");
       const tbody = document.querySelector("#rankings tbody");
       const table = document.getElementById("rankings");
+      function setUrlParam(k, v){
+        const u = new URL(window.location.href);
+        if (v === null || v === undefined || v === "") u.searchParams.delete(k);
+        else u.searchParams.set(k, String(v));
+        history.replaceState(null, "", u.toString());
+      }
+      function getUrlParam(k){ return new URL(window.location.href).searchParams.get(k); }
+      function toPlayerLabel(playerKey){
+        const [iniRaw, surRaw] = String(playerKey || '').split('|');
+        const ini = String(iniRaw || '').trim();
+        const sur = String(surRaw || '').trim();
+        if (!ini || !sur) return String(playerKey || '');
+        return `${ini}.${sur.slice(0,1)}${sur.slice(1).toLowerCase()}`;
+      }
+      function setStatus(v){ if (statusEl) statusEl.textContent = String(v ?? ''); }
+      function getStatus(){ return statusEl ? String(statusEl.textContent || '') : ''; }
+      function getDrawerEls(){
+        return {
+          drawer: document.getElementById('playerDrawer'),
+          backdrop: document.getElementById('playerDrawerBackdrop'),
+          closeBtn: document.getElementById('playerDrawerClose'),
+          title: document.getElementById('playerDrawerTitle'),
+          sub: document.getElementById('playerDrawerSub'),
+          body: document.getElementById('playerDrawerBody'),
+        };
+      }
 
       function normalizeResult(v) {
         const s = (v ?? "").toString().trim().toUpperCase();
@@ -361,6 +426,7 @@ function looksLikeResultColumn(colName) {
 
         data.forEach(row => {
           const tr = document.createElement("tr");
+          tr.tabIndex = 0;
           cols.forEach(c => {
             const td = document.createElement("td");
             const val = row[c] ?? "";
@@ -398,6 +464,199 @@ function looksLikeResultColumn(colName) {
         });
 
         countEl.textContent = `${data.length} players`;
+      }
+
+      function getRowPlayerKey(tr){
+        const cols = window.__CURRENT_COLS__ || [];
+        const iI = cols.indexOf('Initial');
+        const iS = cols.indexOf('Surname');
+        if (iI < 0 || iS < 0) return null;
+        const ini = (tr.children[iI]?.textContent || '').trim().toUpperCase();
+        const sur = (tr.children[iS]?.textContent || '').trim().toUpperCase();
+        if (!ini || !sur) return null;
+        return `${ini}|${sur}`;
+      }
+
+      function closePlayerDrawer(){
+        const { drawer, backdrop } = getDrawerEls();
+        if (!drawer || !backdrop) return;
+        drawer.classList.remove('open');
+        backdrop.style.display = 'none';
+      }
+
+      function getRankMovement(playerKey){
+        const rows = window.__CURRENT_RENDER_DATA || [];
+        const cur = rows.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!cur) return null;
+        const curRank = Number(cur.Rank);
+        if (!Number.isFinite(curRank)) return null;
+        const v = snapshotSelect?.value || 'latest';
+        const snaps = window.__SNAPS_CHRONO || [];
+        let prev = null;
+        if (v === 'latest') prev = snaps.length ? snaps[snaps.length - 1] : null;
+        else {
+          const i = snaps.findIndex(s => s.key === v);
+          prev = (i > 0) ? snaps[i - 1] : null;
+        }
+        if (!prev || !Array.isArray(prev.records)) return null;
+        const pr = prev.records.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!pr) return null;
+        const prevRank = Number(pr.Rank);
+        if (!Number.isFinite(prevRank)) return null;
+        const delta = prevRank - curRank;
+        if (delta > 0) return `▲${delta}`;
+        if (delta < 0) return `▼${Math.abs(delta)}`;
+        return '—';
+      }
+
+      function openPlayerDrawer(playerKey){
+        const { drawer, backdrop, title, sub, body } = getDrawerEls();
+        if (!drawer || !backdrop || !title || !sub || !body) return;
+
+        const rows = window.__CURRENT_RENDER_DATA || [];
+        const row = rows.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!row) return;
+        window.__SELECTED_PLAYER_KEY__ = playerKey;
+        setUrlParam('player', playerKey);
+
+        const rankMove = getRankMovement(playerKey) || '—';
+        title.textContent = `${row.Initial}. ${String(row.Surname||'').slice(0,1)}${String(row.Surname||'').slice(1).toLowerCase()}`;
+        sub.textContent = `Rank #${row.Rank ?? ''} · Elo ${Number.isFinite(Number(row.Elo)) ? Math.round(Number(row.Elo)) : ''} · ${rankMove}`;
+
+        const metrics = [
+          ['PC2', row.PC2], ['PC', row.PC], ['POSS', row.POSS], ['RPA', row.RPA], ['Played', row.Played], ['MissedLast', row.MissedLast]
+        ].map(([k,v]) => `<div class="metric"><div class="k">${k}</div><div class="v">${formatMaybe2dp(String(k).toLowerCase(), v ?? '')}</div></div>`).join('');
+
+        const cols = window.__CURRENT_COLS__ || [];
+        const recentCols = cols.filter(c => /^\d{2}\s*[NKL]$/i.test(String(c))).slice(0,5);
+        const recent = recentCols.map(c => {
+          const rv = row[c] || '';
+          const cls = resultClass(rv) || '';
+          return `<span class="chip ${cls}">${escapeHtml(c)}: ${escapeHtml(displayResultValue(String(rv||'')) || '—')}</span>`;
+        }).join('');
+
+        const snaps = window.__SNAPS_CHRONO || [];
+        const eloSeries = [];
+        const rankSeries = [];
+        for (const s of snaps){
+          const r = (s.records || []).find(rr => `${String(rr.Initial||'').toUpperCase()}|${String(rr.Surname||'').toUpperCase()}` === playerKey);
+          if (!r) continue;
+          if (Number.isFinite(Number(r.Elo))) eloSeries.push(Number(r.Elo));
+          if (Number.isFinite(Number(r.Rank))) rankSeries.push(Number(r.Rank));
+        }
+        if (Number.isFinite(Number(row.Elo))) eloSeries.push(Number(row.Elo));
+        if (Number.isFinite(Number(row.Rank))) rankSeries.push(Number(row.Rank));
+
+        const eloSpark = buildSparkline(eloSeries, {w: 260, h: 52, pad: 5});
+        const rankSpark = buildSparkline(rankSeries.map(v => -v), {w: 260, h: 52, pad: 5});
+
+        body.innerHTML = `
+          <div class="metric-grid">${metrics}</div>
+          <div style="margin-top:10px;"><b>Recent results</b><div class="recent-strip">${recent || '<span class="small">No recent results</span>'}</div></div>
+          <div style="margin-top:12px;"><b>Trend</b><div class="small">Elo</div>${eloSpark}<div class="small" style="margin-top:8px;">Rank (improvement rises)</div>${rankSpark}</div>
+          <div style="margin-top:12px;"><b>Compare</b>
+            <div class="compare-row">
+              <select id="drawerCompareSelect" aria-label="Compare with player">
+                <option value="">Choose player…</option>
+              </select>
+              <button type="button" id="drawerCompareBtn">Compare in trends</button>
+            </div>
+          </div>
+          <div class="drawer-actions">
+            <button type="button" id="drawerOpenTrends">Open full trends</button>
+            <button type="button" id="drawerCopyLink">Copy link</button>
+          </div>
+        `;
+
+        const cmpSel = body.querySelector('#drawerCompareSelect');
+        if (cmpSel) {
+          const keys = (window.__CURRENT_RENDER_DATA || [])
+            .map(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`)
+            .filter(k => k && k !== playerKey);
+          const uniq = Array.from(new Set(keys)).sort((a,b) => toPlayerLabel(a).localeCompare(toPlayerLabel(b)));
+          for (const k of uniq){
+            const opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = toPlayerLabel(k);
+            cmpSel.appendChild(opt);
+          }
+        }
+
+        body.querySelector('#drawerOpenTrends')?.addEventListener('click', () => {
+          const u = new URL('./graph.html', window.location.href);
+          u.searchParams.set('players', playerKey);
+          const snap = snapshotSelect?.value || 'latest';
+          if (snap !== 'latest') { u.searchParams.set('from', snap); u.searchParams.set('to', snap); }
+          window.location.href = u.toString();
+        });
+        body.querySelector('#drawerCompareBtn')?.addEventListener('click', () => {
+          const other = body.querySelector('#drawerCompareSelect')?.value || '';
+          if (!other) return;
+          const u = new URL('./graph.html', window.location.href);
+          u.searchParams.set('players', `${playerKey},${other}`);
+          const snap = snapshotSelect?.value || 'latest';
+          if (snap !== 'latest') { u.searchParams.set('from', snap); u.searchParams.set('to', snap); }
+          window.location.href = u.toString();
+        });
+        body.querySelector('#drawerCopyLink')?.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(window.location.href); } catch(e) {}
+        });
+
+        backdrop.style.display = 'block';
+        drawer.classList.add('open');
+      }
+
+      function attachRowClicks(){
+        tbody.addEventListener('click', (ev) => {
+          const td = ev.target.closest('td');
+          if (!td) return;
+          if (td.classList.contains('result-cell')) return; // keep tournament cell click behavior
+          const tr = td.parentElement;
+          if (!tr) return;
+          const pkey = getRowPlayerKey(tr);
+          if (pkey) openPlayerDrawer(pkey);
+        });
+
+        tbody.addEventListener('keydown', (ev) => {
+          if (ev.key !== 'Enter') return;
+          const tr = ev.target.closest('tr');
+          if (!tr) return;
+          const pkey = getRowPlayerKey(tr);
+          if (pkey) openPlayerDrawer(pkey);
+        });
+
+        const { closeBtn, backdrop } = getDrawerEls();
+        closeBtn?.addEventListener('click', closePlayerDrawer);
+        backdrop?.addEventListener('click', closePlayerDrawer);
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closePlayerDrawer();
+        });
+      }
+
+      function bindViewToggle(){
+        function setMode(mode){
+          const isTable = mode !== 'trends';
+          viewTableBtn?.setAttribute('aria-pressed', isTable ? 'true' : 'false');
+          viewTrendsBtn?.setAttribute('aria-pressed', isTable ? 'false' : 'true');
+          setUrlParam('view', isTable ? 'table' : 'trends');
+        }
+
+        viewTableBtn?.addEventListener('click', () => setMode('table'));
+        viewTrendsBtn?.addEventListener('click', () => {
+          setMode('trends');
+          const u = new URL('./graph.html', window.location.href);
+          const selected = window.__SELECTED_PLAYER_KEY__ || getUrlParam('player');
+          if (selected) u.searchParams.set('players', selected);
+          const snap = snapshotSelect?.value || 'latest';
+          if (snap !== 'latest') {
+            u.searchParams.set('from', snap);
+            u.searchParams.set('to', snap);
+          }
+          window.location.href = u.toString();
+        });
+
+        const requested = (getUrlParam('view') || 'table').toLowerCase();
+        setMode(requested === 'trends' ? 'trends' : 'table');
       }
 
       function getCellValue(row, idx) {
@@ -809,7 +1068,6 @@ function looksLikeResultColumn(colName) {
           const [loaded, matchesData] = await Promise.all([loadData(), loadMatches()]);
           window.__MATCHES_DATA__ = matchesData;
 
-        const snapshotSelect = document.getElementById('snapshotSelect');
         const snapsRaw = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
         function _parseSnapKey(k){
           const m = /^([0-9]{2})\\s+([NKL])$/i.exec((k||"").trim());
@@ -844,31 +1102,62 @@ function looksLikeResultColumn(colName) {
             snapshotSelect.appendChild(opt);
           });
           snapshotSelect.value = 'latest';
+
+          const snapParam = getUrlParam('snapshot');
+          if (snapParam && Array.from(snapshotSelect.options).some(o => o.value === snapParam)) {
+            snapshotSelect.value = snapParam;
+          }
+
           snapshotSelect.addEventListener('change', () => {
             const v = snapshotSelect.value;
             if (v === 'latest') {
               render(loaded.latest);
-              statusEl.textContent = 'Showing latest';
+              setStatus('Showing latest');
+              setUrlParam('snapshot', null);
             } else {
               const snap = snapsChrono.find(x => x.key === v);
               if (snap && Array.isArray(snap.records)) {
                 render(snap.records);
-                statusEl.textContent = `As of ${snap.label}`;
+                setStatus(`As of ${snap.label}`);
+                setUrlParam('snapshot', v);
               }
             }
             // reset search + sort
             searchBox.value = '';
             sortBy(0, true);
+
+            const selected = window.__SELECTED_PLAYER_KEY__ || getUrlParam('player');
+            if (selected) {
+              const exists = (window.__CURRENT_RENDER_DATA || []).some(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === selected);
+              if (exists) openPlayerDrawer(selected);
+              else closePlayerDrawer();
+            }
           });
         }
 
-          render(loaded.latest);
+          if (snapshotSelect?.value && snapshotSelect.value !== 'latest') {
+            const snap = snapsChrono.find(x => x.key === snapshotSelect.value);
+            render((snap && Array.isArray(snap.records)) ? snap.records : loaded.latest);
+            setStatus((snap && snap.label) ? `As of ${snap.label}` : 'Showing latest');
+          } else {
+            render(loaded.latest);
+          }
+
           enableSortAndSearch();
           attachCellClicks(matchesData);
-          statusEl.textContent = "Showing latest";
+          attachRowClicks();
+          bindViewToggle();
+
+          const deepPlayer = getUrlParam('player');
+          if (deepPlayer) {
+            const exists = (window.__CURRENT_RENDER_DATA || []).some(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === deepPlayer);
+            if (exists) openPlayerDrawer(deepPlayer);
+          }
+
+          if (!getStatus() || getStatus() === 'Loading…') setStatus('Showing latest');
         } catch (e) {
           console.error(e);
-          statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";
+          setStatus((e && e.message) ? e.message : "Failed to load rankings data.");
         }
       })();
     })();
@@ -1128,6 +1417,20 @@ if (document.readyState === 'loading') {
 </div>
     </div>
   </div>
+
+  <div class="drawer-backdrop" id="playerDrawerBackdrop"></div>
+  <aside class="player-drawer" id="playerDrawer" role="dialog" aria-modal="true" aria-labelledby="playerDrawerTitle">
+    <header>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div>
+          <h2 id="playerDrawerTitle" style="margin:0;font-size:18px;">Player</h2>
+          <div class="small" id="playerDrawerSub"></div>
+        </div>
+        <button id="playerDrawerClose" type="button" class="close">Close</button>
+      </div>
+    </header>
+    <div class="body" id="playerDrawerBody"></div>
+  </aside>
 
 </body>
 </html>
