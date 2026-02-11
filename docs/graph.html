@@ -4,24 +4,45 @@
   <meta charset="utf-8"/>
   <title>Rank Progression</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 12px; }
-    h1 { margin: 0 0 10px 0; font-size: 34px; }
-    .controls { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 12px; align-items:start; }
-    .controls .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
-    .control { font-size: 12px; min-width: 110px; }
-    label { display:block; margin-bottom:6px; font-weight:600; }
-    select, button { font: inherit; }
-    select { padding: 6px; border: 1px solid #ccc; border-radius: 10px; background: #fff; }
-    select[multiple] { width: 100%; min-height: 180px; }
-    button { padding: 8px 12px; border:1px solid #ccc; border-radius: 12px; background:#f7f7f7; }
-    .note { font-size: 12px; color:#666; margin: 8px 0 0 0; }
-    .canvasWrap { border:1px solid #eee; border-radius: 14px; padding: 10px; }
-    @media (max-width: 900px){
-      h1{ font-size: 40px; }
-      .controls{ grid-template-columns: 1fr; }
-      select[multiple]{ min-height: 220px; }
+    h1 { margin: 0 0 10px 0; font-size: 34px; letter-spacing: -0.5px; }
+
+    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom: 12px; }
+    .control { font-size: 12px; }
+    label { display:block; margin-bottom:6px; color:#333; }
+    select, button, input { font: inherit; }
+    select { padding: 8px; border:1px solid #ddd; border-radius: 12px; background:#fff; }
+    button { padding: 10px 14px; border:1px solid #ddd; border-radius: 14px; background:#f7f7f7; cursor:pointer; }
+
+    .multi { width: min(520px, 92vw); height: 170px; }
+    .row2 { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
+
+    .legendRow { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; margin: 8px 0 6px 0; }
+    .legendBox { border:1px solid #eee; border-radius: 14px; padding: 10px 12px; background:#fff; }
+    .legendTitleRow { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
+    .legendTitle { font-weight: 700; }
+    .legendToggle { display:flex; align-items:center; gap:6px; font-size: 12px; color:#222; user-select:none; }
+    .legendToggle input { width: 18px; height: 18px; }
+
+    .legendItem { display:flex; gap:8px; align-items:center; margin: 6px 0; font-size: 13px; }
+    .swatch { width: 18px; height: 10px; border-radius: 6px; border:2px solid transparent; }
+    .marker { width: 16px; height: 16px; display:inline-flex; align-items:center; justify-content:center; }
+
+    .grid { display:grid; gap: 12px; }
+    .card { border:1px solid #eee; border-radius: 18px; padding: 10px; background:#fff; }
+    .cardTitle { font-weight: 700; margin: 2px 0 8px 2px; font-size: 13px; color:#222; }
+
+    .chartBox { height: 62vh; min-height: 320px; max-height: 720px; }
+    .chartBoxSmall { height: 320px; min-height: 240px; }
+    canvas { width: 100% !important; height: 100% !important; display:block; }
+
+    @media (max-width: 520px){
+      h1 { font-size: 30px; }
+      .multi { width: 92vw; height: 200px; }
+      .chartBox { height: 58vh; min-height: 300px; }
+      .grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -29,26 +50,23 @@
   <h1>Rank Progression</h1>
 
   <div class="controls">
-    <div class="row">
-      <div class="control" style="flex:1; min-width:220px;">
-        <label>Players</label>
-        <select id="playerSelect" multiple></select>
-        <div class="note">Tip: tap-and-hold to multi-select on iOS.</div>
-      </div>
-
-      <div class="control" style="flex:1; min-width:180px;">
-        <label>Series</label>
-        <select id="seriesSelect" multiple>
-          <option value="PC2">Official (PC2)</option>
-          <option value="PC">PC</option>
-          <option value="Elo">Elo</option>
-          <option value="EloSkill">EloSkill</option>
-          <option value="EloForm">EloForm</option>
-        </select>
-      </div>
+    <div class="control">
+      <label>Players</label>
+      <select id="playerSelect" class="multi" multiple></select>
     </div>
 
-    <div class="row">
+    <div class="control">
+      <label>Series</label>
+      <select id="seriesSelect" class="multi" multiple>
+        <option value="official">Official (PC2)</option>
+        <option value="pc">PC</option>
+        <option value="elo">Elo</option>
+        <option value="eloSkill">EloSkill</option>
+        <option value="eloForm">EloForm</option>
+      </select>
+    </div>
+
+    <div class="row2">
       <div class="control">
         <label>Y axis</label>
         <select id="modeSelect">
@@ -73,146 +91,511 @@
     </div>
   </div>
 
-  <div class="canvasWrap">
-    <canvas id="chart"></canvas>
+  <div class="legendRow">
+    <div class="legendBox" style="min-width: 220px;">
+      <div class="legendTitleRow">
+        <div class="legendTitle">Players</div>
+        <label class="legendToggle" title="Show one chart per player">
+          <span>Mult.</span>
+          <input type="checkbox" id="splitPlayers"/>
+        </label>
+      </div>
+      <div id="playerLegend"></div>
+    </div>
+
+    <div class="legendBox" style="min-width: 220px;">
+      <div class="legendTitleRow">
+        <div class="legendTitle">Series</div>
+        <label class="legendToggle" title="Show one chart per series">
+          <span>Mult.</span>
+          <input type="checkbox" id="splitSeries"/>
+        </label>
+      </div>
+      <div id="seriesLegend"></div>
+    </div>
   </div>
 
+  <div id="chartsHost" class="grid"></div>
+
 <script>
-let snapshots = [];       // [{key,label,records:[...]}]
-let snapMaps = [];        // [{ key,label,map: { "I|SUR": rec } }]
-let chart = null;
+function keyToLabel(k){ return String(k || "").replace("|", "."); }
+function safeNum(x){ return (x === null || x === undefined || x === "" || Number.isNaN(Number(x))) ? null : Number(x); }
 
-function keyFromRec(rec){ return `${rec.Initial}|${rec.Surname}`; }
-function labelFromKey(key){ return key.replace("|", "."); }
-function getSelectedValues(sel){ return [...sel.selectedOptions].map(o => o.value); }
+let SNAPSHOTS = [];
+let META = [];
+let PLAYER_KEYS = [];
+let charts = [];
 
-async function loadData(){
-  const data = await fetch("./data/rankings_snapshots.json").then(r=>r.json());
-  snapshots = data.snapshots || [];
-  snapMaps = snapshots.map(s => {
-    const m = {};
-    (s.records || []).forEach(rec => { m[keyFromRec(rec)] = rec; });
-    return { key: s.key, label: s.label, map: m, records: (s.records||[]) };
-  });
+// Keep current slice accessible to tooltip callbacks
+let CURRENT_SLICE = [];
+let CURRENT_MAPS = [];
+
+// Map displayed name ("R.Houlden") -> internal key ("R|Houlden")
+const LABEL_TO_KEY = new Map();
+
+function labelToKey(nameLabel){
+  if (LABEL_TO_KEY.has(nameLabel)) return LABEL_TO_KEY.get(nameLabel);
+  const idx = nameLabel.indexOf(".");
+  if (idx !== -1) return nameLabel.slice(0, idx) + "|" + nameLabel.slice(idx + 1);
+  return null;
 }
 
+function getPerfCode(rec, snap){
+  if (!rec) return "DNS";
+
+  const OK = new Set(["W","F","SF","QF","L16","NQ","DNS"]);
+
+  const candidates = [
+    snap?.key, snap?.tournamentKey, snap?.tournament_code, snap?.tournament,
+    snap?.code, snap?.abbr, snap?.id, snap?.label
+  ].filter(x => typeof x === "string" && x.trim().length);
+
+  for (const k of candidates){
+    const v1 = rec[k];
+    if (typeof v1 === "string" && OK.has(v1)) return v1;
+
+    const v2 = rec.Results?.[k];
+    if (typeof v2 === "string" && OK.has(v2)) return v2;
+  }
+
+  const generic = [rec.Result, rec.result, rec.Finish, rec.finish];
+  for (const v of generic){
+    if (typeof v === "string" && OK.has(v)) return v;
+  }
+
+  return "";
+}
+
+fetch("./data/rankings_snapshots.json")
+  .then(r => r.json())
+  .then(data => {
+    SNAPSHOTS = (data && data.snapshots) ? data.snapshots : [];
+    META = SNAPSHOTS.map((s, i) => ({ idx:i, label: s.label || `Snap ${i+1}` }));
+
+    const set = new Set();
+    for(const snap of SNAPSHOTS){
+      const recs = snap.records || [];
+      for(const r of recs){
+        const ini = (r.Initial ?? "").toString().trim();
+        const sur = (r.Surname ?? "").toString().trim();
+        if(!ini || !sur) continue;
+        set.add(`${ini}|${sur}`);
+      }
+    }
+    PLAYER_KEYS = Array.from(set).sort((a,b)=>keyToLabel(a).localeCompare(keyToLabel(b)));
+    initControls();
+  })
+  .catch(err => console.error(err));
+
 function initControls(){
-  const players = new Set();
-  snapMaps.forEach(s => Object.keys(s.map).forEach(k => players.add(k)));
   const ps = document.getElementById("playerSelect");
   ps.innerHTML = "";
-  [...players].sort().forEach(k => {
+
+  LABEL_TO_KEY.clear();
+  for(const k of PLAYER_KEYS){
+    const lbl = keyToLabel(k);
+    LABEL_TO_KEY.set(lbl, k);
+
     const o = document.createElement("option");
     o.value = k;
-    o.textContent = labelFromKey(k);
+    o.textContent = lbl;
     ps.appendChild(o);
-  });
+  }
 
   const from = document.getElementById("fromSelect");
   const to = document.getElementById("toSelect");
-  from.innerHTML = ""; to.innerHTML = "";
-  snapMaps.forEach((s,i) => {
+  from.innerHTML = "";
+  to.innerHTML = "";
+  META.forEach(m => {
     const o1 = document.createElement("option");
-    o1.value = i; o1.textContent = s.label;
+    o1.value = m.idx;
+    o1.textContent = m.label;
     const o2 = o1.cloneNode(true);
-    from.appendChild(o1); to.appendChild(o2);
+    from.appendChild(o1);
+    to.appendChild(o2);
   });
-  from.value = "0";
-  to.value = String(Math.max(0, snapMaps.length - 1));
+  from.value = 0;
+  to.value = Math.max(0, META.length - 1);
 
-  // sensible defaults: select first series + empty players (user chooses)
-  const seriesSelect = document.getElementById("seriesSelect");
-  [...seriesSelect.options].forEach((opt, idx)=>{ opt.selected = (idx===0); });
+  document.getElementById("btnUpdate").addEventListener("click", updateAll);
+
+  // immediate re-render
+  document.getElementById("splitPlayers").addEventListener("change", updateAll);
+  document.getElementById("splitSeries").addEventListener("change", updateAll);
+  document.getElementById("modeSelect").addEventListener("change", updateAll);
+
+  const seriesSel = document.getElementById("seriesSelect");
+  [...seriesSel.options].forEach(o => { if(o.value === "official") o.selected = true; });
+
+  updateAll();
 }
 
-function computeRankForSeries(snapshot, seriesKey, playerKey){
-  // rank by seriesKey descending (higher rating => better rank)
-  const arr = snapshot.records
-    .map(r => ({ key: keyFromRec(r), val: r[seriesKey] }))
-    .filter(x => x.val !== null && x.val !== undefined && x.val !== "" && !Number.isNaN(Number(x.val)))
-    .sort((a,b) => Number(b.val) - Number(a.val));
+function selectedValues(sel){ return [...sel.selectedOptions].map(o => o.value); }
 
-  const idx = arr.findIndex(x => x.key === playerKey);
-  return idx >= 0 ? (idx + 1) : null;
+function recordMap(snap){
+  const map = new Map();
+  const recs = snap.records || [];
+  for(const r of recs){
+    const ini = (r.Initial ?? "").toString().trim();
+    const sur = (r.Surname ?? "").toString().trim();
+    if(!ini || !sur) continue;
+    map.set(`${ini}|${sur}`, r);
+  }
+  return map;
 }
 
-function buildDatasets(playerKeys, seriesKeys, fromIdx, toIdx, mode){
-  const slice = snapMaps.slice(fromIdx, toIdx+1);
-  const labels = slice.map(s => s.label);
-  const datasets = [];
+function getSeriesValue(rec, series){
+  if(series === "official") return safeNum(rec.PC2 ?? rec.pc2 ?? rec.Pc2);
+  if(series === "pc") return safeNum(rec.PC ?? rec.pc);
+  if(series === "elo") return safeNum(rec.Elo ?? rec.elo);
+  if(series === "eloSkill") return safeNum(rec.EloSkill ?? rec.eloskill ?? rec.ELOSKILL);
+  if(series === "eloForm") return safeNum(rec.EloForm ?? rec.eloform ?? rec.ELOFORM);
+  return null;
+}
+function getOfficialRank(rec){ return safeNum(rec.Rank ?? rec.rank); }
 
-  for(const p of playerKeys){
-    for(const series of seriesKeys){
-      const data = slice.map(snap => {
-        const rec = snap.map[p];
-        if(!rec) return null;
+const PLAYER_COLORS = [
+  "#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf",
+  "#393b79","#637939","#8c6d31","#843c39","#7b4173","#3182bd","#e6550d","#31a354","#756bb1","#636363"
+];
+const SERIES_META = {
+  official:  { label: "Official (PC2)", pointStyle: "circle"   },
+  pc:        { label: "PC",            pointStyle: "triangle" },
+  elo:       { label: "Elo",           pointStyle: "rectRot"  },
+  eloSkill:  { label: "EloSkill",      pointStyle: "rect"     },
+  eloForm:   { label: "EloForm",       pointStyle: "cross"    }
+};
 
-        if(mode === "rank"){
-          if(series === "__OFFICIAL_RANK__") return rec.Rank ?? null;
-          // PC2 rank should still be computed by rating if user selected "Official (PC2)" in rank mode.
-          return computeRankForSeries(snap, series, p);
-        } else {
-          // rating mode: return rating value
-          const v = rec[series];
-          return (v === undefined || v === null || v === "") ? null : Number(v);
+function buildLegends(players, series){
+  const pHost = document.getElementById("playerLegend");
+  const sHost = document.getElementById("seriesLegend");
+  pHost.innerHTML = "";
+  sHost.innerHTML = "";
+
+  players.forEach((p, i) => {
+    const item = document.createElement("div");
+    item.className = "legendItem";
+    const sw = document.createElement("span");
+    sw.className = "swatch";
+    sw.style.background = PLAYER_COLORS[i % PLAYER_COLORS.length];
+    item.appendChild(sw);
+    const txt = document.createElement("span");
+    txt.textContent = keyToLabel(p);
+    item.appendChild(txt);
+    pHost.appendChild(item);
+  });
+
+  series.forEach(s => {
+    const meta = SERIES_META[s] || { label:s, pointStyle:"circle" };
+    const item = document.createElement("div");
+    item.className = "legendItem";
+    const mk = document.createElement("span");
+    mk.className = "marker";
+    const markerChar = ({ circle:"●", triangle:"▲", rect:"■", rectRot:"◆", cross:"✚" })[meta.pointStyle] || "●";
+    mk.textContent = markerChar;
+    item.appendChild(mk);
+    const txt = document.createElement("span");
+    txt.textContent = meta.label;
+    item.appendChild(txt);
+    sHost.appendChild(item);
+  });
+}
+
+function ranksForSnapshot(snapMap, series){
+  const arr = [];
+  for(const [k, rec] of snapMap.entries()){
+    const v = getSeriesValue(rec, series);
+    if(v === null) continue;
+    arr.push({ k, v });
+  }
+  arr.sort((a,b) => b.v - a.v);
+  const out = new Map();
+  arr.forEach((x, idx) => out.set(x.k, idx + 1));
+  return out;
+}
+
+function clearCharts(){
+  for(const c of charts){ try{ c.destroy(); }catch(e){} }
+  charts = [];
+  document.getElementById("chartsHost").innerHTML = "";
+}
+
+function makeChartCard(title, heightClass){
+  const host = document.getElementById("chartsHost");
+  const card = document.createElement("div");
+  card.className = "card";
+  const t = document.createElement("div");
+  t.className = "cardTitle";
+  t.textContent = title;
+  const box = document.createElement("div");
+  box.className = heightClass;
+  const canvas = document.createElement("canvas");
+  box.appendChild(canvas);
+  card.appendChild(t);
+  card.appendChild(box);
+  host.appendChild(card);
+  return canvas;
+}
+
+function chartOptions(isRank){
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        mode: "index",
+        intersect: false,
+        callbacks: {
+          title: (items) => {
+            if (!items || !items.length) return "";
+            return items[0].label || "";
+          },
+          // (X) Name: E [🔺|🔻] D
+          // - Use 🔺/🔻 instead of colours
+          // - If no change: show just "(X) Name: E" (no icon, no delta)
+          label: (ctx) => {
+            const originalLabel = ctx.dataset.label || "";
+
+            // derive player label part (before " — ")
+            const cut = originalLabel.indexOf(" — ");
+            const playerLabel = (cut !== -1) ? originalLabel.slice(0, cut) : originalLabel;
+
+            // record for this player at this snapshot index
+            const pKey = labelToKey(playerLabel);
+            const snapIdx = ctx.dataIndex;
+            const rec = (pKey && CURRENT_MAPS[snapIdx]) ? CURRENT_MAPS[snapIdx].get(pKey) : null;
+            const perf = getPerfCode(rec, CURRENT_SLICE[snapIdx]);
+            const perfPrefix = perf ? `(${perf}) ` : "";
+
+            // Series multiples: suppress series name in tooltip
+            let name = originalLabel;
+            const splitPlayers = document.getElementById("splitPlayers")?.checked;
+            const splitSeries  = document.getElementById("splitSeries")?.checked;
+            if (!splitPlayers && splitSeries) {
+              name = playerLabel;
+            }
+
+            const y = ctx.parsed?.y;
+            if (y === null || y === undefined || Number.isNaN(Number(y))) return perfPrefix + name;
+
+            const curr = Math.round(Number(y));
+
+            // previous non-null value in this dataset
+            const data = Array.isArray(ctx.dataset.data) ? ctx.dataset.data : [];
+            const i = ctx.dataIndex;
+            let prev = null;
+            for (let j = i - 1; j >= 0; j--) {
+              const v = data[j];
+              if (v !== null && v !== undefined && v !== "" && !Number.isNaN(Number(v))) {
+                prev = Math.round(Number(v));
+                break;
+              }
+            }
+
+            // if no previous value, show value only
+            if (prev === null) {
+              return `${perfPrefix}${name}: ${curr}`;
+            }
+
+            const delta = curr - prev;
+
+            // rank improvement is inverted (down is better)
+            const dir = isRank ? -delta : delta;
+
+            // no change => no icon, no delta
+            if (dir === 0) {
+              return `${perfPrefix}${name}: ${curr}`;
+            }
+
+            const icon = dir > 0 ? "🔺" : "🔻";
+            const dStr = String(Math.abs(delta));
+
+            return `${perfPrefix}${name}: ${curr} ${icon} ${dStr}`;
+          }
         }
-      });
+      }
+    },
+    interaction: { mode: "index", intersect: false },
+    scales: {
+      x: { ticks: { maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+      y: isRank ? { reverse: true, ticks: { precision: 0 } } : { beginAtZero: false }
+    }
+  };
+}
 
-      datasets.push({
-        label: `${labelFromKey(p)} – ${series === "__OFFICIAL_RANK__" ? "Official Rank" : (series==="PC2" ? "Official (PC2)" : series)}`,
-        data,
-        borderWidth: 2,
-        spanGaps: false,
-        pointRadius: 3
-      });
+function updateAll(){
+  const players = selectedValues(document.getElementById("playerSelect"));
+  const series = selectedValues(document.getElementById("seriesSelect"));
+  const mode = document.getElementById("modeSelect").value;
+
+  buildLegends(players, series);
+  clearCharts();
+  if(!players.length || !series.length) return;
+
+  const fromV = Number(document.getElementById("fromSelect").value);
+  const toV = Number(document.getElementById("toSelect").value);
+  const lo = Math.min(fromV, toV), hi = Math.max(fromV, toV);
+
+  const slice = SNAPSHOTS.slice(lo, hi + 1);
+  const labels = slice.map(s => s.label || "");
+  const maps = slice.map(s => recordMap(s));
+
+  // expose slice for tooltip callbacks
+  CURRENT_SLICE = slice;
+  CURRENT_MAPS = maps;
+
+  const rankMapsBySeries = {};
+  if(mode === "rank"){
+    for(const s of series){
+      if(s === "official") continue;
+      rankMapsBySeries[s] = maps.map(m => ranksForSnapshot(m, s));
     }
   }
-  return { labels, datasets };
-}
 
-function updateChart(){
-  const playerKeys = getSelectedValues(playerSelect);
-  const rawSeries = getSelectedValues(seriesSelect);
-  if(!playerKeys.length){ alert("Select at least one player."); return; }
-  if(!rawSeries.length){ alert("Select at least one series."); return; }
+  const splitP = document.getElementById("splitPlayers").checked;
+  const splitS = document.getElementById("splitSeries").checked;
 
-  const fromIdx = Number(fromSelect.value);
-  const toIdx = Number(toSelect.value);
-  const lo = Math.min(fromIdx, toIdx);
-  const hi = Math.max(fromIdx, toIdx);
-  const mode = modeSelect.value;
+  const chartCount = (splitP && splitS) ? (players.length * series.length) :
+                     (splitP ? players.length : (splitS ? series.length : 1));
+  const cols = Math.max(1, Math.min(3, Math.round(Math.sqrt(chartCount))));
+  document.getElementById("chartsHost").style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
 
-  // In rank mode, allow explicit official rank by selecting PC2? You preferred rank plotted against rank.
-  // We'll treat "Official (PC2)" as PC2 in rating mode, but in rank mode user still gets PC2-derived rank.
-  const seriesKeys = rawSeries;
+  function seriesDataFor(pKey, sKey){
+    return maps.map((m, i) => {
+      const rec = m.get(pKey);
+      if(!rec) return null;
 
-  const ctx = document.getElementById("chart");
-  const { labels, datasets } = buildDatasets(playerKeys, seriesKeys, lo, hi, mode);
-
-  if(chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: "line",
-    data: { labels, datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: "index", intersect: false },
-      scales: {
-        y: mode === "rank" ? { reverse: true, beginAtZero: false, ticks: { precision: 0 } } : { }
-      },
-      plugins: {
-        legend: { display: true }
+      if(mode === "rank"){
+        if(sKey === "official") return getOfficialRank(rec);
+        return rankMapsBySeries[sKey][i].get(pKey) ?? null;
       }
-    }
+      return (sKey === "official") ? getSeriesValue(rec, "official") : getSeriesValue(rec, sKey);
+    });
+  }
+
+  // Combined: players × series in one chart
+  if(!splitP && !splitS){
+    const canvas = makeChartCard("Combined", "chartBox");
+    const datasets = [];
+    players.forEach((pKey, pIdx) => {
+      const color = PLAYER_COLORS[pIdx % PLAYER_COLORS.length];
+      series.forEach(sKey => {
+        const meta = SERIES_META[sKey] || { label:sKey, pointStyle:"circle" };
+        datasets.push({
+          label: `${keyToLabel(pKey)} — ${meta.label}`,
+          data: seriesDataFor(pKey, sKey),
+          borderColor: color,
+          backgroundColor: color,
+          borderWidth: 2,
+          tension: 0.15,
+          pointStyle: meta.pointStyle,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          showLine: true,
+          fill: false,
+          spanGaps: false
+        });
+      });
+    });
+    charts.push(new Chart(canvas.getContext("2d"), {
+      type:"line",
+      data:{ labels, datasets },
+      options: chartOptions(mode==="rank")
+    }));
+    return;
+  }
+
+  // One chart per player (all series on each chart)
+  if(splitP && !splitS){
+    players.forEach((pKey, pIdx) => {
+      const canvas = makeChartCard(keyToLabel(pKey), "chartBoxSmall");
+      const color = PLAYER_COLORS[pIdx % PLAYER_COLORS.length];
+      const datasets = series.map(sKey => {
+        const meta = SERIES_META[sKey] || { label:sKey, pointStyle:"circle" };
+        return {
+          label: `${keyToLabel(pKey)} — ${meta.label}`,
+          data: seriesDataFor(pKey, sKey),
+          borderColor: color,
+          backgroundColor: color,
+          borderWidth: 2,
+          tension: 0.15,
+          pointStyle: meta.pointStyle,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          showLine: true,
+          fill: false,
+          spanGaps: false
+        };
+      });
+      charts.push(new Chart(canvas.getContext("2d"), {
+        type:"line",
+        data:{ labels, datasets },
+        options: chartOptions(mode==="rank")
+      }));
+    });
+    return;
+  }
+
+  // One chart per series (all players on each chart)
+  if(!splitP && splitS){
+    series.forEach(sKey => {
+      const meta = SERIES_META[sKey] || { label:sKey, pointStyle:"circle" };
+      const canvas = makeChartCard(meta.label, "chartBoxSmall");
+      const datasets = players.map((pKey, pIdx) => {
+        const color = PLAYER_COLORS[pIdx % PLAYER_COLORS.length];
+        return {
+          label: `${keyToLabel(pKey)} — ${meta.label}`,
+          data: seriesDataFor(pKey, sKey),
+          borderColor: color,
+          backgroundColor: color,
+          borderWidth: 2,
+          tension: 0.15,
+          pointStyle: meta.pointStyle,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          showLine: true,
+          fill: false,
+          spanGaps: false
+        };
+      });
+      charts.push(new Chart(canvas.getContext("2d"), {
+        type:"line",
+        data:{ labels, datasets },
+        options: chartOptions(mode==="rank")
+      }));
+    });
+    return;
+  }
+
+  // One chart per player–series pair
+  players.forEach((pKey, pIdx) => {
+    const color = PLAYER_COLORS[pIdx % PLAYER_COLORS.length];
+    series.forEach(sKey => {
+      const meta = SERIES_META[sKey] || { label:sKey, pointStyle:"circle" };
+      const canvas = makeChartCard(`${keyToLabel(pKey)} — ${meta.label}`, "chartBoxSmall");
+      const datasets = [{
+        label: `${keyToLabel(pKey)} — ${meta.label}`,
+        data: seriesDataFor(pKey, sKey),
+        borderColor: color,
+        backgroundColor: color,
+        borderWidth: 2,
+        tension: 0.15,
+        pointStyle: meta.pointStyle,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        showLine: true,
+        fill: false,
+        spanGaps: false
+      }];
+      charts.push(new Chart(canvas.getContext("2d"), {
+        type:"line",
+        data:{ labels, datasets },
+        options: chartOptions(mode==="rank")
+      }));
+    });
   });
 }
-
-document.getElementById("btnUpdate").addEventListener("click", updateChart);
-
-(async function(){
-  await loadData();
-  initControls();
-})();
 </script>
 </body>
 </html>
