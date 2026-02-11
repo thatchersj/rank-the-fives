@@ -6,7 +6,7 @@
   <title>Elo Debugger — Eton Fives Rankings</title>
   <link rel="stylesheet" href="./styles.css" />
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
     header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
     h1 { margin:0; font-size:20px; }
     a { color: inherit; }
@@ -40,20 +40,20 @@
   </style>
 </head>
 <body class="app-shell">
+<div class="dashboard-shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <a class="sidebar-link" href="./index.html" title="Rankings" aria-label="Rankings">🏆</a>
+    <a class="sidebar-link" href="./graph.html" title="Graph" aria-label="Graph">📈</a>
+    <a class="sidebar-link" href="./debug.html" aria-current="page" title="Debug" aria-label="Debug">🧪</a>
+  </aside>
+
+  <main class="dashboard-main">
 <header class="page-header">
   <div>
     <div class="page-eyebrow">Model Diagnostics</div>
     <h1>Elo Debugger</h1>
     <div class="muted">Pick a historic match or create a synthetic match, then compare Elo deltas across saved parameter sets.</div>
   </div>
-  <nav class="site-nav-wrap" aria-label="Primary">
-    <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-    <div class="site-nav-menu">
-      <a href="./index.html">🏆 Rankings</a>
-      <a href="./graph.html">📈 Graph</a>
-      <a href="./debug.html" aria-current="page">🧪 Debug</a>
-    </div>
-  </nav>
 </header>
 
 <div class="wrap" style="margin-top:12px;">
@@ -176,7 +176,7 @@
     </div>
   </aside>
 
-  <main class="card">
+  <section class="card">
     <div class="twoCol">
       <section>
         <div class="row" style="justify-content:space-between;">
@@ -285,6 +285,8 @@
         <div class="small"><b>What you’re seeing:</b> “Pair Δ” is the raw Elo delta before splitting across teammates and across Skill/Form. Shares depend on the passenger settings. Skill/Form split uses α.</div>
       </div>
     </section>
+  </section>
+</div>
   </main>
 </div>
 
@@ -1045,7 +1047,6 @@ function hookUI(){
 }
 
 document.addEventListener("DOMContentLoaded", async ()=>{
-  wireSiteNav();
   hookUI();
   try{
     await loadAll();
@@ -1058,30 +1059,6 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     document.getElementById("dataStatus").style.background = "#fff0f0";
   }
 });
-
-function wireSiteNav(){
-  const wrap = document.querySelector('.site-nav-wrap');
-  if (!wrap) return;
-  const btn = wrap.querySelector('.nav-toggle');
-  if (!btn) return;
-
-  function closeMenu(){
-    wrap.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
-
-  btn.addEventListener('click', () => {
-    const open = wrap.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!wrap.contains(e.target)) closeMenu();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-}
 </script>
 </body>
 </html>

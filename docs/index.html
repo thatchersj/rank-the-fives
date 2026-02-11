@@ -8,7 +8,7 @@
 
 
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
     header { display:flex; gap:16px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; }
     h1 { margin:0; font-size: 24px; }
     .meta { color:#555; font-size: 14px; min-height: 20px; }
@@ -41,9 +41,9 @@
 
     /* Full-screen table mode (mobile landscape helper) */
     body.fullscreen-mode{ margin:0; }
-    body.fullscreen-mode > header,
-    body.fullscreen-mode > .note,
-    body.fullscreen-mode > .controls{ display:none; }
+    body.fullscreen-mode .sidebar,
+    body.fullscreen-mode .page-header,
+    body.fullscreen-mode #controlsCard{ display:none; }
     body.fullscreen-mode .table-wrap{
       position: fixed; inset: 0;
       max-height: 100vh;
@@ -229,34 +229,33 @@ font-variant-numeric: tabular-nums;
 </head>
 
 <body class="app-shell">
-  <header class="page-header">
-    <div>
-      <div class="page-eyebrow">Official Rankings</div>
-      <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1></div>
-      <nav class="site-nav-wrap" aria-label="Primary" style="margin-top:8px;">
-        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
-        <div class="site-nav-menu">
-          <a href="./index.html" aria-current="page">🏆 Rankings</a>
-          <a href="./graph.html">📈 Graph</a>
-          <a href="./debug.html">🧪 Debug</a>
-        </div>
-      </nav>
-      <div class="meta" id="status">Loading…</div>
-    </div>
-    <div class="actions">
-      <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
-      <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
-      <a
-        href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
-        target="_blank" rel="noopener"
-      >Submit new results</a>
-    
-      <button id="fsBtn" type="button" title="Full screen" aria-label="Toggle full screen">⛶</button>
-      <button id="helpBtn" type="button" title="Help" aria-label="Help">?</button>
-    </div>
-  </header>
+  <div class="dashboard-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="sidebar-link" href="./index.html" aria-current="page" title="Rankings" aria-label="Rankings">🏆</a>
+      <a class="sidebar-link" href="./graph.html" title="Graph" aria-label="Graph">📈</a>
+      <a class="sidebar-link" href="./debug.html" title="Debug" aria-label="Debug">🧪</a>
+    </aside>
 
-  <div class="section-card">
+    <main class="dashboard-main">
+      <header class="page-header">
+        <div>
+          <div class="page-eyebrow">Official Rankings</div>
+          <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1></div>
+          <div class="meta" id="status">Loading…</div>
+        </div>
+        <div class="actions header-tools">
+          <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
+          <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
+          <a
+            href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
+            target="_blank" rel="noopener"
+          >Submit new results</a>
+          <button id="fsBtn" type="button" title="Full screen" aria-label="Toggle full screen">⛶</button>
+          <button id="helpBtn" type="button" title="Help" aria-label="Help">?</button>
+        </div>
+      </header>
+
+  <div class="section-card" id="controlsCard">
     <div class="controls" style="margin:0;">
       <select id="snapshotSelect" aria-label="As of tournament"></select>
       <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
@@ -274,6 +273,8 @@ font-variant-numeric: tabular-nums;
   <noscript>
     <p><b>This page needs JavaScript enabled</b> to load rankings.</p>
   </noscript>
+    </main>
+  </div>
 
   <script>
     (function(){
@@ -1235,43 +1236,6 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', wireHelpModal);
 } else {
   wireHelpModal();
-}
-
-// ------------------------
-// Site nav (mobile hamburger)
-// ------------------------
-function wireSiteNav(){
-  const wrap = document.querySelector('.site-nav-wrap');
-  if (!wrap) return;
-  const btn = wrap.querySelector('.nav-toggle');
-  if (!btn) return;
-
-  function closeMenu(){
-    wrap.classList.remove('open');
-    btn.setAttribute('aria-expanded', 'false');
-  }
-  function openMenu(){
-    wrap.classList.add('open');
-    btn.setAttribute('aria-expanded', 'true');
-  }
-
-  btn.addEventListener('click', () => {
-    if (wrap.classList.contains('open')) closeMenu();
-    else openMenu();
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!wrap.contains(e.target)) closeMenu();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', wireSiteNav);
-} else {
-  wireSiteNav();
 }
 
 </script>
