@@ -51,12 +51,19 @@
   </style>
 </head>
 <body class="app-shell">
-  <h1>Rank Progression</h1>
+  <header class="page-header">
+    <div>
+      <div class="page-eyebrow">Trends & Comparisons</div>
+      <h1>Rank Progression</h1>
+      <div class="meta">Compare players across ranking and Elo series over time.</div>
+    </div>
+    <nav class="page-nav" aria-label="Primary">
+      <a href="./index.html" class="nav-pill">🏆 Rankings</a>
+      <a href="./debug.html" class="nav-pill">🧪 Debug</a>
+    </nav>
+  </header>
 
-  <div class="topbar" style="margin-bottom:8px;">
-    <a href="./index.html" style="font-size:13px; text-decoration:none; border:1px solid #ddd; border-radius:999px; padding:4px 10px;">← Back to table</a>
-  </div>
-
+  <div class="section-card">
   <div class="controls">
     <div class="control">
       <label>Players</label>
@@ -98,7 +105,9 @@
       </div>
     </div>
   </div>
+  </div>
 
+  <div class="section-card">
   <div class="legendRow">
     <div class="legendBox" style="min-width: 220px;">
       <div class="legendTitleRow">
@@ -121,6 +130,7 @@
       </div>
       <div id="seriesLegend"></div>
     </div>
+  </div>
   </div>
 
   <div id="chartsHost" class="grid"></div>

@@ -32,6 +32,54 @@ body.app-shell > :not(.modal-backdrop):not(.drawer-backdrop):not(.player-drawer)
 
 h1, h2, h3 { letter-spacing: -0.02em; color: var(--text); }
 
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.page-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.page-nav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nav-pill {
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.nav-pill:hover { background: var(--surface-2); }
+
+.section-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
 .meta, .muted, .small { color: var(--muted) !important; }
 
 .table-wrap,
