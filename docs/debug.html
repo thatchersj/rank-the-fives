@@ -358,8 +358,22 @@ async function loadAll(){
     fetch("./data/TournamentResults.txt").then(r=>r.text()),
     fetch("./data/matches_latest.json").then(r=>r.json())
   ]);
-  TOURN_ORDER = parseTournamentResults(trTxt);
   MATCHES = matchesJson;
+  TOURN_ORDER = Object.values(MATCHES.tournaments)
+  .map(t => ({
+    year: t.year,
+    comp: t.comp,
+    key: t.key,
+    compShort: t.comp[0].toUpperCase() // "K", "L", "N"
+  }))
+  .sort((a, b) => {
+    // sort newest year first
+    if (b.year !== a.year) return b.year - a.year;
+
+    // optional: sort comps in consistent order (K, N, L)
+    const order = { K: 1, N: 2, L: 0 };
+    return order[a.compShort] - order[b.compShort];
+  });
   // Build match index using tournament keys in matches file
   MATCH_INDEX = {};
   for(const [tkey, tinfo] of Object.entries(MATCHES.tournaments || {})){
