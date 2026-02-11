@@ -6,62 +6,213 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 12px; }
-    h1 { margin: 0 0 8px 0; }
-    .controls { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-    .control { font-size: 12px; }
-    select, button { padding: 4px; }
-    canvas { max-height: 70vh; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 12px; }
+    h1 { margin: 0 0 10px 0; font-size: 34px; }
+    .controls { display: grid; grid-template-columns: 1.2fr 1fr; gap: 12px; margin-bottom: 12px; align-items:start; }
+    .controls .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+    .control { font-size: 12px; min-width: 110px; }
+    label { display:block; margin-bottom:6px; font-weight:600; }
+    select, button { font: inherit; }
+    select { padding: 6px; border: 1px solid #ccc; border-radius: 10px; background: #fff; }
+    select[multiple] { width: 100%; min-height: 180px; }
+    button { padding: 8px 12px; border:1px solid #ccc; border-radius: 12px; background:#f7f7f7; }
+    .note { font-size: 12px; color:#666; margin: 8px 0 0 0; }
+    .canvasWrap { border:1px solid #eee; border-radius: 14px; padding: 10px; }
+    @media (max-width: 900px){
+      h1{ font-size: 40px; }
+      .controls{ grid-template-columns: 1fr; }
+      select[multiple]{ min-height: 220px; }
+    }
   </style>
 </head>
 <body>
-<h1>Rank Progression</h1>
-<div class="controls">
-<div class="control"><label>Players</label><br/><select id="playerSelect" multiple size="6"></select></div>
-<div class="control"><label>Series</label><br/><select id="seriesSelect" multiple size="6">
-<option value="official">Official (PC2)</option><option value="pc">PC</option>
-<option value="elo">Elo</option><option value="eloskill">EloSkill</option>
-<option value="eloform">EloForm</option></select></div>
-<div class="control"><label>Y axis</label><br/><select id="modeSelect">
-<option value="rank">Rank</option><option value="rating">Rating</option></select></div>
-<div class="control"><label>From</label><br/><select id="fromSelect"></select></div>
-<div class="control"><label>To</label><br/><select id="toSelect"></select></div>
-<div class="control"><br/><button onclick="updateChart()">Update</button></div>
-</div>
-<canvas id="chart"></canvas>
+  <h1>Rank Progression</h1>
+
+  <div class="controls">
+    <div class="row">
+      <div class="control" style="flex:1; min-width:220px;">
+        <label>Players</label>
+        <select id="playerSelect" multiple></select>
+        <div class="note">Tip: tap-and-hold to multi-select on iOS.</div>
+      </div>
+
+      <div class="control" style="flex:1; min-width:180px;">
+        <label>Series</label>
+        <select id="seriesSelect" multiple>
+          <option value="PC2">Official (PC2)</option>
+          <option value="PC">PC</option>
+          <option value="Elo">Elo</option>
+          <option value="EloSkill">EloSkill</option>
+          <option value="EloForm">EloForm</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="control">
+        <label>Y axis</label>
+        <select id="modeSelect">
+          <option value="rank">Rank</option>
+          <option value="rating">Rating</option>
+        </select>
+      </div>
+
+      <div class="control">
+        <label>From</label>
+        <select id="fromSelect"></select>
+      </div>
+
+      <div class="control">
+        <label>To</label>
+        <select id="toSelect"></select>
+      </div>
+
+      <div class="control">
+        <button id="btnUpdate">Update</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="canvasWrap">
+    <canvas id="chart"></canvas>
+  </div>
+
 <script>
-let snapshots=[], chart;
-fetch("./data/rankings_snapshots.json").then(r=>r.json()).then(d=>{snapshots=d.snapshots;init();});
-function init(){
- const players=new Set(); snapshots.forEach(s=>Object.keys(s.players).forEach(p=>players.add(p)));
- const ps=document.getElementById("playerSelect");
- [...players].sort().forEach(p=>{const o=document.createElement("option");o.value=p;o.textContent=p.replace("|",".");ps.appendChild(o);});
- const f=fromSelect,t=toSelect;
- snapshots.forEach((s,i)=>{const o=document.createElement("option");o.value=i;o.textContent=s.label;f.appendChild(o);t.appendChild(o.cloneNode(true));});
- f.value=0; t.value=snapshots.length-1;
-}
-function sel(el){return [...el.selectedOptions].map(o=>o.value);}
-function updateChart(){
- const players=sel(playerSelect), series=sel(seriesSelect);
- if(!players.length||!series.length) return;
- const from=+fromSelect.value,to=+toSelect.value,mode=modeSelect.value;
- const labels=snapshots.slice(from,to+1).map(s=>s.label), datasets=[];
- players.forEach(p=>series.forEach(s=>{
-  const data=snapshots.slice(from,to+1).map(sn=>{
-   const r=sn.players[p]; if(!r) return null;
-   if(mode==="rank"){ if(s==="official") return r.rank;
-    const arr=Object.values(sn.players).filter(x=>x[s]).sort((a,b)=>b[s]-a[s]);
-    return arr.findIndex(x=>x===r)+1;}
-   return s==="official"?r.pc2:r[s];
+let snapshots = [];       // [{key,label,records:[...]}]
+let snapMaps = [];        // [{ key,label,map: { "I|SUR": rec } }]
+let chart = null;
+
+function keyFromRec(rec){ return `${rec.Initial}|${rec.Surname}`; }
+function labelFromKey(key){ return key.replace("|", "."); }
+function getSelectedValues(sel){ return [...sel.selectedOptions].map(o => o.value); }
+
+async function loadData(){
+  const data = await fetch("./data/rankings_snapshots.json").then(r=>r.json());
+  snapshots = data.snapshots || [];
+  snapMaps = snapshots.map(s => {
+    const m = {};
+    (s.records || []).forEach(rec => { m[keyFromRec(rec)] = rec; });
+    return { key: s.key, label: s.label, map: m, records: (s.records||[]) };
   });
-  datasets.push({label:p.replace("|",".")+" – "+s,data,borderWidth:2,spanGaps:false});
- }));
- if(chart) chart.destroy();
- chart=new Chart(chartCanvas={getContext:()=>document.getElementById("chart").getContext("2d")},{
-  type:"line", data:{labels,datasets},
-  options:{interaction:{mode:"index",intersect:false},
-   scales:{y:mode==="rank"?{reverse:true}:{}}
- }});
 }
+
+function initControls(){
+  const players = new Set();
+  snapMaps.forEach(s => Object.keys(s.map).forEach(k => players.add(k)));
+  const ps = document.getElementById("playerSelect");
+  ps.innerHTML = "";
+  [...players].sort().forEach(k => {
+    const o = document.createElement("option");
+    o.value = k;
+    o.textContent = labelFromKey(k);
+    ps.appendChild(o);
+  });
+
+  const from = document.getElementById("fromSelect");
+  const to = document.getElementById("toSelect");
+  from.innerHTML = ""; to.innerHTML = "";
+  snapMaps.forEach((s,i) => {
+    const o1 = document.createElement("option");
+    o1.value = i; o1.textContent = s.label;
+    const o2 = o1.cloneNode(true);
+    from.appendChild(o1); to.appendChild(o2);
+  });
+  from.value = "0";
+  to.value = String(Math.max(0, snapMaps.length - 1));
+
+  // sensible defaults: select first series + empty players (user chooses)
+  const seriesSelect = document.getElementById("seriesSelect");
+  [...seriesSelect.options].forEach((opt, idx)=>{ opt.selected = (idx===0); });
+}
+
+function computeRankForSeries(snapshot, seriesKey, playerKey){
+  // rank by seriesKey descending (higher rating => better rank)
+  const arr = snapshot.records
+    .map(r => ({ key: keyFromRec(r), val: r[seriesKey] }))
+    .filter(x => x.val !== null && x.val !== undefined && x.val !== "" && !Number.isNaN(Number(x.val)))
+    .sort((a,b) => Number(b.val) - Number(a.val));
+
+  const idx = arr.findIndex(x => x.key === playerKey);
+  return idx >= 0 ? (idx + 1) : null;
+}
+
+function buildDatasets(playerKeys, seriesKeys, fromIdx, toIdx, mode){
+  const slice = snapMaps.slice(fromIdx, toIdx+1);
+  const labels = slice.map(s => s.label);
+  const datasets = [];
+
+  for(const p of playerKeys){
+    for(const series of seriesKeys){
+      const data = slice.map(snap => {
+        const rec = snap.map[p];
+        if(!rec) return null;
+
+        if(mode === "rank"){
+          if(series === "__OFFICIAL_RANK__") return rec.Rank ?? null;
+          // PC2 rank should still be computed by rating if user selected "Official (PC2)" in rank mode.
+          return computeRankForSeries(snap, series, p);
+        } else {
+          // rating mode: return rating value
+          const v = rec[series];
+          return (v === undefined || v === null || v === "") ? null : Number(v);
+        }
+      });
+
+      datasets.push({
+        label: `${labelFromKey(p)} – ${series === "__OFFICIAL_RANK__" ? "Official Rank" : (series==="PC2" ? "Official (PC2)" : series)}`,
+        data,
+        borderWidth: 2,
+        spanGaps: false,
+        pointRadius: 3
+      });
+    }
+  }
+  return { labels, datasets };
+}
+
+function updateChart(){
+  const playerKeys = getSelectedValues(playerSelect);
+  const rawSeries = getSelectedValues(seriesSelect);
+  if(!playerKeys.length){ alert("Select at least one player."); return; }
+  if(!rawSeries.length){ alert("Select at least one series."); return; }
+
+  const fromIdx = Number(fromSelect.value);
+  const toIdx = Number(toSelect.value);
+  const lo = Math.min(fromIdx, toIdx);
+  const hi = Math.max(fromIdx, toIdx);
+  const mode = modeSelect.value;
+
+  // In rank mode, allow explicit official rank by selecting PC2? You preferred rank plotted against rank.
+  // We'll treat "Official (PC2)" as PC2 in rating mode, but in rank mode user still gets PC2-derived rank.
+  const seriesKeys = rawSeries;
+
+  const ctx = document.getElementById("chart");
+  const { labels, datasets } = buildDatasets(playerKeys, seriesKeys, lo, hi, mode);
+
+  if(chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      scales: {
+        y: mode === "rank" ? { reverse: true, beginAtZero: false, ticks: { precision: 0 } } : { }
+      },
+      plugins: {
+        legend: { display: true }
+      }
+    }
+  });
+}
+
+document.getElementById("btnUpdate").addEventListener("click", updateChart);
+
+(async function(){
+  await loadData();
+  initControls();
+})();
 </script>
-</body></html>
+</body>
+</html>
