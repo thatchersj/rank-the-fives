@@ -58,6 +58,49 @@ h1, h2, h3 { letter-spacing: -0.02em; color: var(--text); }
   flex-wrap: wrap;
 }
 
+.site-nav-wrap {
+  position: relative;
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.site-nav-menu {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.site-nav-menu a {
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.site-nav-menu a:hover { background: var(--surface-2); }
+
+.site-nav-menu a[aria-current="page"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .nav-pill {
   text-decoration: none;
   font-size: 13px;
@@ -156,6 +199,52 @@ table thead th {
 
 .actions { gap: 8px !important; }
 
+.player-drawer .close,
+.player-drawer .compare-row select,
+.player-drawer .compare-row button {
+  height: 38px;
+  border-radius: 10px;
+}
+
+.player-drawer .compare-row button {
+  border: 1px solid var(--accent) !important;
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.player-drawer .compare-row button:hover {
+  border-color: var(--accent-strong) !important;
+  background: var(--accent-strong) !important;
+}
+
 @media (max-width: 900px) {
   body.app-shell { padding: 14px; }
+
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .site-nav-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 220px;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+    flex-direction: column;
+    z-index: 60;
+  }
+
+  .site-nav-wrap.open .site-nav-menu {
+    display: flex;
+  }
+
+  .site-nav-menu a {
+    border-radius: 10px;
+    padding: 10px;
+  }
 }

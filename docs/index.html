@@ -233,9 +233,13 @@ font-variant-numeric: tabular-nums;
     <div>
       <div class="page-eyebrow">Official Rankings</div>
       <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1></div>
-      <nav class="page-nav" aria-label="Primary" style="margin-top:8px;">
-        <a href="./graph.html" class="nav-pill">📈 Graph</a>
-        <a href="./debug.html" class="nav-pill">🧪 Debug</a>
+      <nav class="site-nav-wrap" aria-label="Primary" style="margin-top:8px;">
+        <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+        <div class="site-nav-menu">
+          <a href="./index.html" aria-current="page">🏆 Rankings</a>
+          <a href="./graph.html">📈 Graph</a>
+          <a href="./debug.html">🧪 Debug</a>
+        </div>
       </nav>
       <div class="meta" id="status">Loading…</div>
     </div>
@@ -253,18 +257,9 @@ font-variant-numeric: tabular-nums;
   </header>
 
   <div class="section-card">
-    <div class="note" style="margin:0 0 12px;">
-      Tap a column header to sort (mobile supported). Search to find a player.
-      <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>.</div>
-    </div>
-
     <div class="controls" style="margin:0;">
       <select id="snapshotSelect" aria-label="As of tournament"></select>
       <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
-      <div class="segmented" role="group" aria-label="View mode">
-        <button id="viewTableBtn" type="button" aria-pressed="true">Table</button>
-        <button id="viewTrendsBtn" type="button" aria-pressed="false">Trends</button>
-      </div>
       <span class="small" id="count"></span>
     </div>
   </div>
@@ -302,8 +297,6 @@ const statusEl = document.getElementById("status");
       const countEl = document.getElementById("count");
       const searchBox = document.getElementById("searchBox");
       const snapshotSelect = document.getElementById('snapshotSelect');
-      const viewTableBtn = document.getElementById('viewTableBtn');
-      const viewTrendsBtn = document.getElementById('viewTrendsBtn');
       const theadRow = document.getElementById("theadRow");
       const tbody = document.querySelector("#rankings tbody");
       const table = document.getElementById("rankings");
@@ -638,32 +631,6 @@ function looksLikeResultColumn(colName) {
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') closePlayerDrawer();
         });
-      }
-
-      function bindViewToggle(){
-        function setMode(mode){
-          const isTable = mode !== 'trends';
-          viewTableBtn?.setAttribute('aria-pressed', isTable ? 'true' : 'false');
-          viewTrendsBtn?.setAttribute('aria-pressed', isTable ? 'false' : 'true');
-          setUrlParam('view', isTable ? 'table' : 'trends');
-        }
-
-        viewTableBtn?.addEventListener('click', () => setMode('table'));
-        viewTrendsBtn?.addEventListener('click', () => {
-          setMode('trends');
-          const u = new URL('./graph.html', window.location.href);
-          const selected = window.__SELECTED_PLAYER_KEY__ || getUrlParam('player');
-          if (selected) u.searchParams.set('players', selected);
-          const snap = snapshotSelect?.value || 'latest';
-          if (snap !== 'latest') {
-            u.searchParams.set('from', snap);
-            u.searchParams.set('to', snap);
-          }
-          window.location.href = u.toString();
-        });
-
-        const requested = (getUrlParam('view') || 'table').toLowerCase();
-        setMode(requested === 'trends' ? 'trends' : 'table');
       }
 
       function getCellValue(row, idx) {
@@ -1153,8 +1120,6 @@ function looksLikeResultColumn(colName) {
           enableSortAndSearch();
           attachCellClicks(matchesData);
           attachRowClicks();
-          bindViewToggle();
-
           const deepPlayer = getUrlParam('player');
           if (deepPlayer) {
             const exists = (window.__CURRENT_RENDER_DATA || []).some(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === deepPlayer);
@@ -1270,6 +1235,43 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', wireHelpModal);
 } else {
   wireHelpModal();
+}
+
+// ------------------------
+// Site nav (mobile hamburger)
+// ------------------------
+function wireSiteNav(){
+  const wrap = document.querySelector('.site-nav-wrap');
+  if (!wrap) return;
+  const btn = wrap.querySelector('.nav-toggle');
+  if (!btn) return;
+
+  function closeMenu(){
+    wrap.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+  function openMenu(){
+    wrap.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+
+  btn.addEventListener('click', () => {
+    if (wrap.classList.contains('open')) closeMenu();
+    else openMenu();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireSiteNav);
+} else {
+  wireSiteNav();
 }
 
 </script>

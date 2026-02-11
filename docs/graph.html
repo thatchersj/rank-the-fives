@@ -57,9 +57,13 @@
       <h1>Rank Progression</h1>
       <div class="meta">Compare players across ranking and Elo series over time.</div>
     </div>
-    <nav class="page-nav" aria-label="Primary">
-      <a href="./index.html" class="nav-pill">🏆 Rankings</a>
-      <a href="./debug.html" class="nav-pill">🧪 Debug</a>
+    <nav class="site-nav-wrap" aria-label="Primary">
+      <button class="nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+      <div class="site-nav-menu">
+        <a href="./index.html">🏆 Rankings</a>
+        <a href="./graph.html" aria-current="page">📈 Graph</a>
+        <a href="./debug.html">🧪 Debug</a>
+      </div>
     </nav>
   </header>
 
@@ -661,6 +665,36 @@ function updateAll(){
       }));
     });
   });
+}
+
+function wireSiteNav(){
+  const wrap = document.querySelector('.site-nav-wrap');
+  if (!wrap) return;
+  const btn = wrap.querySelector('.nav-toggle');
+  if (!btn) return;
+
+  function closeMenu(){
+    wrap.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+
+  btn.addEventListener('click', () => {
+    const open = wrap.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', wireSiteNav);
+} else {
+  wireSiteNav();
 }
 </script>
 </body>
