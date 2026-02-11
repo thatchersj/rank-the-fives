@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-04T01:42:21Z",
+  "generatedAt": "2026-02-11T11:23:44Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -11569,6 +11569,292 @@
             "S|TAILOR"
           ],
           "raw": "R.Houlden & H.Young beat C.Plummer & S.Tailor 3-0 (12-0, 12-7, 12-7)",
+          "round": "F",
+          "roundName": "Final"
+        }
+      ]
+    },
+    "26 N": {
+      "tournament": "2026 Northern",
+      "year": 2026,
+      "comp": "Northern",
+      "key": "26 N",
+      "nq": [
+        "A|ABRAHAMS",
+        "A|AGARWAL",
+        "A|HEALY",
+        "A|KNIGHT",
+        "A|LUMBARD",
+        "A|MORRIS",
+        "A|SAPOZHENKO",
+        "A|SHETTY",
+        "B|ADENUGBA",
+        "C|DINMORE",
+        "C|DOVASTON",
+        "D|INGRAM",
+        "D|METELSKIY",
+        "E|CALDWELL",
+        "E|SCOONES",
+        "G|BATTERSBY",
+        "H|ETHERINGTON",
+        "J|HUGHES",
+        "J|LEVINSON",
+        "K|BHAVSAR",
+        "L|DRUMMOND",
+        "L|WHITNALL",
+        "M|CHINERY",
+        "N|HAMMOND",
+        "O|RUSHTON",
+        "P|GRIFFITHS",
+        "P|HOLLAND",
+        "R|DARKE",
+        "R|HAIDER",
+        "SAHIL|SHAH",
+        "S|BELFIELD",
+        "S|SPIBY",
+        "T|ARJARIA",
+        "W|THOMAS",
+        "YEE|MAK",
+        "Y|LUO"
+      ],
+      "nqTeams": [
+        {
+          "team": "A.Agarwal & T.Arjaria",
+          "players": [
+            "A|AGARWAL",
+            "T|ARJARIA"
+          ]
+        },
+        {
+          "team": "H.Etherington & O.Rushton",
+          "players": [
+            "H|ETHERINGTON",
+            "O|RUSHTON"
+          ]
+        },
+        {
+          "team": "N.Hammond & D.Metelskiy",
+          "players": [
+            "N|HAMMOND",
+            "D|METELSKIY"
+          ]
+        },
+        {
+          "team": "P.Griffiths & S.Belfield",
+          "players": [
+            "P|GRIFFITHS",
+            "S|BELFIELD"
+          ]
+        },
+        {
+          "team": "J.Hughes & E.Caldwell",
+          "players": [
+            "J|HUGHES",
+            "E|CALDWELL"
+          ]
+        },
+        {
+          "team": "A.Morris & Yee Lok Mak",
+          "players": [
+            "A|MORRIS",
+            "YEE|MAK"
+          ]
+        },
+        {
+          "team": "M.Chinery & A.Knight",
+          "players": [
+            "M|CHINERY",
+            "A|KNIGHT"
+          ]
+        },
+        {
+          "team": "A.Healy & R.Haider",
+          "players": [
+            "A|HEALY",
+            "R|HAIDER"
+          ]
+        },
+        {
+          "team": "A.Abrahams & Sahil Shah",
+          "players": [
+            "A|ABRAHAMS",
+            "SAHIL|SHAH"
+          ]
+        },
+        {
+          "team": "S.Spiby & R.Darke",
+          "players": [
+            "S|SPIBY",
+            "R|DARKE"
+          ]
+        },
+        {
+          "team": "A.Lumbard & E.Scoones",
+          "players": [
+            "A|LUMBARD",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "L.Whitnall & K.Bhavsar",
+          "players": [
+            "L|WHITNALL",
+            "K|BHAVSAR"
+          ]
+        },
+        {
+          "team": "A.Sapozhenko & B.Adenugba",
+          "players": [
+            "A|SAPOZHENKO",
+            "B|ADENUGBA"
+          ]
+        },
+        {
+          "team": "Y.Luo & A.Shetty",
+          "players": [
+            "Y|LUO",
+            "A|SHETTY"
+          ]
+        },
+        {
+          "team": "C.Dinmore & D.Ingram",
+          "players": [
+            "C|DINMORE",
+            "D|INGRAM"
+          ]
+        },
+        {
+          "team": "G.Battersby & C.Dovaston",
+          "players": [
+            "G|BATTERSBY",
+            "C|DOVASTON"
+          ]
+        },
+        {
+          "team": "L.Drummond & J.Levinson",
+          "players": [
+            "L|DRUMMOND",
+            "J|LEVINSON"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        }
+      ],
+      "matches": [
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "T.Cox & R.Worth",
+          "score": "3-0 (12-2, 12-3, 12-4)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "T|COX",
+            "R|WORTH"
+          ],
+          "raw": "R.Houlden & H.Young beat T.Cox & R.Worth 3-0 (12-2, 12-3, 12-4)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "L.Brock & N.Caplin",
+          "loserTeam": "E.Taylor & H.Blofield",
+          "score": "3-1 (12-6, 7-12, 12-10, 12-3)",
+          "winners": [
+            "L|BROCK",
+            "N|CAPLIN"
+          ],
+          "losers": [
+            "E|TAYLOR",
+            "H|BLOFIELD"
+          ],
+          "raw": "L.Brock & N.Caplin beat E.Taylor & H.Blofield 3-1 (12-6, 7-12, 12-10, 12-3)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "C.Plummer & S.Tailor",
+          "loserTeam": "H.Wiseman & P.Sathiyamoorthy",
+          "score": "3-0 (12-5, 12-4, 13-10)",
+          "winners": [
+            "C|PLUMMER",
+            "S|TAILOR"
+          ],
+          "losers": [
+            "H|WISEMAN",
+            "P|SATHIYAMOORTHY"
+          ],
+          "raw": "C.Plummer & S.Tailor beat H.Wiseman & P.Sathiyamoorthy 3-0 (12-5, 12-4, 13-10)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "T.Dunbar & S.Cooley",
+          "loserTeam": "J.Toop & G.Wiseman",
+          "score": "3-0 (12-2, 12-1, 12-3)",
+          "winners": [
+            "T|DUNBAR",
+            "S|COOLEY"
+          ],
+          "losers": [
+            "J|TOOP",
+            "G|WISEMAN"
+          ],
+          "raw": "T.Dunbar & S.Cooley beat J.Toop & G.Wiseman 3-0 (12-2, 12-1, 12-3)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "L.Brock & N.Caplin",
+          "score": "3-0 (12-2, 12-5, 12-4)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "L|BROCK",
+            "N|CAPLIN"
+          ],
+          "raw": "R.Houlden & H.Young beat L.Brock & N.Caplin 3-0 (12-2, 12-5, 12-4)",
+          "round": "SF",
+          "roundName": "Semi-Finals"
+        },
+        {
+          "winnerTeam": "T.Dunbar & S.Cooley",
+          "loserTeam": "C.Plummer & S.Tailor",
+          "score": "3-0 (12-7, 13-10, 12-2)",
+          "winners": [
+            "T|DUNBAR",
+            "S|COOLEY"
+          ],
+          "losers": [
+            "C|PLUMMER",
+            "S|TAILOR"
+          ],
+          "raw": "T.Dunbar & S.Cooley beat C.Plummer & S.Tailor 3-0 (12-7, 13-10, 12-2)",
+          "round": "SF",
+          "roundName": "Semi-Finals"
+        },
+        {
+          "winnerTeam": "T.Dunbar & S.Cooley",
+          "loserTeam": "R.Houlden & H.Young",
+          "score": "3-1 (12-7, 12-7, 5-12, 12-10)",
+          "winners": [
+            "T|DUNBAR",
+            "S|COOLEY"
+          ],
+          "losers": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "raw": "T.Dunbar & S.Cooley beat R.Houlden & H.Young 3-1 (12-7, 12-7, 5-12, 12-10)",
           "round": "F",
           "roundName": "Final"
         }
