@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
-    h1 { margin: 0 0 10px 0; font-size: 34px; letter-spacing: -0.5px; }
+    h1 { margin: 0 0 10px 0; }
 
     .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom: 12px; }
     .topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
@@ -43,7 +43,6 @@
     canvas { width: 100% !important; height: 100% !important; display:block; }
 
     @media (max-width: 520px){
-      h1 { font-size: 30px; }
       .multi { width: 92vw; height: 200px; }
       .chartBox { height: 58vh; min-height: 300px; }
       .grid { grid-template-columns: 1fr !important; }
@@ -55,7 +54,7 @@
     <aside class="sidebar" aria-label="Primary navigation">
       <a class="sidebar-link" href="./index.html" title="Rankings" aria-label="Rankings">🏆</a>
       <a class="sidebar-link" href="./graph.html" aria-current="page" title="Graph" aria-label="Graph">📈</a>
-      <a class="sidebar-link" href="./debug.html" title="Debug" aria-label="Debug">🧪</a>
+      <a class="sidebar-link" href="./debug.html" title="Elo Explorer" aria-label="Elo Explorer">🧪</a>
     </aside>
 
     <main class="dashboard-main">
