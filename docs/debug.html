@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Elo Debugger — Eton Fives Rankings</title>
+  <title>Elo Explorer — Eton Fives Rankings</title>
+  <link rel="stylesheet" href="./styles.css" />
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
     header { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-    h1 { margin:0; font-size:20px; }
+    h1 { margin:0; }
     a { color: inherit; }
-    .wrap { display:grid; grid-template-columns: 360px 1fr; gap:16px; align-items:start; }
-    @media (max-width: 980px){ .wrap{ grid-template-columns: 1fr; } }
+    .stack { display:grid; grid-template-columns: 1fr; gap:12px; align-items:start; }
     .card { border:1px solid #ddd; border-radius:12px; padding:12px; background:#fff; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
     .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     label { font-size:12px; color:#444; display:block; margin-bottom:4px; }
@@ -31,37 +31,108 @@
     th { text-align:left; position:sticky; top:0; background:#fff; z-index:1; }
     .kpi { font-size: 12px; color:#333; }
     .kpi b { font-weight:700; }
-    .twoCol { display:grid; grid-template-columns: 1fr 1fr; gap:14px; }
-    @media (max-width: 980px){ .twoCol{ grid-template-columns: 1fr; } }
+    .twoCol { display:grid; grid-template-columns: 1fr auto 1fr; gap:14px; align-items: stretch; }
+    .midBridge { display:flex; align-items:center; justify-content:center; }
+    .bridgeBtn {
+      min-width: 44px;
+      height: 40px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    @media (max-width: 980px){
+      .twoCol{ grid-template-columns: 1fr; }
+      .midBridge { justify-content:flex-start; }
+    }
     .hr { height:1px; background:#eee; margin:10px 0; }
     .note { background:#f6faff; border:1px solid #d7e8ff; padding:10px; border-radius:10px; }
     .badge { display:inline-block; padding:2px 8px; border:1px solid #ddd; border-radius:999px; font-size:12px; background:#fafafa; }
+    details.card summary {
+      cursor: pointer;
+      list-style: none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:700;
+    }
+    details.card summary::-webkit-details-marker { display:none; }
+    details.card summary::after {
+      content: "▸";
+      font-size: 14px;
+      color: #666;
+      transition: transform .15s ease;
+    }
+    details.card[open] summary::after { transform: rotate(90deg); }
+    .details-body { margin-top: 10px; }
+    .toast-host {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 8px;
+      z-index: 1300;
+      pointer-events: none;
+    }
+    .toast {
+      pointer-events: auto;
+      min-width: 240px;
+      max-width: min(86vw, 380px);
+      border: 1px solid #dbe2ea;
+      border-left: 4px solid #2563eb;
+      background: #fff;
+      color: #0f172a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: toast-in .18s ease forwards;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .toast.warn { border-left-color: #d97706; }
+    .toast.err { border-left-color: #dc2626; }
+    @keyframes toast-in {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes toast-out {
+      to { opacity: 0; transform: translateY(8px); }
+    }
   </style>
 </head>
-<body>
-<header>
+<body class="app-shell">
+<div class="dashboard-shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <a class="sidebar-link" href="./index.html" title="Rankings" aria-label="Rankings">🏆</a>
+    <a class="sidebar-link" href="./graph.html" title="Graph" aria-label="Graph">📈</a>
+    <a class="sidebar-link" href="./debug.html" aria-current="page" title="Elo Explorer" aria-label="Elo Explorer">🧪</a>
+  </aside>
+
+  <main class="dashboard-main">
+<header class="page-header">
   <div>
-    <h1>Elo Debugger</h1>
-    <div class="muted">Pick a historic match or create a synthetic match, then compare Elo deltas across saved parameter sets.</div>
-  </div>
-  <div class="row">
-    <a href="./index.html" class="badge">← Back to rankings</a>
+    <div class="page-eyebrow">Model Diagnostics</div>
+    <h1>Elo Explorer</h1>
+    <div class="muted page-subtitle">Pick a historic match or create a synthetic match, then compare Elo deltas across saved parameter sets.</div>
   </div>
 </header>
 
-<div class="wrap" style="margin-top:12px;">
-  <aside class="card">
+<div class="stack" style="margin-top:12px;">
+  <section class="card">
     <div class="row" style="justify-content:space-between;">
       <div><strong>Parameter sets</strong><div class="muted">Saved in this browser session.</div></div>
       <button id="btnReset" class="danger" title="Clear all saved sets">Clear</button>
     </div>
     <div id="setList"></div>
+  </section>
 
-    <div class="hr"></div>
-    <div><strong>Edit / create</strong></div>
-    <div class="muted">Change values, then save as a named set. Default matches the site’s current Elo settings.</div>
+  <details class="card">
+    <summary>Edit / create parameter set</summary>
+    <div class="details-body">
+      <div class="muted">Change values, then save as a named set. Default matches the site’s current Elo settings.</div>
 
-    <div class="grid2" style="margin-top:10px;">
+      <div class="grid2" style="margin-top:10px;">
       <div>
         <label>K base</label>
         <input id="p_kBase" type="number" step="0.1">
@@ -135,8 +206,8 @@
       <div>
         <label>Mode</label>
         <select id="p_passMode">
-          <option value="fixed">Fixed 60/40 (legacy)</option>
           <option value="prop">Proportional (gap-based)</option>
+          <option value="fixed">Fixed 60/40 (legacy)</option>
         </select>
       </div>
       <div>
@@ -167,9 +238,10 @@
     <div class="note" style="margin-top:10px;">
       <div class="small"><b>Tip:</b> Create two or three parameter sets (e.g. “Default”, “High K”, “Fast form decay”), then switch matches to see how they behave.</div>
     </div>
-  </aside>
+    </div>
+  </details>
 
-  <main class="card">
+  <section class="card">
     <div class="twoCol">
       <section>
         <div class="row" style="justify-content:space-between;">
@@ -187,6 +259,10 @@
           </div>
         </div>
       </section>
+
+      <div class="midBridge" aria-hidden="true">
+        <button id="btnCopyToSynthetic" class="bridgeBtn" type="button" title="Copy selected historic match to synthetic inputs">&gt;&gt;</button>
+      </div>
 
       <section>
         <div><strong>Synthetic match</strong><div class="muted">Create a match using players’ Elo at a chosen point in history.</div></div>
@@ -278,12 +354,17 @@
         <div class="small"><b>What you’re seeing:</b> “Pair Δ” is the raw Elo delta before splitting across teammates and across Skill/Form. Shares depend on the passenger settings. Skill/Form split uses α.</div>
       </div>
     </section>
+  </section>
+</div>
+
+<div id="toastHost" class="toast-host" aria-live="polite" aria-atomic="true"></div>
   </main>
 </div>
 
 <script>
 /** -------- Session param sets -------- */
 const STORAGE_KEY = "eloDebugParamSets_v1";
+const DEBUG_VIEW_KEY = "eloDebugViewState_v1";
 function loadSets(){
   try{ return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "[]"); }catch(e){ return []; }
 }
@@ -291,6 +372,37 @@ function saveSets(sets){
   sessionStorage.setItem(STORAGE_KEY, JSON.stringify(sets));
 }
 function uid(){ return Math.random().toString(16).slice(2) + Date.now().toString(16); }
+
+function readDebugViewState(){
+  try{ return JSON.parse(localStorage.getItem(DEBUG_VIEW_KEY) || "null"); }catch(e){ return null; }
+}
+function saveDebugViewState(){
+  const ids = ["selTourn","selMatch","synAsOf","synState","synW1","synW2","synL1","synL2","synRound","synFlags"];
+  const state = {};
+  for (const id of ids){
+    const el = document.getElementById(id);
+    if (!el) continue;
+    state[id] = el.value;
+  }
+  try{ localStorage.setItem(DEBUG_VIEW_KEY, JSON.stringify(state)); }catch(e){}
+}
+function restoreDebugViewState(){
+  const s = readDebugViewState();
+  if (!s) return;
+
+  if (s.selTourn) safeSetSelect("selTourn", s.selTourn);
+  populateMatchSelect(document.getElementById("selTourn")?.value);
+
+  if (s.selMatch != null) safeSetSelect("selMatch", String(s.selMatch));
+  if (s.synAsOf) safeSetSelect("synAsOf", s.synAsOf);
+  if (s.synState) safeSetSelect("synState", s.synState);
+  if (s.synW1) safeSetSelect("synW1", s.synW1);
+  if (s.synW2) safeSetSelect("synW2", s.synW2);
+  if (s.synL1) safeSetSelect("synL1", s.synL1);
+  if (s.synL2) safeSetSelect("synL2", s.synL2);
+  if (s.synRound) safeSetSelect("synRound", s.synRound);
+  if (s.synFlags !== undefined) safeSetSelect("synFlags", s.synFlags);
+}
 
 /** -------- Defaults (should match calc_rankings.py) -------- */
 const DEFAULTS = {
@@ -381,6 +493,8 @@ async function loadAll(){
   }
   // Populate UI
   populateTournamentSelects();
+  restoreDebugViewState();
+  saveDebugViewState();
   document.getElementById("dataStatus").textContent = "Loaded";
 }
 
@@ -405,7 +519,10 @@ function populateTournamentSelects(){
     opt2.textContent = `${t.year} ${t.comp}`;
     synAsOf.appendChild(opt2);
   }
-  selT.addEventListener("change", ()=>populateMatchSelect(selT.value));
+  selT.addEventListener("change", ()=>{
+    populateMatchSelect(selT.value);
+    saveDebugViewState();
+  });
   populateMatchSelect(selT.value);
 
   // synAsOf.addEventListener("change", ()=>populatePlayerSelects());
@@ -760,7 +877,7 @@ function setEditorFromParams(p){
   document.getElementById("p_wQF").value = p.wQF;
   document.getElementById("p_wSF").value = p.wSF;
   document.getElementById("p_wF").value = p.wF;
-  document.getElementById("p_passMode").value = p.passMode || "fixed";
+  document.getElementById("p_passMode").value = p.passMode || "prop";
   document.getElementById("p_passFixedLow").value = p.passFixedLow;
   document.getElementById("p_passMaxBias").value = p.passMaxBias;
   document.getElementById("p_passDiffScale").value = p.passDiffScale;
@@ -808,6 +925,67 @@ function ensureDefaultSet(){
 }
 
 function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+function showToast(message, type="ok"){
+  const host = document.getElementById("toastHost");
+  if(!host) return;
+  const t = document.createElement("div");
+  t.className = `toast ${type === "warn" ? "warn" : (type === "err" ? "err" : "")}`.trim();
+  t.textContent = String(message || "Done");
+  host.appendChild(t);
+  const life = 2600;
+  window.setTimeout(()=>{
+    t.style.animation = "toast-out .18s ease forwards";
+    window.setTimeout(()=> t.remove(), 220);
+  }, life);
+}
+
+function inferFlagsFromScore(score){
+  const s = String(score || "").toLowerCase();
+  if(/\b(w\/o|wo|walkover)\b/.test(s)) return "wo";
+  if(/\bret\b/.test(s)) return "ret";
+  return "";
+}
+
+function safeSetSelect(id, value){
+  const sel = document.getElementById(id);
+  if(!sel) return false;
+  const exists = Array.from(sel.options || []).some(o => o.value === value);
+  if(!exists) return false;
+  sel.value = value;
+  return true;
+}
+
+function copyHistoricToSynthetic(){
+  const sel = historicSelection();
+  if(!sel || !sel.match){
+    showToast("No historic match selected", "warn");
+    return;
+  }
+  const m = sel.match;
+  const wins = Array.isArray(m.winners) ? m.winners : [];
+  const losses = Array.isArray(m.losers) ? m.losers : [];
+  if(wins.length < 2 || losses.length < 2){
+    showToast("Historic match does not contain two complete pairs", "warn");
+    return;
+  }
+
+  const okT = safeSetSelect("synAsOf", sel.tkey);
+  const okW1 = safeSetSelect("synW1", wins[0]);
+  const okW2 = safeSetSelect("synW2", wins[1]);
+  const okL1 = safeSetSelect("synL1", losses[0]);
+  const okL2 = safeSetSelect("synL2", losses[1]);
+  const okR = safeSetSelect("synRound", (m.round || "L16"));
+  safeSetSelect("synFlags", inferFlagsFromScore(m.score || ""));
+
+  if(!(okT && okW1 && okW2 && okL1 && okL2 && okR)){
+    saveDebugViewState();
+    showToast("Copied partially: some fields were unavailable in synthetic options", "warn");
+    return;
+  }
+  saveDebugViewState();
+  showToast("Copied historic match to synthetic inputs", "ok");
+}
 
 function populatePlayerSelects(){
   // Use a broad list of players from matches data (union across tournaments)
@@ -1031,10 +1209,15 @@ function hookUI(){
     setActiveMatchHistoric(sel);
   });
 
+
+  ["selMatch","synAsOf","synState","synW1","synW2","synL1","synL2","synRound","synFlags"]
+    .forEach(id => document.getElementById(id)?.addEventListener("change", saveDebugViewState));
   document.getElementById("btnRunSynthetic").addEventListener("click", ()=>{
     const syn = syntheticSelection();
     setActiveMatchSynthetic(syn);
   });
+
+  document.getElementById("btnCopyToSynthetic")?.addEventListener("click", copyHistoricToSynthetic);
 }
 
 document.addEventListener("DOMContentLoaded", async ()=>{

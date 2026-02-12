@@ -4,12 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Eton Fives Rankings</title>
+  <link rel="stylesheet" href="./styles.css" />
 
 
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
     header { display:flex; gap:16px; align-items:baseline; justify-content:space-between; flex-wrap:wrap; }
-    h1 { margin:0; font-size: 24px; }
+    h1 { margin:0; }
     .meta { color:#555; font-size: 14px; min-height: 20px; }
     .actions { display:flex; gap:12px; flex-wrap:wrap; }
     .actions a, .actions button {
@@ -24,6 +25,20 @@
       appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
       background:white; font-size:14px; min-width: 220px;
     }
+    .player-filter-bar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+    .filter-btn{ appearance:none; border:1px solid #ccc; border-radius:999px; background:#fff; padding:6px 10px; font-size:12px; cursor:pointer; }
+    .chip-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .chip-btn{ border:1px solid #cfd8e3; border-radius:999px; background:#f8fafc; padding:4px 8px; font-size:12px; cursor:pointer; }
+    .suggest-list{ margin-top:8px; border:1px solid #eee; border-radius:10px; max-height:180px; overflow:auto; background:#fff; }
+    .suggest-item{ width:100%; text-align:left; border:0; border-bottom:1px solid #f1f1f1; background:#fff; padding:8px 10px; font-size:12px; cursor:pointer; }
+    .suggest-item:last-child{ border-bottom:0; }
+    .suggest-item:hover{ background:#f8fafc; }
+    .segmented { display:inline-flex; border:1px solid #ccc; border-radius:10px; overflow:hidden; }
+    .segmented button {
+      appearance:none; border:0; background:#fff; padding:10px 12px; cursor:pointer; font-size:14px;
+    }
+    .segmented button + button { border-left:1px solid #ddd; }
+    .segmented button[aria-pressed="true"] { background:#111; color:#fff; }
 
     .table-wrap{
       border:1px solid #ddd; border-radius:14px; overflow:auto;
@@ -34,9 +49,9 @@
 
     /* Full-screen table mode (mobile landscape helper) */
     body.fullscreen-mode{ margin:0; }
-    body.fullscreen-mode > header,
-    body.fullscreen-mode > .note,
-    body.fullscreen-mode > .controls{ display:none; }
+    body.fullscreen-mode .sidebar,
+    body.fullscreen-mode .page-header,
+    body.fullscreen-mode #controlsCard{ display:none; }
     body.fullscreen-mode .table-wrap{
       position: fixed; inset: 0;
       max-height: 100vh;
@@ -155,6 +170,11 @@ font-variant-numeric: tabular-nums;
       padding: 10px 12px; border: 1px solid #eee; border-radius: 12px;
       margin: 8px 0; background: #fafafa;
     }
+    .match-row{ display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+    .match-main{ min-width:0; flex:1; }
+    .match-metrics{ min-width:140px; text-align:right; }
+    .shock-pill{ display:inline-block; border:1px solid #eab308; background:#fef9c3; color:#854d0e; border-radius:999px; padding:2px 8px; font-size:11px; margin-top:4px; }
+    .shock-pill.major{ border-color:#dc2626; background:#fee2e2; color:#991b1b; }
     .match .line{ margin: 4px 0; }
     .pill{
       display:inline-block; padding: 2px 8px; border-radius: 999px;
@@ -177,12 +197,14 @@ font-variant-numeric: tabular-nums;
     .peakBtn{ appearance:none; border:1px solid #ccc; background:#fff; border-radius:999px; padding:6px 10px; font-size:12px; cursor:pointer; }
 
     /* Help modal tabs */
-    .tabs{ display:flex; gap:8px; padding: 0 16px 12px; border-bottom: 1px solid #eee; }
+    .tabs{ display:flex; gap:8px; padding: 8px 16px; border-bottom: 1px solid #eee; }
     .tabbtn{
       appearance:none; border:1px solid #ccc; background:#fff;
       border-radius: 999px; padding: 8px 12px; font-size: 13px; cursor:pointer;
     }
-    .tabbtn[aria-selected="true"]{ border-color:#111; }
+    .tabbtn:hover{ background:#f6f6f6; color:#111; }
+    .tabbtn[aria-selected="true"]{ border-color:#111; background:#111; color:#fff; font-weight:600; }
+    .tabbtn[aria-selected="true"]:hover{ background:#1a73e8 !important; color:#fff; }
     .tabpanel{ display:none; padding: 12px 16px 16px; }
     .tabpanel.active{ display:block; }
     .tabpanel h3{ margin: 10px 0 6px; font-size: 15px; }
@@ -193,37 +215,73 @@ font-variant-numeric: tabular-nums;
     .sparkWrap{ margin-top:8px; }
     .sparkSvg{ width: 200px; height: 44px; display:block; }
 
+    /* Player drawer */
+    .drawer-backdrop{
+      position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+      display:none; z-index: 900;
+    }
+    .player-drawer{
+      position: fixed; top: 0; right: 0; height: 100vh; width: min(440px, 95vw);
+      background:#fff; border-left:1px solid #ddd; box-shadow: -8px 0 24px rgba(0,0,0,.12);
+      transform: translateX(100%); transition: transform .2s ease; z-index: 901;
+      display:flex; flex-direction:column;
+    }
+    .player-drawer.open { transform: translateX(0); }
+    .player-drawer header { padding: 12px 14px; border-bottom:1px solid #eee; }
+    .player-drawer .body { padding: 12px 14px 16px; overflow:auto; }
+    .metric-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:8px; }
+    .metric { border:1px solid #eee; border-radius:10px; padding:8px; background:#fafafa; }
+    .metric .k { font-size:12px; color:#666; }
+    .metric .v { font-weight:700; }
+    .recent-strip { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .chip { border:1px solid #ddd; border-radius:999px; padding:2px 8px; font-size:12px; background:#fff; }
+    .drawer-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .drawer-actions button { appearance:none; border:1px solid #ccc; border-radius:10px; background:#fff; padding:8px 10px; cursor:pointer; }
+    .compare-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center; }
+    .compare-row select { flex:1 1 220px; min-width: 180px; }
+
   </style>
 </head>
 
-<body>
-  <header>
-    <div>
-      <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1><a href="./debug.html" style="font-size:12px; padding:4px 8px; border:1px solid #ddd; border-radius:999px; text-decoration:none;">🧪 Debug</a><a href="./graph.html" style="font-size:12px; padding:4px 8px; border:1px solid #ddd; border-radius:999px; text-decoration:none;">📈 Graph</a></div>
-      <div class="meta" id="status">Loading…</div>
+<body class="app-shell">
+  <div class="dashboard-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="sidebar-link" href="./index.html" aria-current="page" title="Rankings" aria-label="Rankings">🏆</a>
+      <a class="sidebar-link" href="./graph.html" title="Graph" aria-label="Graph">📈</a>
+      <a class="sidebar-link" href="./debug.html" title="Elo Explorer" aria-label="Elo Explorer">🧪</a>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="page-header">
+        <div>
+          <div class="page-eyebrow">Official Rankings</div>
+          <div class="row" style="gap:8px; align-items:center;"><h1>Eton Fives Rankings</h1></div>
+          <div class="meta page-subtitle" id="status">Loading…</div>
+        </div>
+        <div class="actions header-tools">
+          <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
+          <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
+          <a
+            href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
+            target="_blank" rel="noopener"
+          >Submit new results</a>
+          <button id="fsBtn" type="button" title="Full screen" aria-label="Toggle full screen">⛶</button>
+          <button id="helpBtn" type="button" title="Help" aria-label="Help">?</button>
+        </div>
+      </header>
+
+  <div class="section-card" id="controlsCard">
+    <div class="controls" style="margin:0;">
+      <select id="snapshotSelect" aria-label="As of tournament"></select>
+      <input id="searchBox" type="search" placeholder="Search and add players..." autocomplete="off" />
+      <span class="small" id="count"></span>
     </div>
-    <div class="actions">
-      <a href="./downloads/rankings_latest.xlsx" download>Download XLSX</a>
-      <a href="./downloads/rankings_latest.csv" download>Download CSV</a>
-      <a
-        href="https://github.com/thatchersj/rank-the-fives/issues/new?template=submit_results.yml&title=New%20tournament%20results&labels=recalculate"
-        target="_blank" rel="noopener"
-      >Submit new results</a>
-    
-      <button id="fsBtn" type="button" title="Full screen" aria-label="Toggle full screen">⛶</button>
-      <button id="helpBtn" type="button" title="Help" aria-label="Help">?</button>
-</div>
-  </header>
-
-  <div class="note">
-    Tap a column header to sort (mobile supported). Search to find a player.
-    <div class="small">Codes: <b>W</b>, <b>F</b>, <b>SF</b>, <b>QF</b>, <b>L16</b>, <b>NQ</b>.</div>
-  </div>
-
-  <div class="controls">
-    <select id="snapshotSelect" aria-label="As of tournament"></select>
-    <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
-    <span class="small" id="count"></span>
+    <div id="playerSuggest" class="suggest-list" style="display:none;"></div>
+    <div class="player-filter-bar">
+      <button id="btnShowAllPlayers" class="filter-btn" type="button">Show all</button>
+      <button id="btnClearPlayerFilter" class="filter-btn" type="button">Clear all</button>
+    </div>
+    <div id="playerChipRow" class="chip-row"></div>
   </div>
 
   <div class="table-wrap" id="tableWrap">
@@ -236,6 +294,8 @@ font-variant-numeric: tabular-nums;
   <noscript>
     <p><b>This page needs JavaScript enabled</b> to load rankings.</p>
   </noscript>
+    </main>
+  </div>
 
   <script>
     (function(){
@@ -258,9 +318,155 @@ function displayResultValue(val){
 const statusEl = document.getElementById("status");
       const countEl = document.getElementById("count");
       const searchBox = document.getElementById("searchBox");
+      const snapshotSelect = document.getElementById('snapshotSelect');
       const theadRow = document.getElementById("theadRow");
       const tbody = document.querySelector("#rankings tbody");
       const table = document.getElementById("rankings");
+      const suggestEl = document.getElementById("playerSuggest");
+      const chipRowEl = document.getElementById("playerChipRow");
+      const btnShowAllPlayers = document.getElementById("btnShowAllPlayers");
+      const btnClearPlayerFilter = document.getElementById("btnClearPlayerFilter");
+      const RANKINGS_VIEW_KEY = "rankingsViewState_v1";
+      let SHOW_ALL_PLAYERS = true;
+      let PLAYER_FILTER = new Set();
+
+      function readRankingsViewState(){
+        try { return JSON.parse(localStorage.getItem(RANKINGS_VIEW_KEY) || "null"); } catch(e){ return null; }
+      }
+      function saveRankingsViewState(){
+        const state = {
+          snapshot: snapshotSelect ? snapshotSelect.value : "latest",
+          search: searchBox ? searchBox.value : "",
+          selectedPlayers: Array.from(PLAYER_FILTER),
+          showAllPlayers: !!SHOW_ALL_PLAYERS
+        };
+        try { localStorage.setItem(RANKINGS_VIEW_KEY, JSON.stringify(state)); } catch(e){}
+      }
+      function rowPlayerKeyFromCells(tr){
+        const cols = window.__CURRENT_COLS__ || [];
+        const idxInit = cols.indexOf("Initial");
+        const idxSur = cols.indexOf("Surname");
+        const init = (tr.children[idxInit]?.textContent || "").trim().toUpperCase();
+        const sur = (tr.children[idxSur]?.textContent || "").trim().toUpperCase();
+        return (init && sur) ? `${init}|${sur}` : null;
+      }
+      function playerOptionsFromRows(){
+        const out = [];
+        for (const tr of Array.from(tbody.querySelectorAll("tr"))){
+          const key = rowPlayerKeyFromCells(tr);
+          if (!key) continue;
+          out.push({ key, label: toPlayerLabel(key) });
+        }
+        out.sort((a,b)=>a.label.localeCompare(b.label));
+        return out;
+      }
+      function renderPlayerChips(){
+        if (!chipRowEl) return;
+        chipRowEl.innerHTML = "";
+        const keys = Array.from(PLAYER_FILTER).sort((a,b)=>toPlayerLabel(a).localeCompare(toPlayerLabel(b)));
+        keys.forEach(k => {
+          const b = document.createElement("button");
+          b.className = "chip-btn";
+          b.type = "button";
+          b.textContent = `${toPlayerLabel(k)} ×`;
+          b.addEventListener("click", ()=>{
+            PLAYER_FILTER.delete(k);
+            if (!PLAYER_FILTER.size) SHOW_ALL_PLAYERS = true;
+            applySearchFilter();
+            renderPlayerChips();
+            saveRankingsViewState();
+          });
+          chipRowEl.appendChild(b);
+        });
+      }
+      function renderPlayerSuggest(){
+        if (!suggestEl) return;
+        const q = (searchBox.value || "").trim().toLowerCase();
+        const opts = playerOptionsFromRows();
+        const matches = opts.filter(o => !PLAYER_FILTER.has(o.key) && (!q || o.label.toLowerCase().includes(q))).slice(0, 20);
+        suggestEl.innerHTML = "";
+        if (!q || !matches.length){
+          suggestEl.style.display = "none";
+          return;
+        }
+        matches.forEach(o => {
+          const b = document.createElement("button");
+          b.className = "suggest-item";
+          b.type = "button";
+          b.textContent = o.label;
+          b.addEventListener("click", ()=>{
+            PLAYER_FILTER.add(o.key);
+            SHOW_ALL_PLAYERS = false;
+            searchBox.value = "";
+            renderPlayerSuggest();
+            renderPlayerChips();
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+          suggestEl.appendChild(b);
+        });
+        suggestEl.style.display = "";
+      }
+      function applySearchFilter(){
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        let shown = 0;
+        rows.forEach(tr => {
+          const pkey = rowPlayerKeyFromCells(tr);
+          const ok = SHOW_ALL_PLAYERS || (PLAYER_FILTER.size > 0 && pkey && PLAYER_FILTER.has(pkey));
+          tr.style.display = ok ? "" : "none";
+          if (ok) shown++;
+        });
+        if (btnShowAllPlayers) {
+          btnShowAllPlayers.textContent = SHOW_ALL_PLAYERS ? "Show All" : "Filter";
+          btnShowAllPlayers.style.fontWeight = "700";
+        }
+        countEl.textContent = `${shown} / ${rows.length} players`;
+      }
+      function setupPlayerFilterControls(){
+        if (btnShowAllPlayers){
+          btnShowAllPlayers.addEventListener("click", () => {
+            SHOW_ALL_PLAYERS = !SHOW_ALL_PLAYERS;
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+        }
+        if (btnClearPlayerFilter){
+          btnClearPlayerFilter.addEventListener("click", () => {
+            PLAYER_FILTER = new Set();
+            SHOW_ALL_PLAYERS = true;
+            renderPlayerChips();
+            renderPlayerSuggest();
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+        }
+      }
+      function setUrlParam(k, v){
+        const u = new URL(window.location.href);
+        if (v === null || v === undefined || v === "") u.searchParams.delete(k);
+        else u.searchParams.set(k, String(v));
+        history.replaceState(null, "", u.toString());
+      }
+      function getUrlParam(k){ return new URL(window.location.href).searchParams.get(k); }
+      function toPlayerLabel(playerKey){
+        const [iniRaw, surRaw] = String(playerKey || '').split('|');
+        const ini = String(iniRaw || '').trim();
+        const sur = String(surRaw || '').trim();
+        if (!ini || !sur) return String(playerKey || '');
+        return `${ini}.${sur.slice(0,1)}${sur.slice(1).toLowerCase()}`;
+      }
+      function setStatus(v){ if (statusEl) statusEl.textContent = String(v ?? ''); }
+      function getStatus(){ return statusEl ? String(statusEl.textContent || '') : ''; }
+      function getDrawerEls(){
+        return {
+          drawer: document.getElementById('playerDrawer'),
+          backdrop: document.getElementById('playerDrawerBackdrop'),
+          closeBtn: document.getElementById('playerDrawerClose'),
+          title: document.getElementById('playerDrawerTitle'),
+          sub: document.getElementById('playerDrawerSub'),
+          body: document.getElementById('playerDrawerBody'),
+        };
+      }
 
       function normalizeResult(v) {
         const s = (v ?? "").toString().trim().toUpperCase();
@@ -361,6 +567,7 @@ function looksLikeResultColumn(colName) {
 
         data.forEach(row => {
           const tr = document.createElement("tr");
+          tr.tabIndex = 0;
           cols.forEach(c => {
             const td = document.createElement("td");
             const val = row[c] ?? "";
@@ -399,6 +606,148 @@ function looksLikeResultColumn(colName) {
 
         countEl.textContent = `${data.length} players`;
       }
+
+      function getRowPlayerKey(tr){
+        const cols = window.__CURRENT_COLS__ || [];
+        const iI = cols.indexOf('Initial');
+        const iS = cols.indexOf('Surname');
+        if (iI < 0 || iS < 0) return null;
+        const ini = (tr.children[iI]?.textContent || '').trim().toUpperCase();
+        const sur = (tr.children[iS]?.textContent || '').trim().toUpperCase();
+        if (!ini || !sur) return null;
+        return `${ini}|${sur}`;
+      }
+
+      function closePlayerDrawer(){
+        const { drawer, backdrop } = getDrawerEls();
+        if (!drawer || !backdrop) return;
+        drawer.classList.remove('open');
+        backdrop.style.display = 'none';
+      }
+
+      function getRankMovement(playerKey){
+        const rows = window.__CURRENT_RENDER_DATA || [];
+        const cur = rows.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!cur) return null;
+        const curRank = Number(cur.Rank);
+        if (!Number.isFinite(curRank)) return null;
+        const v = snapshotSelect?.value || 'latest';
+        const snaps = window.__SNAPS_CHRONO || [];
+        let prev = null;
+        if (v === 'latest') prev = snaps.length ? snaps[snaps.length - 1] : null;
+        else {
+          const i = snaps.findIndex(s => s.key === v);
+          prev = (i > 0) ? snaps[i - 1] : null;
+        }
+        if (!prev || !Array.isArray(prev.records)) return null;
+        const pr = prev.records.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!pr) return null;
+        const prevRank = Number(pr.Rank);
+        if (!Number.isFinite(prevRank)) return null;
+        const delta = prevRank - curRank;
+        if (delta > 0) return `▲${delta}`;
+        if (delta < 0) return `▼${Math.abs(delta)}`;
+        return '—';
+      }
+
+      function openPlayerDrawer(playerKey){
+        const { drawer, backdrop, title, sub, body } = getDrawerEls();
+        if (!drawer || !backdrop || !title || !sub || !body) return;
+
+        const rows = window.__CURRENT_RENDER_DATA || [];
+        const row = rows.find(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === playerKey);
+        if (!row) return;
+        window.__SELECTED_PLAYER_KEY__ = playerKey;
+        setUrlParam('player', playerKey);
+
+        const rankMove = getRankMovement(playerKey) || '—';
+        title.textContent = `${row.Initial}. ${String(row.Surname||'').slice(0,1)}${String(row.Surname||'').slice(1).toLowerCase()}`;
+        sub.textContent = `Rank #${row.Rank ?? ''} · Elo ${Number.isFinite(Number(row.Elo)) ? Math.round(Number(row.Elo)) : ''} · ${rankMove}`;
+
+        const metrics = [
+          ['PC2', row.PC2], ['PC', row.PC], ['POSS', row.POSS], ['RPA', row.RPA], ['Played', row.Played], ['MissedLast', row.MissedLast]
+        ].map(([k,v]) => `<div class="metric"><div class="k">${k}</div><div class="v">${formatMaybe2dp(String(k).toLowerCase(), v ?? '')}</div></div>`).join('');
+
+        const cols = window.__CURRENT_COLS__ || [];
+        const recentCols = cols.filter(c => /^\d{2}\s*[NKL]$/i.test(String(c))).slice(0,5);
+        const recent = recentCols.map(c => {
+          const rv = row[c] || '';
+          const cls = resultClass(rv) || '';
+          return `<span class="chip ${cls}">${escapeHtml(c)}: ${escapeHtml(displayResultValue(String(rv||'')) || '—')}</span>`;
+        }).join('');
+
+        const snaps = window.__SNAPS_CHRONO || [];
+        const eloSeries = [];
+        const rankSeries = [];
+        for (const s of snaps){
+          const r = (s.records || []).find(rr => `${String(rr.Initial||'').toUpperCase()}|${String(rr.Surname||'').toUpperCase()}` === playerKey);
+          if (!r) continue;
+          if (Number.isFinite(Number(r.Elo))) eloSeries.push(Number(r.Elo));
+          if (Number.isFinite(Number(r.Rank))) rankSeries.push(Number(r.Rank));
+        }
+        if (Number.isFinite(Number(row.Elo))) eloSeries.push(Number(row.Elo));
+        if (Number.isFinite(Number(row.Rank))) rankSeries.push(Number(row.Rank));
+
+        const eloSpark = buildSparkline(eloSeries, {w: 260, h: 52, pad: 5});
+        const rankSpark = buildSparkline(rankSeries.map(v => -v), {w: 260, h: 52, pad: 5});
+
+        body.innerHTML = `
+          <div class="metric-grid">${metrics}</div>
+          <div style="margin-top:10px;"><b>Recent results</b><div class="recent-strip">${recent || '<span class="small">No recent results</span>'}</div></div>
+          <div style="margin-top:12px;"><b>Trend</b><div class="small">Elo</div>${eloSpark}<div class="small" style="margin-top:8px;">Rank (improvement rises)</div>${rankSpark}</div>
+          <div style="margin-top:12px;"><b>Compare</b>
+            <div class="compare-row">
+              <select id="drawerCompareSelect" aria-label="Compare with player">
+                <option value="">Choose player…</option>
+              </select>
+              <button type="button" id="drawerCompareBtn">Compare in trends</button>
+            </div>
+          </div>
+          <div class="drawer-actions">
+            <button type="button" id="drawerOpenTrends">Open full trends</button>
+            <button type="button" id="drawerCopyLink">Copy link</button>
+          </div>
+        `;
+
+        const cmpSel = body.querySelector('#drawerCompareSelect');
+        if (cmpSel) {
+          const keys = (window.__CURRENT_RENDER_DATA || [])
+            .map(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`)
+            .filter(k => k && k !== playerKey);
+          const uniq = Array.from(new Set(keys)).sort((a,b) => toPlayerLabel(a).localeCompare(toPlayerLabel(b)));
+          for (const k of uniq){
+            const opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = toPlayerLabel(k);
+            cmpSel.appendChild(opt);
+          }
+        }
+
+        body.querySelector('#drawerOpenTrends')?.addEventListener('click', () => {
+          const u = new URL('./graph.html', window.location.href);
+          u.searchParams.set('players', playerKey);
+          const snap = snapshotSelect?.value || 'latest';
+          if (snap !== 'latest') { u.searchParams.set('from', snap); u.searchParams.set('to', snap); }
+          window.location.href = u.toString();
+        });
+        body.querySelector('#drawerCompareBtn')?.addEventListener('click', () => {
+          const other = body.querySelector('#drawerCompareSelect')?.value || '';
+          if (!other) return;
+          const u = new URL('./graph.html', window.location.href);
+          u.searchParams.set('players', `${playerKey},${other}`);
+          const snap = snapshotSelect?.value || 'latest';
+          if (snap !== 'latest') { u.searchParams.set('from', snap); u.searchParams.set('to', snap); }
+          window.location.href = u.toString();
+        });
+        body.querySelector('#drawerCopyLink')?.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(window.location.href); } catch(e) {}
+        });
+
+        backdrop.style.display = 'block';
+        drawer.classList.add('open');
+      }
+
+      function attachRowClicks(){ /* intentionally disabled */ }
 
       function getCellValue(row, idx) {
         const td = row.children[idx];
@@ -454,23 +803,8 @@ function looksLikeResultColumn(colName) {
         });
 
         searchBox.addEventListener("input", () => {
-          const q = searchBox.value.trim().toUpperCase();
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          let shown = 0;
-          rows.forEach(tr => {
-            const cols = window.__CURRENT_COLS__ || [];
-            const idxRank = cols.indexOf("Rank") >= 0 ? cols.indexOf("Rank") : 0;
-            const idxInit = cols.indexOf("Initial");
-            const idxSur = cols.indexOf("Surname");
-            const rank = (tr.children[idxRank]?.textContent || "").toUpperCase();
-            const init = (tr.children[idxInit]?.textContent || "").toUpperCase();
-            const sur = (tr.children[idxSur]?.textContent || "").toUpperCase();
-            const hay = `${rank} ${init} ${sur}`;
-            const ok = !q || hay.includes(q);
-            tr.style.display = ok ? "" : "none";
-            if (ok) shown++;
-          });
-          countEl.textContent = `${shown} / ${rows.length} players`;
+          renderPlayerSuggest();
+          saveRankingsViewState();
         });
 
         // Default sort by Rank (column 1 at top)
@@ -512,6 +846,73 @@ function looksLikeResultColumn(colName) {
         }
         backdrop.style.display = "flex";
         backdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function eloWinProb(teamA, teamB){
+        const d = Number(teamA) - Number(teamB);
+        if (!Number.isFinite(d)) return null;
+        return 1 / (1 + Math.pow(10, -d / 400));
+      }
+
+      const SET_DECISIVENESS = 1.2; // >1 => stronger pair more likely to win 3-0/3-1 than 3-2
+
+      function bo5WinProbFromSetProb(p){
+        // Best-of-5 (first to 3): P(win match)
+        return (10 * Math.pow(p, 3)) - (15 * Math.pow(p, 4)) + (6 * Math.pow(p, 5));
+      }
+
+      function inferSetProbFromMatchProb(pMatch){
+        const pm = Math.max(0.001, Math.min(0.999, Number(pMatch)));
+        let lo = 0.001, hi = 0.999;
+        for (let i = 0; i < 32; i++) {
+          const mid = (lo + hi) / 2;
+          const pmid = bo5WinProbFromSetProb(mid);
+          if (pmid < pm) lo = mid;
+          else hi = mid;
+        }
+        return (lo + hi) / 2;
+      }
+
+      function sharpenSetProb(pSet, k){
+        const p = Math.max(0.001, Math.min(0.999, Number(pSet)));
+        const logit = Math.log(p / (1 - p));
+        const sharp = 1 / (1 + Math.exp(-(k * logit)));
+        return Math.max(0.001, Math.min(0.999, sharp));
+      }
+
+      function expectedSetScore(pWin){
+        if (!Number.isFinite(pWin)) return "—";
+        // Convert viewed-side match win probability into set win probability,
+        // then derive BO5 scoreline probabilities.
+        let pSet = inferSetProbFromMatchProb(pWin);
+        pSet = sharpenSetProb(pSet, SET_DECISIVENESS);
+        const q = 1 - pSet;
+
+        const probs = [
+          { s: "3-0", p: Math.pow(pSet, 3) },
+          { s: "3-1", p: 3 * Math.pow(pSet, 3) * q },
+          { s: "3-2", p: 6 * Math.pow(pSet, 3) * Math.pow(q, 2) },
+          { s: "2-3", p: 6 * Math.pow(q, 3) * Math.pow(pSet, 2) },
+          { s: "1-3", p: 3 * Math.pow(q, 3) * pSet },
+          { s: "0-3", p: Math.pow(q, 3) },
+        ];
+
+        probs.sort((a,b) => b.p - a.p);
+        return probs[0]?.s || "—";
+      }
+      function shockLabel(pWinner){
+        if (!Number.isFinite(pWinner)) return "";
+        if (pWinner < 0.20) return `<div class=\"shock-pill major\">Major shock</div>`;
+        if (pWinner < 0.35) return `<div class=\"shock-pill\">Shock</div>`;
+        return "";
+      }
+
+      function scoreForViewedPlayer(rawScore, won){
+        const s = (rawScore || "").toString().trim();
+        if (!s || won) return s;
+        // When viewing from the losing side, swap all score pairs so the
+        // displayed match score and set scores are from the viewed player's perspective.
+        return s.replace(/(\d+)\s*-\s*(\d+)/g, (_, a, b) => `${b}-${a}`);
       }
 
       function closeMatchModal() {
@@ -588,6 +989,35 @@ function looksLikeResultColumn(colName) {
         const title = `${tourn.tournament}`;
         const subtitle = `Draw`;
 
+        const eloMap = new Map();
+        for (const r of (window.__CURRENT_RENDER_DATA || [])) {
+          const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+          const v = Number(r.Elo);
+          if (k && Number.isFinite(v)) eloMap.set(k, v);
+        }
+
+        function renderDrawMatchCard(m){
+          const wKeys = Array.isArray(m.winners) ? m.winners : [];
+          const lKeys = Array.isArray(m.losers) ? m.losers : [];
+          const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+          const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+          const wTeamElo = wE.length ? wE.reduce((a,b)=>a+b,0) : NaN;
+          const lTeamElo = lE.length ? lE.reduce((a,b)=>a+b,0) : NaN;
+          const pWinner = eloWinProb(wTeamElo, lTeamElo);
+          const expScore = expectedSetScore(pWinner);
+          const shock = shockLabel(pWinner);
+          const score = (m.score || "").toString().trim();
+          return `<div class="match">`
+            + `<div class="match-row">`
+            + `<div class="match-main">`
+            + `<div class="line"><b>${escapeHtml(m.winnerTeam || "")}</b> beat ${escapeHtml(m.loserTeam || "")}</div>`
+            + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
+            + `</div>`
+            + `<div class="match-metrics"><div class="small">Win% ${Number.isFinite(pWinner) ? Math.round(pWinner*100) + '%' : '—'}</div><div class="small">Expected ${expScore}</div>${shock}</div>`
+            + `</div>`
+            + `</div>`;
+        }
+
         const order = ["L16", "QF", "SF", "F"];
         const byRound = {};
         for (const m of (tourn.matches || [])){
@@ -619,13 +1049,7 @@ function looksLikeResultColumn(colName) {
           if (!list.length) continue;
           body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || "";
-            const lTeam = m.loserTeam || "";
-            const score = (m.score || "").toString().trim();
-            body += `<div class="match">`
-              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
-              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
-              + `</div>`;
+            body += renderDrawMatchCard(m);
           }
         }
 
@@ -635,13 +1059,7 @@ function looksLikeResultColumn(colName) {
           if (!list.length) continue;
           body += `<div class="match-round">${escapeHtml(r)}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || "";
-            const lTeam = m.loserTeam || "";
-            const score = (m.score || "").toString().trim();
-            body += `<div class="match">`
-              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
-              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
-              + `</div>`;
+            body += renderDrawMatchCard(m);
           }
         }
 
@@ -772,6 +1190,12 @@ function looksLikeResultColumn(colName) {
           }
 
           const byRound = {};
+          const eloMap = new Map();
+          for (const r of (window.__CURRENT_RENDER_DATA || [])) {
+            const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+            const v = Number(r.Elo);
+            if (k && Number.isFinite(v)) eloMap.set(k, v);
+          }
           for (const m of matches) {
             const r = m.round || "UNK";
             byRound[r] = byRound[r] || [];
@@ -783,12 +1207,30 @@ function looksLikeResultColumn(colName) {
             if (!list || list.length === 0) continue;
             body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
             for (const m of list) {
-              const score = escapeHtml(m.score || "");
               const won = (m.winners || []).includes(playerKey);
+              const scoreText = scoreForViewedPlayer(m.score || "", won);
+              const score = escapeHtml(scoreText);
+              const wKeys = Array.isArray(m.winners) ? m.winners : [];
+              const lKeys = Array.isArray(m.losers) ? m.losers : [];
+              const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+              const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+              const wTeam = wE.length ? wE.reduce((a,b)=>a+b,0) : NaN;
+              const lTeam = lE.length ? lE.reduce((a,b)=>a+b,0) : NaN;
+              const pWinner = eloWinProb(wTeam, lTeam);
+              const pShown = won ? pWinner : (Number.isFinite(pWinner) ? (1 - pWinner) : NaN);
+              const expScore = expectedSetScore(pShown);
+              // Shock should reflect whether the *actual winner* was an underdog,
+              // independent of which side the viewed player was on.
+              const shock = shockLabel(pWinner);
               body += `<div class="match">` +
-                      `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
-                      (score ? `<div class="line">${score}</div>` : ``) +
-                      `</div>`;
+                      `<div class="match-row">`
+                      + `<div class="match-main">`
+                      + `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>`
+                      + (score ? `<div class="line">${score}</div>` : ``)
+                      + `</div>`
+                      + `<div class="match-metrics"><div class="small">Win% ${Number.isFinite(pShown) ? Math.round(pShown*100) + '%' : '—'}</div><div class="small">Expected ${expScore}</div>${shock}</div>`
+                      + `</div>`
+                      + `</div>`;
             }
           }
 
@@ -809,7 +1251,59 @@ function looksLikeResultColumn(colName) {
           const [loaded, matchesData] = await Promise.all([loadData(), loadMatches()]);
           window.__MATCHES_DATA__ = matchesData;
 
-        const snapshotSelect = document.getElementById('snapshotSelect');
+          function buildEloMapFromRecords(records){
+            const m = new Map();
+            for (const r of (records || [])) {
+              const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+              const v = Number(r.Elo);
+              if (k && Number.isFinite(v)) m.set(k, v);
+            }
+            return m;
+          }
+
+          function buildShockRows(allMatchesData, latestRows, snapsChrono){
+            const rows = [];
+            const latestMap = buildEloMapFromRecords(latestRows || []);
+            const snapMapByKey = new Map();
+            for (const s of (snapsChrono || [])) {
+              if (!s || !s.key) continue;
+              snapMapByKey.set(normaliseHeader(s.key), buildEloMapFromRecords(s.records || []));
+            }
+
+            for (const [, t] of Object.entries((allMatchesData && allMatchesData.tournaments) || {})) {
+              const tKey = normaliseHeader((t && t.key) || '');
+              const eloMap = snapMapByKey.get(tKey) || latestMap;
+              const year = Number(t && t.year);
+              if (Number.isFinite(year) && year < 2013) continue;
+              for (const m of ((t && t.matches) || [])) {
+                const wKeys = Array.isArray(m.winners) ? m.winners : [];
+                const lKeys = Array.isArray(m.losers) ? m.losers : [];
+                const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+                const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+                if (!wE.length || !lE.length) continue;
+                const wTeamElo = wE.reduce((a,b)=>a+b,0);
+                const lTeamElo = lE.reduce((a,b)=>a+b,0);
+                const pWinner = eloWinProb(wTeamElo, lTeamElo);
+                if (!Number.isFinite(pWinner)) continue;
+                rows.push({
+                  year: Number.isFinite(year) ? year : null,
+                  tournament: (t && t.tournament) || '',
+                  round: (m && m.round) || '—',
+                  winnerTeam: (m && m.winnerTeam) || '',
+                  loserTeam: (m && m.loserTeam) || '',
+                  score: (m && m.score) || '',
+                  winPct: Math.round(pWinner * 100),
+                  expected: expectedSetScore(pWinner),
+                  shock: pWinner < 0.20 ? 'Major shock' : (pWinner < 0.35 ? 'Shock' : ''),
+                  improb: 1 - pWinner
+                });
+              }
+            }
+
+            rows.sort((a,b) => b.improb - a.improb);
+            return rows;
+          }
+
         const snapsRaw = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
         function _parseSnapKey(k){
           const m = /^([0-9]{2})\\s+([NKL])$/i.exec((k||"").trim());
@@ -831,6 +1325,7 @@ function looksLikeResultColumn(colName) {
         const snapsDesc = snapsChrono.slice().reverse();
         // Keep around for modal sparklines / peak Elo stats
         window.__SNAPS_CHRONO = snapsChrono;
+        window.__SHOCK_ROWS__ = buildShockRows(matchesData, loaded.latest, snapsChrono);
         if (snapshotSelect) {
           snapshotSelect.innerHTML = '';
           const optLatest = document.createElement('option');
@@ -844,31 +1339,78 @@ function looksLikeResultColumn(colName) {
             snapshotSelect.appendChild(opt);
           });
           snapshotSelect.value = 'latest';
+
+          const snapParam = getUrlParam('snapshot');
+          if (snapParam && Array.from(snapshotSelect.options).some(o => o.value === snapParam)) {
+            snapshotSelect.value = snapParam;
+          }
+
           snapshotSelect.addEventListener('change', () => {
             const v = snapshotSelect.value;
             if (v === 'latest') {
               render(loaded.latest);
-              statusEl.textContent = 'Showing latest';
+              setStatus('Showing latest');
+              setUrlParam('snapshot', null);
             } else {
               const snap = snapsChrono.find(x => x.key === v);
               if (snap && Array.isArray(snap.records)) {
                 render(snap.records);
-                statusEl.textContent = `As of ${snap.label}`;
+                setStatus(`As of ${snap.label}`);
+                setUrlParam('snapshot', v);
               }
             }
-            // reset search + sort
+            // reset input text + sort
             searchBox.value = '';
+            renderPlayerSuggest();
             sortBy(0, true);
+            saveRankingsViewState();
+
+            applySearchFilter();
+            renderPlayerChips();
           });
         }
 
-          render(loaded.latest);
+          const saved = readRankingsViewState();
+          if (!getUrlParam('snapshot') && saved?.snapshot && snapshotSelect &&
+              Array.from(snapshotSelect.options).some(o => o.value === saved.snapshot)) {
+            snapshotSelect.value = saved.snapshot;
+            if (saved.snapshot === 'latest') {
+              render(loaded.latest);
+              setStatus('Showing latest');
+            } else {
+              const snap = snapsChrono.find(x => x.key === saved.snapshot);
+              render((snap && Array.isArray(snap.records)) ? snap.records : loaded.latest);
+              setStatus((snap && snap.label) ? `As of ${snap.label}` : 'Showing latest');
+            }
+          }
+
+          if (snapshotSelect?.value && snapshotSelect.value !== 'latest') {
+            const snap = snapsChrono.find(x => x.key === snapshotSelect.value);
+            render((snap && Array.isArray(snap.records)) ? snap.records : loaded.latest);
+            setStatus((snap && snap.label) ? `As of ${snap.label}` : 'Showing latest');
+          } else {
+            render(loaded.latest);
+          }
+
           enableSortAndSearch();
+          setupPlayerFilterControls();
+          const saved2 = readRankingsViewState();
+          if (!getUrlParam('snapshot') && saved2) {
+            if (saved2.search) searchBox.value = saved2.search;
+            PLAYER_FILTER = new Set(Array.isArray(saved2.selectedPlayers) ? saved2.selectedPlayers : []);
+            SHOW_ALL_PLAYERS = (typeof saved2.showAllPlayers === 'boolean') ? saved2.showAllPlayers : !PLAYER_FILTER.size;
+          }
+          renderPlayerChips();
+          renderPlayerSuggest();
+          applySearchFilter();
+          saveRankingsViewState();
           attachCellClicks(matchesData);
-          statusEl.textContent = "Showing latest";
+          attachRowClicks();
+
+          if (!getStatus() || getStatus() === 'Loading…') setStatus('Showing latest');
         } catch (e) {
           console.error(e);
-          statusEl.textContent = (e && e.message) ? e.message : "Failed to load rankings data.";
+          setStatus((e && e.message) ? e.message : "Failed to load rankings data.");
         }
       })();
     })();
@@ -928,17 +1470,35 @@ document.addEventListener('fullscreenchange', () => {
 function wireHelpModal(){
   const helpBackdrop = document.getElementById('helpModalBackdrop');
   const helpClose = document.getElementById('helpModalClose');
+  const helpShocksBtn = document.getElementById('helpShocksBtn');
   const tabRank = document.getElementById('tabRank');
   const tabElo = document.getElementById('tabElo');
+  const tabShocks = document.getElementById('tabShocks');
   const panelRank = document.getElementById('panelRank');
   const panelElo = document.getElementById('panelElo');
+  const panelShocks = document.getElementById('panelShocks');
+  const shocksBody = document.getElementById('shocksPanelBody');
+  const shocksYearSelect = document.getElementById('shocksYearSelect');
+
+  function esc(s){
+    return (s ?? "").toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
   function switchHelpTab(which){
     const isRank = (which === 'rank');
+    const isElo = (which === 'elo');
+    const isShocks = (which === 'shocks');
     if(tabRank) tabRank.setAttribute('aria-selected', isRank ? 'true' : 'false');
-    if(tabElo) tabElo.setAttribute('aria-selected', isRank ? 'false' : 'true');
+    if(tabElo) tabElo.setAttribute('aria-selected', isElo ? 'true' : 'false');
+    if(tabShocks) tabShocks.setAttribute('aria-selected', isShocks ? 'true' : 'false');
     if(panelRank) panelRank.classList.toggle('active', isRank);
-    if(panelElo) panelElo.classList.toggle('active', !isRank);
+    if(panelElo) panelElo.classList.toggle('active', isElo);
+    if(panelShocks) panelShocks.classList.toggle('active', isShocks);
   }
 
   function openHelp(){
@@ -953,11 +1513,62 @@ function wireHelpModal(){
     helpBackdrop.setAttribute('aria-hidden','true');
   }
 
+  function renderShocksList(){
+    if(!shocksBody) return;
+    const rows = Array.isArray(window.__SHOCK_ROWS__) ? window.__SHOCK_ROWS__ : [];
+    const yearVal = (shocksYearSelect && shocksYearSelect.value) ? shocksYearSelect.value : 'all';
+    const filtered = (yearVal === 'all')
+      ? rows
+      : rows.filter(r => String(r.year || '') === String(yearVal));
+    const top = filtered.slice(0, 30);
+
+    let html = `<div class="small" style="margin-bottom:8px;">Ranked by lowest pre-match winner probability from Elo at the relevant snapshot.</div>`;
+    if (!top.length) {
+      shocksBody.innerHTML = html + `<div class="match">No shock rows available for this selection.</div>`;
+      return;
+    }
+
+    html += top.map((r, i) => {
+      const shockPill = (r.shock === 'Major shock')
+        ? `<div class="shock-pill major">Major shock</div>`
+        : (r.shock === 'Shock' ? `<div class="shock-pill">Shock</div>` : ``);
+      return `<div class="match">`
+        + `<div class="line"><b>#${i+1}</b> ${esc(String(r.tournament || ''))} · ${esc(String(r.round || '—'))}</div>`
+        + `<div class="match-row">`
+        + `<div class="match-main">`
+        + `<div class="line"><b>${esc(String(r.winnerTeam || ''))}</b> beat ${esc(String(r.loserTeam || ''))}</div>`
+        + `${r.score ? `<div class="line">${esc(String(r.score))}</div>` : ``}`
+        + `</div>`
+        + `<div class="match-metrics"><div class="small">Winner Win% ${Number.isFinite(Number(r.winPct)) ? String(Math.round(Number(r.winPct))) + '%' : '—'}</div><div class="small">Expected ${esc(String(r.expected || '—'))}</div>${shockPill}</div>`
+        + `</div>`
+        + `</div>`;
+    }).join('');
+
+    shocksBody.innerHTML = html;
+  }
+
+  function openShocksTab(){
+    if(tabShocks) tabShocks.style.display = '';
+    const rows = Array.isArray(window.__SHOCK_ROWS__) ? window.__SHOCK_ROWS__ : [];
+    if (shocksYearSelect){
+      const years = Array.from(new Set(rows.map(r => Number(r.year)).filter(y => Number.isFinite(y)))).sort((a,b)=>b-a);
+      const prev = shocksYearSelect.value || 'all';
+      shocksYearSelect.innerHTML = `<option value="all">All time</option>`
+        + years.map(y => `<option value="${String(y)}">${String(y)}</option>`).join('');
+      shocksYearSelect.value = years.some(y => String(y) === String(prev)) ? String(prev) : 'all';
+    }
+    renderShocksList();
+    switchHelpTab('shocks');
+  }
+
   if(helpBtn) helpBtn.addEventListener('click', openHelp);
   if(helpClose) helpClose.addEventListener('click', closeHelp);
+  if(helpShocksBtn) helpShocksBtn.addEventListener('click', openShocksTab);
   if(helpBackdrop) helpBackdrop.addEventListener('click', (e)=>{ if(e.target===helpBackdrop) closeHelp(); });
   if(tabRank) tabRank.addEventListener('click', ()=>switchHelpTab('rank'));
   if(tabElo) tabElo.addEventListener('click', ()=>switchHelpTab('elo'));
+  if(tabShocks) tabShocks.addEventListener('click', ()=>switchHelpTab('shocks'));
+  if(shocksYearSelect) shocksYearSelect.addEventListener('change', renderShocksList);
 
   // ESC closes help (and exits fullscreen CSS mode if open)
   document.addEventListener('keydown', (e)=>{
@@ -999,12 +1610,16 @@ if (document.readyState === 'loading') {
           <h2 id="helpModalTitle">Help</h2>
           <div class="small" id="helpModalSub">How rankings and Elo are calculated</div>
         </div>
-        <button class="close" id="helpModalClose" type="button">Close</button>
+        <div style="display:flex; gap:8px;">
+          <button class="close" id="helpShocksBtn" type="button" title="Most improbable results">⚡</button>
+          <button class="close" id="helpModalClose" type="button">Close</button>
+        </div>
       </header>
 
       <div class="tabs" role="tablist" aria-label="Help tabs">
         <button class="tabbtn" id="tabRank" role="tab" aria-selected="true" aria-controls="panelRank" type="button">Rank</button>
         <button class="tabbtn" id="tabElo" role="tab" aria-selected="false" aria-controls="panelElo" type="button">Elo</button>
+        <button class="tabbtn" id="tabShocks" role="tab" aria-selected="false" aria-controls="panelShocks" type="button" style="display:none;">Shocks</button>
       </div>
 
       <div class="tabpanel active" id="panelRank" role="tabpanel" aria-labelledby="tabRank">
@@ -1126,8 +1741,33 @@ if (document.readyState === 'loading') {
     <li>Ratings reflect opposition quality, not just finishing position.</li>
   </ul>
 </div>
+
+<div class="tabpanel" id="panelShocks" role="tabpanel" aria-labelledby="tabShocks">
+  <div class="small" style="margin-bottom:8px;">Most improbable results based on Elo winner win%.</div>
+  <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+    <label for="shocksYearSelect" class="small" style="margin:0;">View:</label>
+    <select id="shocksYearSelect" aria-label="Filter shocks by year" style="min-width:140px;">
+      <option value="all">All time</option>
+    </select>
+  </div>
+  <div id="shocksPanelBody"></div>
+</div>
     </div>
   </div>
+
+  <div class="drawer-backdrop" id="playerDrawerBackdrop"></div>
+  <aside class="player-drawer" id="playerDrawer" role="dialog" aria-modal="true" aria-labelledby="playerDrawerTitle">
+    <header>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div>
+          <h2 id="playerDrawerTitle" style="margin:0;font-size:18px;">Player</h2>
+          <div class="small" id="playerDrawerSub"></div>
+        </div>
+        <button id="playerDrawerClose" type="button" class="close">Close</button>
+      </div>
+    </header>
+    <div class="body" id="playerDrawerBody"></div>
+  </aside>
 
 </body>
 </html>

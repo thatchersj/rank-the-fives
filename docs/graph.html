@@ -4,28 +4,150 @@
   <meta charset="utf-8"/>
   <title>Rank Progression</title>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="./styles.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 12px; }
-    h1 { margin: 0 0 10px 0; font-size: 34px; letter-spacing: -0.5px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+    h1 { margin: 0 0 10px 0; }
 
-    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; margin-bottom: 12px; }
-    .control { font-size: 12px; }
+    .controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-start; margin-bottom: 12px; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
+    .control { font-size: 12px; display:flex; flex-direction:column; align-items:flex-start; }
     label { display:block; margin-bottom:6px; color:#333; }
     select, button, input { font: inherit; }
     select { padding: 8px; border:1px solid #ddd; border-radius: 12px; background:#fff; }
     button { padding: 10px 14px; border:1px solid #ddd; border-radius: 14px; background:#f7f7f7; cursor:pointer; }
 
     .multi { width: min(520px, 92vw); height: 170px; }
+    .picker {
+      width: min(520px, 92vw);
+      border:1px solid #ddd;
+      border-radius: 12px;
+      background:#fff;
+      padding: 8px;
+      height: 330px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .picker input[type="search"] {
+      width:100%;
+      padding:8px 10px;
+      border:1px solid #ddd;
+      border-radius:10px;
+      margin-bottom:0;
+    }
+    .chips { display:flex; flex-wrap:wrap; gap:6px; min-height: 24px; margin-bottom:0; }
+    .chips {
+      max-height: 68px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-gutter: stable;
+      align-content: flex-start;
+    }
+    .player-actions { display:flex; justify-content:flex-end; width:100%; }
+    .player-actions button { padding:4px 8px; border-radius:10px; font-size:12px; }
+    .chip-btn {
+      border:1px solid #cfd8e3;
+      border-radius:999px;
+      background:#f8fafc;
+      padding:4px 8px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .player-list {
+      flex:1;
+      min-height:40px;
+      overflow-y:auto;
+      overflow-x:hidden;
+      scrollbar-gutter: stable;
+      border:1px solid #eee;
+      border-radius:10px;
+      padding:4px 8px 4px 4px;
+      display:grid;
+      gap:4px;
+    }
+    .player-item {
+      margin-right: 12px;
+      box-sizing: border-box;
+      border:1px solid transparent;
+      border-radius:8px;
+      background:#fff;
+      text-align:left;
+      padding:6px 8px;
+      min-height: 32px;
+      font-size:12px;
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items:center;
+      cursor:pointer;
+    }
+    .player-item > span:first-child {
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      padding-right:8px;
+    }
+    .player-item:hover { background:#f8fafc; }
+    .player-item.selected {
+      background:#eff6ff;
+      border-color:#93c5fd;
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .series-checks {
+      width: min(520px, 92vw);
+      border:1px solid #ddd;
+      border-radius: 12px;
+      background:#fff;
+      padding:10px;
+      display:grid;
+      gap:8px;
+    }
+    .series-checks label {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin:0;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .series-actions { display:flex; gap:6px; margin-top:8px; }
+    .series-actions button { padding:6px 10px; border-radius:10px; font-size:12px; }
     .row2 { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
+    .advanced { border:1px solid #eee; border-radius: 14px; padding: 8px 10px; margin: 8px 0 10px; }
+    .advGrid { display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; }
 
     .legendRow { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; margin: 8px 0 6px 0; }
     .legendBox { border:1px solid #eee; border-radius: 14px; padding: 10px 12px; background:#fff; }
+    .dataBox { min-width: 260px; }
+    .dataGrid { display:grid; gap:10px; }
+    .rangeRow { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .segmented {
+      display:inline-flex;
+      border:1px solid #ccc;
+      border-radius:10px;
+      overflow:hidden;
+    }
+    .segmented button {
+      border:0;
+      border-right:1px solid #ddd;
+      border-radius:0;
+      padding:8px 12px;
+      background:#fff;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .segmented button:last-child { border-right:0; }
+    .segmented button.active {
+      background:#111;
+      color:#fff;
+    }
     .legendTitleRow { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:6px; }
     .legendTitle { font-weight: 700; }
     .legendToggle { display:flex; align-items:center; gap:6px; font-size: 12px; color:#222; user-select:none; }
     .legendToggle input { width: 18px; height: 18px; }
-
+    #playerLegend { overflow-y: auto; max-height: 120px;}
     .legendItem { display:flex; gap:8px; align-items:center; margin: 6px 0; font-size: 13px; }
     .swatch { width: 18px; height: 10px; border-radius: 6px; border:2px solid transparent; }
     .marker { width: 16px; height: 16px; display:inline-flex; align-items:center; justify-content:center; }
@@ -39,25 +161,58 @@
     canvas { width: 100% !important; height: 100% !important; display:block; }
 
     @media (max-width: 520px){
-      h1 { font-size: 30px; }
       .multi { width: 92vw; height: 200px; }
+      .picker, .series-checks { width: 92vw; }
+      .rangeRow { grid-template-columns: 1fr; }
       .chartBox { height: 58vh; min-height: 300px; }
       .grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
-<body>
-  <h1>Rank Progression</h1>
+<body class="app-shell">
+  <div class="dashboard-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="sidebar-link" href="./index.html" title="Rankings" aria-label="Rankings">🏆</a>
+      <a class="sidebar-link" href="./graph.html" aria-current="page" title="Graph" aria-label="Graph">📈</a>
+      <a class="sidebar-link" href="./debug.html" title="Elo Explorer" aria-label="Elo Explorer">🧪</a>
+    </aside>
 
+    <main class="dashboard-main">
+      <header class="page-header">
+        <div>
+          <div class="page-eyebrow">Trends & Comparisons</div>
+          <h1>Rank Progression</h1>
+          <div class="meta page-subtitle">Compare players across ranking and Elo series over time.</div>
+        </div>
+      </header>
+
+  <div class="section-card">
   <div class="controls">
     <div class="control">
-      <label>Players</label>
-      <select id="playerSelect" class="multi" multiple></select>
+      <label id="playersLabel" for="playerSearch">Players</label>
+      <div class="picker" id="playerPicker">
+        <input id="playerSearch" type="search" placeholder="Search players..." autocomplete="off" />
+        <div class="chips" id="playerChips"></div>
+        <div class="player-actions"><button type="button" id="playerClearBtn">Clear all</button></div>
+        <div id="playerList" class="player-list" role="listbox" aria-multiselectable="true" aria-label="Players"></div>
+      </div>
+      <select id="playerSelect" class="multi" multiple hidden></select>
     </div>
 
     <div class="control">
       <label>Series</label>
-      <select id="seriesSelect" class="multi" multiple>
+      <div class="series-checks" id="seriesChecks">
+        <label><input type="checkbox" name="seriesOpt" value="official" /> Official (PC2)</label>
+        <label><input type="checkbox" name="seriesOpt" value="pc" /> PC</label>
+        <label><input type="checkbox" name="seriesOpt" value="elo" /> Elo</label>
+        <label><input type="checkbox" name="seriesOpt" value="eloSkill" /> EloSkill</label>
+        <label><input type="checkbox" name="seriesOpt" value="eloForm" /> EloForm</label>
+      </div>
+      <div class="series-actions">
+        <button type="button" id="seriesAllBtn">All</button>
+        <button type="button" id="seriesNoneBtn">None</button>
+      </div>
+      <select id="seriesSelect" class="multi" multiple hidden>
         <option value="official">Official (PC2)</option>
         <option value="pc">PC</option>
         <option value="elo">Elo</option>
@@ -66,31 +221,10 @@
       </select>
     </div>
 
-    <div class="row2">
-      <div class="control">
-        <label>Y axis</label>
-        <select id="modeSelect">
-          <option value="rank">Rank</option>
-          <option value="rating">Rating</option>
-        </select>
-      </div>
-
-      <div class="control">
-        <label>From</label>
-        <select id="fromSelect"></select>
-      </div>
-
-      <div class="control">
-        <label>To</label>
-        <select id="toSelect"></select>
-      </div>
-
-      <div class="control">
-        <button id="btnUpdate">Update</button>
-      </div>
-    </div>
+  </div>
   </div>
 
+  <div class="section-card">
   <div class="legendRow">
     <div class="legendBox" style="min-width: 220px;">
       <div class="legendTitleRow">
@@ -113,9 +247,41 @@
       </div>
       <div id="seriesLegend"></div>
     </div>
+
+    <div class="legendBox dataBox">
+      <div class="legendTitleRow">
+        <div class="legendTitle">Data</div>
+      </div>
+      <div class="dataGrid">
+        <div>
+          <div class="small" style="margin-bottom:6px;">Mode</div>
+          <div class="segmented" role="group" aria-label="Data mode">
+            <button type="button" id="modeRankBtn" aria-pressed="true">Rank</button>
+            <button type="button" id="modeRatingBtn" aria-pressed="false">Rating</button>
+          </div>
+          <select id="modeSelect" hidden>
+            <option value="rank">Rank</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
+        <div class="rangeRow">
+          <div class="control" style="width:100%;">
+            <label for="fromSelect">From</label>
+            <select id="fromSelect"></select>
+          </div>
+          <div class="control" style="width:100%;">
+            <label for="toSelect">To</label>
+            <select id="toSelect"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <div id="chartsHost" class="grid"></div>
+    </main>
+  </div>
 
 <script>
 function keyToLabel(k){ return String(k || "").replace("|", "."); }
@@ -125,10 +291,77 @@ let SNAPSHOTS = [];
 let META = [];
 let PLAYER_KEYS = [];
 let charts = [];
+const GRAPH_VIEW_KEY = "graphViewState_v1";
 
 // Keep current slice accessible to tooltip callbacks
 let CURRENT_SLICE = [];
 let CURRENT_MAPS = [];
+
+function getQ(name){ return new URL(window.location.href).searchParams.get(name); }
+function setQ(name, value){
+  const u = new URL(window.location.href);
+  if (value === null || value === undefined || value === "") u.searchParams.delete(name);
+  else u.searchParams.set(name, String(value));
+  history.replaceState(null, "", u.toString());
+}
+function hasQ(name){ return getQ(name) !== null; }
+function readGraphViewState(){
+  try { return JSON.parse(localStorage.getItem(GRAPH_VIEW_KEY) || "null"); } catch(e){ return null; }
+}
+function saveGraphViewState(){
+  const ps = document.getElementById("playerSelect");
+  const ss = document.getElementById("seriesSelect");
+  const modeSel = document.getElementById("modeSelect");
+  const fromSel = document.getElementById("fromSelect");
+  const toSel = document.getElementById("toSelect");
+  const splitP = document.getElementById("splitPlayers");
+  const splitS = document.getElementById("splitSeries");
+  const searchEl = document.getElementById("playerSearch");
+  if (!ps || !ss || !modeSel || !fromSel || !toSel || !splitP || !splitS) return;
+  const fromIdx = Number(fromSel.value);
+  const toIdx = Number(toSel.value);
+  const state = {
+    players: selectedValues(ps),
+    series: selectedValues(ss),
+    mode: modeSel.value,
+    from: SNAPSHOTS[fromIdx]?.key || "",
+    to: SNAPSHOTS[toIdx]?.key || "",
+    splitPlayers: !!splitP.checked,
+    splitSeries: !!splitS.checked,
+    playerSearch: searchEl ? searchEl.value : ""
+  };
+  try { localStorage.setItem(GRAPH_VIEW_KEY, JSON.stringify(state)); } catch(e){}
+}
+function applyGraphViewFallback(ps, seriesSel){
+  const s = readGraphViewState();
+  if (!s) return;
+
+  if (!hasQ('players') && Array.isArray(s.players) && s.players.length){
+    [...ps.options].forEach(o => { o.selected = s.players.includes(o.value); });
+  }
+  if (!hasQ('series') && Array.isArray(s.series) && s.series.length){
+    [...seriesSel.options].forEach(o => { o.selected = s.series.includes(o.value); });
+  }
+  if (!hasQ('mode') && (s.mode === 'rank' || s.mode === 'rating')){
+    document.getElementById('modeSelect').value = s.mode;
+  }
+  if (!hasQ('from') && s.from){
+    const i = META.findIndex(m => SNAPSHOTS[m.idx]?.key === s.from || m.label === s.from);
+    if (i >= 0) document.getElementById('fromSelect').value = String(i);
+  }
+  if (!hasQ('to') && s.to){
+    const i = META.findIndex(m => SNAPSHOTS[m.idx]?.key === s.to || m.label === s.to);
+    if (i >= 0) document.getElementById('toSelect').value = String(i);
+  }
+  if (!hasQ('splitPlayers') && typeof s.splitPlayers === 'boolean'){
+    document.getElementById('splitPlayers').checked = s.splitPlayers;
+  }
+  if (!hasQ('splitSeries') && typeof s.splitSeries === 'boolean'){
+    document.getElementById('splitSeries').checked = s.splitSeries;
+  }
+  const searchEl = document.getElementById('playerSearch');
+  if (searchEl && typeof s.playerSearch === 'string') searchEl.value = s.playerSearch;
+}
 
 // Map displayed name ("R.Houlden") -> internal key ("R|Houlden")
 const LABEL_TO_KEY = new Map();
@@ -187,8 +420,147 @@ fetch("./data/rankings_snapshots.json")
   })
   .catch(err => console.error(err));
 
+function selectedValues(sel){ return [...sel.selectedOptions].map(o => o.value); }
+
+function renderPlayerPicker(ps){
+  const listEl = document.getElementById('playerList');
+  const chipsEl = document.getElementById('playerChips');
+  const searchEl = document.getElementById('playerSearch');
+  const labelEl = document.getElementById('playersLabel');
+  if (!listEl || !chipsEl || !searchEl || !labelEl) return;
+
+  const q = (searchEl.value || '').trim().toLowerCase();
+  const opts = [...ps.options];
+  const selected = opts.filter(o => o.selected);
+  const selectedSet = new Set(selected.map(o => o.value));
+
+  const filtered = opts
+    .filter(o => !q || o.textContent.toLowerCase().includes(q))
+    .sort((a,b) => {
+      const sa = a.selected ? 1 : 0;
+      const sb = b.selected ? 1 : 0;
+      if (sa !== sb) return sb - sa;
+      return a.textContent.localeCompare(b.textContent);
+    });
+
+  listEl.innerHTML = '';
+  for (const o of filtered){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'player-item' + (o.selected ? ' selected' : '');
+    b.setAttribute('role', 'option');
+    b.setAttribute('aria-selected', o.selected ? 'true' : 'false');
+    b.innerHTML = `<span>${o.textContent}</span><span>${o.selected ? '✓' : ''}</span>`;
+    b.addEventListener('click', () => {
+      o.selected = !o.selected;
+      renderPlayerPicker(ps);
+      updateAll();
+    });
+    listEl.appendChild(b);
+  }
+
+  chipsEl.innerHTML = '';
+  for (const o of selected.sort((a,b)=>a.textContent.localeCompare(b.textContent))){
+    const c = document.createElement('button');
+    c.type = 'button';
+    c.className = 'chip-btn';
+    c.textContent = `${o.textContent} ×`;
+    c.addEventListener('click', () => {
+      o.selected = false;
+      renderPlayerPicker(ps);
+      updateAll();
+    });
+    chipsEl.appendChild(c);
+  }
+
+  labelEl.textContent = `Players (${selectedSet.size} selected)`;
+}
+
+function setupEnhancedSelectors(ps, seriesSel){
+  const searchEl = document.getElementById('playerSearch');
+  if (searchEl && !searchEl.dataset.bound){
+    searchEl.dataset.bound = '1';
+    searchEl.addEventListener('input', () => {
+      renderPlayerPicker(ps);
+      saveGraphViewState();
+    });
+  }
+
+  const checks = [...document.querySelectorAll('input[name="seriesOpt"]')];
+  function syncChecksFromSeries(){
+    const chosen = new Set(selectedValues(seriesSel));
+    for (const cb of checks) cb.checked = chosen.has(cb.value);
+  }
+  function syncSeriesFromChecks(){
+    const chosen = new Set(checks.filter(cb => cb.checked).map(cb => cb.value));
+    for (const o of [...seriesSel.options]) o.selected = chosen.has(o.value);
+  }
+
+  for (const cb of checks){
+    if (!cb.dataset.bound){
+      cb.dataset.bound = '1';
+      cb.addEventListener('change', () => {
+        syncSeriesFromChecks();
+        updateAll();
+      });
+    }
+  }
+
+  const allBtn = document.getElementById('seriesAllBtn');
+  const noneBtn = document.getElementById('seriesNoneBtn');
+  const clearPlayersBtn = document.getElementById('playerClearBtn');
+  if (allBtn && !allBtn.dataset.bound){
+    allBtn.dataset.bound = '1';
+    allBtn.addEventListener('click', () => {
+      for (const cb of checks) cb.checked = true;
+      syncSeriesFromChecks();
+      updateAll();
+    });
+  }
+  if (noneBtn && !noneBtn.dataset.bound){
+    noneBtn.dataset.bound = '1';
+    noneBtn.addEventListener('click', () => {
+      for (const cb of checks) cb.checked = false;
+      syncSeriesFromChecks();
+      updateAll();
+    });
+  }
+  if (clearPlayersBtn && !clearPlayersBtn.dataset.bound){
+    clearPlayersBtn.dataset.bound = '1';
+    clearPlayersBtn.addEventListener('click', () => {
+      for (const o of [...ps.options]) o.selected = false;
+      renderPlayerPicker(ps);
+      updateAll();
+    });
+  }
+
+  syncChecksFromSeries();
+  renderPlayerPicker(ps);
+}
+
+function syncModeButtons(){
+  const mode = document.getElementById('modeSelect').value;
+  const rankBtn = document.getElementById('modeRankBtn');
+  const ratingBtn = document.getElementById('modeRatingBtn');
+  if (!rankBtn || !ratingBtn) return;
+  const rankOn = mode === 'rank';
+  rankBtn.classList.toggle('active', rankOn);
+  ratingBtn.classList.toggle('active', !rankOn);
+  rankBtn.setAttribute('aria-pressed', rankOn ? 'true' : 'false');
+  ratingBtn.setAttribute('aria-pressed', rankOn ? 'false' : 'true');
+}
+
+function setModeValue(mode){
+  const sel = document.getElementById('modeSelect');
+  if (!sel || (mode !== 'rank' && mode !== 'rating')) return;
+  sel.value = mode;
+  syncModeButtons();
+  updateAll();
+}
+
 function initControls(){
   const ps = document.getElementById("playerSelect");
+  const seriesSel = document.getElementById("seriesSelect");
   ps.innerHTML = "";
 
   LABEL_TO_KEY.clear();
@@ -217,20 +589,57 @@ function initControls(){
   from.value = 0;
   to.value = Math.max(0, META.length - 1);
 
-  document.getElementById("btnUpdate").addEventListener("click", updateAll);
+  const modeQ = (getQ('mode') || '').toLowerCase();
+  if (modeQ === 'rating') document.getElementById('modeSelect').value = 'rating';
+  syncModeButtons();
+
+  const playersQ = (getQ('players') || '').split(',').map(s=>s.trim()).filter(Boolean);
+  if (playersQ.length){
+    [...ps.options].forEach(o => { o.selected = playersQ.includes(o.value); });
+  }
+
+  const seriesQ = (getQ('series') || '').split(',').map(s=>s.trim()).filter(Boolean);
+  if (seriesQ.length){
+    [...seriesSel.options].forEach(o => { o.selected = seriesQ.includes(o.value); });
+  }
+
+  const fromQ = getQ('from');
+  const toQ = getQ('to');
+  if (fromQ){
+    const i = META.findIndex(m => m.label === fromQ || SNAPSHOTS[m.idx]?.key === fromQ);
+    if (i >= 0) from.value = String(i);
+  }
+  if (toQ){
+    const i = META.findIndex(m => m.label === toQ || SNAPSHOTS[m.idx]?.key === toQ);
+    if (i >= 0) to.value = String(i);
+  }
+
+  const splitP = getQ('splitPlayers');
+  const splitS = getQ('splitSeries');
+  if (splitP === '1') document.getElementById('splitPlayers').checked = true;
+  if (splitS === '1') document.getElementById('splitSeries').checked = true;
+
+  applyGraphViewFallback(ps, seriesSel);
+  syncModeButtons();
 
   // immediate re-render
   document.getElementById("splitPlayers").addEventListener("change", updateAll);
   document.getElementById("splitSeries").addEventListener("change", updateAll);
   document.getElementById("modeSelect").addEventListener("change", updateAll);
+  document.getElementById("fromSelect").addEventListener("change", updateAll);
+  document.getElementById("toSelect").addEventListener("change", updateAll);
+  document.getElementById("modeRankBtn").addEventListener("click", () => setModeValue('rank'));
+  document.getElementById("modeRatingBtn").addEventListener("click", () => setModeValue('rating'));
 
-  const seriesSel = document.getElementById("seriesSelect");
-  [...seriesSel.options].forEach(o => { if(o.value === "official") o.selected = true; });
+  const hasSelectedSeries = [...seriesSel.options].some(o => o.selected);
+  if (!hasSelectedSeries) {
+    [...seriesSel.options].forEach(o => { if(o.value === "official") o.selected = true; });
+  }
+
+  setupEnhancedSelectors(ps, seriesSel);
 
   updateAll();
 }
-
-function selectedValues(sel){ return [...sel.selectedOptions].map(o => o.value); }
 
 function recordMap(snap){
   const map = new Map();
@@ -429,12 +838,19 @@ function updateAll(){
   const series = selectedValues(document.getElementById("seriesSelect"));
   const mode = document.getElementById("modeSelect").value;
 
+  setQ('players', players.join(','));
+  setQ('series', series.join(','));
+  setQ('mode', mode);
+  saveGraphViewState();
+
   buildLegends(players, series);
   clearCharts();
   if(!players.length || !series.length) return;
 
   const fromV = Number(document.getElementById("fromSelect").value);
   const toV = Number(document.getElementById("toSelect").value);
+  setQ('from', SNAPSHOTS[fromV]?.key || "");
+  setQ('to', SNAPSHOTS[toV]?.key || "");
   const lo = Math.min(fromV, toV), hi = Math.max(fromV, toV);
 
   const slice = SNAPSHOTS.slice(lo, hi + 1);
@@ -455,6 +871,8 @@ function updateAll(){
 
   const splitP = document.getElementById("splitPlayers").checked;
   const splitS = document.getElementById("splitSeries").checked;
+  setQ('splitPlayers', splitP ? '1' : null);
+  setQ('splitSeries', splitS ? '1' : null);
 
   const chartCount = (splitP && splitS) ? (players.length * series.length) :
                      (splitP ? players.length : (splitS ? series.length : 1));
@@ -596,6 +1014,7 @@ function updateAll(){
     });
   });
 }
+
 </script>
 </body>
 </html>
