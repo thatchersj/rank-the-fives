@@ -848,14 +848,52 @@ function looksLikeResultColumn(colName) {
         if (!Number.isFinite(d)) return null;
         return 1 / (1 + Math.pow(10, -d / 400));
       }
+
+      const SET_DECISIVENESS = 1.2; // >1 => stronger pair more likely to win 3-0/3-1 than 3-2
+
+      function bo5WinProbFromSetProb(p){
+        // Best-of-5 (first to 3): P(win match)
+        return (10 * Math.pow(p, 3)) - (15 * Math.pow(p, 4)) + (6 * Math.pow(p, 5));
+      }
+
+      function inferSetProbFromMatchProb(pMatch){
+        const pm = Math.max(0.001, Math.min(0.999, Number(pMatch)));
+        let lo = 0.001, hi = 0.999;
+        for (let i = 0; i < 32; i++) {
+          const mid = (lo + hi) / 2;
+          const pmid = bo5WinProbFromSetProb(mid);
+          if (pmid < pm) lo = mid;
+          else hi = mid;
+        }
+        return (lo + hi) / 2;
+      }
+
+      function sharpenSetProb(pSet, k){
+        const p = Math.max(0.001, Math.min(0.999, Number(pSet)));
+        const logit = Math.log(p / (1 - p));
+        const sharp = 1 / (1 + Math.exp(-(k * logit)));
+        return Math.max(0.001, Math.min(0.999, sharp));
+      }
+
       function expectedSetScore(pWin){
         if (!Number.isFinite(pWin)) return "—";
-        if (pWin >= 0.85) return "3-0";
-        if (pWin >= 0.68) return "3-1";
-        if (pWin >= 0.52) return "3-2";
-        if (pWin >= 0.38) return "2-3";
-        if (pWin >= 0.22) return "1-3";
-        return "0-3";
+        // Convert viewed-side match win probability into set win probability,
+        // then derive BO5 scoreline probabilities.
+        let pSet = inferSetProbFromMatchProb(pWin);
+        pSet = sharpenSetProb(pSet, SET_DECISIVENESS);
+        const q = 1 - pSet;
+
+        const probs = [
+          { s: "3-0", p: Math.pow(pSet, 3) },
+          { s: "3-1", p: 3 * Math.pow(pSet, 3) * q },
+          { s: "3-2", p: 6 * Math.pow(pSet, 3) * Math.pow(q, 2) },
+          { s: "2-3", p: 6 * Math.pow(q, 3) * Math.pow(pSet, 2) },
+          { s: "1-3", p: 3 * Math.pow(q, 3) * pSet },
+          { s: "0-3", p: Math.pow(q, 3) },
+        ];
+
+        probs.sort((a,b) => b.p - a.p);
+        return probs[0]?.s || "—";
       }
       function shockLabel(pWinner){
         if (!Number.isFinite(pWinner)) return "";
