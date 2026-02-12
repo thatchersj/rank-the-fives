@@ -291,6 +291,7 @@ let SNAPSHOTS = [];
 let META = [];
 let PLAYER_KEYS = [];
 let charts = [];
+const GRAPH_VIEW_KEY = "graphViewState_v1";
 
 // Keep current slice accessible to tooltip callbacks
 let CURRENT_SLICE = [];
@@ -302,6 +303,64 @@ function setQ(name, value){
   if (value === null || value === undefined || value === "") u.searchParams.delete(name);
   else u.searchParams.set(name, String(value));
   history.replaceState(null, "", u.toString());
+}
+function hasQ(name){ return getQ(name) !== null; }
+function readGraphViewState(){
+  try { return JSON.parse(localStorage.getItem(GRAPH_VIEW_KEY) || "null"); } catch(e){ return null; }
+}
+function saveGraphViewState(){
+  const ps = document.getElementById("playerSelect");
+  const ss = document.getElementById("seriesSelect");
+  const modeSel = document.getElementById("modeSelect");
+  const fromSel = document.getElementById("fromSelect");
+  const toSel = document.getElementById("toSelect");
+  const splitP = document.getElementById("splitPlayers");
+  const splitS = document.getElementById("splitSeries");
+  const searchEl = document.getElementById("playerSearch");
+  if (!ps || !ss || !modeSel || !fromSel || !toSel || !splitP || !splitS) return;
+  const fromIdx = Number(fromSel.value);
+  const toIdx = Number(toSel.value);
+  const state = {
+    players: selectedValues(ps),
+    series: selectedValues(ss),
+    mode: modeSel.value,
+    from: SNAPSHOTS[fromIdx]?.key || "",
+    to: SNAPSHOTS[toIdx]?.key || "",
+    splitPlayers: !!splitP.checked,
+    splitSeries: !!splitS.checked,
+    playerSearch: searchEl ? searchEl.value : ""
+  };
+  try { localStorage.setItem(GRAPH_VIEW_KEY, JSON.stringify(state)); } catch(e){}
+}
+function applyGraphViewFallback(ps, seriesSel){
+  const s = readGraphViewState();
+  if (!s) return;
+
+  if (!hasQ('players') && Array.isArray(s.players) && s.players.length){
+    [...ps.options].forEach(o => { o.selected = s.players.includes(o.value); });
+  }
+  if (!hasQ('series') && Array.isArray(s.series) && s.series.length){
+    [...seriesSel.options].forEach(o => { o.selected = s.series.includes(o.value); });
+  }
+  if (!hasQ('mode') && (s.mode === 'rank' || s.mode === 'rating')){
+    document.getElementById('modeSelect').value = s.mode;
+  }
+  if (!hasQ('from') && s.from){
+    const i = META.findIndex(m => SNAPSHOTS[m.idx]?.key === s.from || m.label === s.from);
+    if (i >= 0) document.getElementById('fromSelect').value = String(i);
+  }
+  if (!hasQ('to') && s.to){
+    const i = META.findIndex(m => SNAPSHOTS[m.idx]?.key === s.to || m.label === s.to);
+    if (i >= 0) document.getElementById('toSelect').value = String(i);
+  }
+  if (!hasQ('splitPlayers') && typeof s.splitPlayers === 'boolean'){
+    document.getElementById('splitPlayers').checked = s.splitPlayers;
+  }
+  if (!hasQ('splitSeries') && typeof s.splitSeries === 'boolean'){
+    document.getElementById('splitSeries').checked = s.splitSeries;
+  }
+  const searchEl = document.getElementById('playerSearch');
+  if (searchEl && typeof s.playerSearch === 'string') searchEl.value = s.playerSearch;
 }
 
 // Map displayed name ("R.Houlden") -> internal key ("R|Houlden")
@@ -421,7 +480,10 @@ function setupEnhancedSelectors(ps, seriesSel){
   const searchEl = document.getElementById('playerSearch');
   if (searchEl && !searchEl.dataset.bound){
     searchEl.dataset.bound = '1';
-    searchEl.addEventListener('input', () => renderPlayerPicker(ps));
+    searchEl.addEventListener('input', () => {
+      renderPlayerPicker(ps);
+      saveGraphViewState();
+    });
   }
 
   const checks = [...document.querySelectorAll('input[name="seriesOpt"]')];
@@ -556,6 +618,9 @@ function initControls(){
   const splitS = getQ('splitSeries');
   if (splitP === '1') document.getElementById('splitPlayers').checked = true;
   if (splitS === '1') document.getElementById('splitSeries').checked = true;
+
+  applyGraphViewFallback(ps, seriesSel);
+  syncModeButtons();
 
   // immediate re-render
   document.getElementById("splitPlayers").addEventListener("change", updateAll);
@@ -776,6 +841,7 @@ function updateAll(){
   setQ('players', players.join(','));
   setQ('series', series.join(','));
   setQ('mode', mode);
+  saveGraphViewState();
 
   buildLegends(players, series);
   clearCharts();

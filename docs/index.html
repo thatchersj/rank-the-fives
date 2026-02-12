@@ -25,6 +25,14 @@
       appearance:none; border:1px solid #ccc; border-radius:10px; padding:10px 12px;
       background:white; font-size:14px; min-width: 220px;
     }
+    .player-filter-bar{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+    .filter-btn{ appearance:none; border:1px solid #ccc; border-radius:999px; background:#fff; padding:6px 10px; font-size:12px; cursor:pointer; }
+    .chip-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+    .chip-btn{ border:1px solid #cfd8e3; border-radius:999px; background:#f8fafc; padding:4px 8px; font-size:12px; cursor:pointer; }
+    .suggest-list{ margin-top:8px; border:1px solid #eee; border-radius:10px; max-height:180px; overflow:auto; background:#fff; }
+    .suggest-item{ width:100%; text-align:left; border:0; border-bottom:1px solid #f1f1f1; background:#fff; padding:8px 10px; font-size:12px; cursor:pointer; }
+    .suggest-item:last-child{ border-bottom:0; }
+    .suggest-item:hover{ background:#f8fafc; }
     .segmented { display:inline-flex; border:1px solid #ccc; border-radius:10px; overflow:hidden; }
     .segmented button {
       appearance:none; border:0; background:#fff; padding:10px 12px; cursor:pointer; font-size:14px;
@@ -162,6 +170,11 @@ font-variant-numeric: tabular-nums;
       padding: 10px 12px; border: 1px solid #eee; border-radius: 12px;
       margin: 8px 0; background: #fafafa;
     }
+    .match-row{ display:flex; gap:12px; justify-content:space-between; align-items:flex-start; }
+    .match-main{ min-width:0; flex:1; }
+    .match-metrics{ min-width:140px; text-align:right; }
+    .shock-pill{ display:inline-block; border:1px solid #eab308; background:#fef9c3; color:#854d0e; border-radius:999px; padding:2px 8px; font-size:11px; margin-top:4px; }
+    .shock-pill.major{ border-color:#dc2626; background:#fee2e2; color:#991b1b; }
     .match .line{ margin: 4px 0; }
     .pill{
       display:inline-block; padding: 2px 8px; border-radius: 999px;
@@ -258,9 +271,15 @@ font-variant-numeric: tabular-nums;
   <div class="section-card" id="controlsCard">
     <div class="controls" style="margin:0;">
       <select id="snapshotSelect" aria-label="As of tournament"></select>
-      <input id="searchBox" type="search" placeholder="Search (rank/initial/surname)..." autocomplete="off" />
+      <input id="searchBox" type="search" placeholder="Search and add players..." autocomplete="off" />
       <span class="small" id="count"></span>
     </div>
+    <div id="playerSuggest" class="suggest-list" style="display:none;"></div>
+    <div class="player-filter-bar">
+      <button id="btnShowAllPlayers" class="filter-btn" type="button">Show all</button>
+      <button id="btnClearPlayerFilter" class="filter-btn" type="button">Clear all</button>
+    </div>
+    <div id="playerChipRow" class="chip-row"></div>
   </div>
 
   <div class="table-wrap" id="tableWrap">
@@ -301,6 +320,122 @@ const statusEl = document.getElementById("status");
       const theadRow = document.getElementById("theadRow");
       const tbody = document.querySelector("#rankings tbody");
       const table = document.getElementById("rankings");
+      const suggestEl = document.getElementById("playerSuggest");
+      const chipRowEl = document.getElementById("playerChipRow");
+      const btnShowAllPlayers = document.getElementById("btnShowAllPlayers");
+      const btnClearPlayerFilter = document.getElementById("btnClearPlayerFilter");
+      const RANKINGS_VIEW_KEY = "rankingsViewState_v1";
+      let SHOW_ALL_PLAYERS = true;
+      let PLAYER_FILTER = new Set();
+
+      function readRankingsViewState(){
+        try { return JSON.parse(localStorage.getItem(RANKINGS_VIEW_KEY) || "null"); } catch(e){ return null; }
+      }
+      function saveRankingsViewState(){
+        const state = {
+          snapshot: snapshotSelect ? snapshotSelect.value : "latest",
+          search: searchBox ? searchBox.value : "",
+          selectedPlayers: Array.from(PLAYER_FILTER),
+          showAllPlayers: !!SHOW_ALL_PLAYERS
+        };
+        try { localStorage.setItem(RANKINGS_VIEW_KEY, JSON.stringify(state)); } catch(e){}
+      }
+      function rowPlayerKeyFromCells(tr){
+        const cols = window.__CURRENT_COLS__ || [];
+        const idxInit = cols.indexOf("Initial");
+        const idxSur = cols.indexOf("Surname");
+        const init = (tr.children[idxInit]?.textContent || "").trim().toUpperCase();
+        const sur = (tr.children[idxSur]?.textContent || "").trim().toUpperCase();
+        return (init && sur) ? `${init}|${sur}` : null;
+      }
+      function playerOptionsFromRows(){
+        const out = [];
+        for (const tr of Array.from(tbody.querySelectorAll("tr"))){
+          const key = rowPlayerKeyFromCells(tr);
+          if (!key) continue;
+          out.push({ key, label: toPlayerLabel(key) });
+        }
+        out.sort((a,b)=>a.label.localeCompare(b.label));
+        return out;
+      }
+      function renderPlayerChips(){
+        if (!chipRowEl) return;
+        chipRowEl.innerHTML = "";
+        const keys = Array.from(PLAYER_FILTER).sort((a,b)=>toPlayerLabel(a).localeCompare(toPlayerLabel(b)));
+        keys.forEach(k => {
+          const b = document.createElement("button");
+          b.className = "chip-btn";
+          b.type = "button";
+          b.textContent = `${toPlayerLabel(k)} ×`;
+          b.addEventListener("click", ()=>{
+            PLAYER_FILTER.delete(k);
+            if (!PLAYER_FILTER.size) SHOW_ALL_PLAYERS = true;
+            applySearchFilter();
+            renderPlayerChips();
+            saveRankingsViewState();
+          });
+          chipRowEl.appendChild(b);
+        });
+      }
+      function renderPlayerSuggest(){
+        if (!suggestEl) return;
+        const q = (searchBox.value || "").trim().toLowerCase();
+        const opts = playerOptionsFromRows();
+        const matches = opts.filter(o => !PLAYER_FILTER.has(o.key) && (!q || o.label.toLowerCase().includes(q))).slice(0, 20);
+        suggestEl.innerHTML = "";
+        if (!q || !matches.length){
+          suggestEl.style.display = "none";
+          return;
+        }
+        matches.forEach(o => {
+          const b = document.createElement("button");
+          b.className = "suggest-item";
+          b.type = "button";
+          b.textContent = o.label;
+          b.addEventListener("click", ()=>{
+            PLAYER_FILTER.add(o.key);
+            SHOW_ALL_PLAYERS = false;
+            searchBox.value = "";
+            renderPlayerSuggest();
+            renderPlayerChips();
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+          suggestEl.appendChild(b);
+        });
+        suggestEl.style.display = "";
+      }
+      function applySearchFilter(){
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+        let shown = 0;
+        rows.forEach(tr => {
+          const pkey = rowPlayerKeyFromCells(tr);
+          const ok = SHOW_ALL_PLAYERS || !PLAYER_FILTER.size || (pkey && PLAYER_FILTER.has(pkey));
+          tr.style.display = ok ? "" : "none";
+          if (ok) shown++;
+        });
+        if (btnShowAllPlayers) btnShowAllPlayers.style.fontWeight = SHOW_ALL_PLAYERS ? "700" : "400";
+        countEl.textContent = `${shown} / ${rows.length} players`;
+      }
+      function setupPlayerFilterControls(){
+        if (btnShowAllPlayers){
+          btnShowAllPlayers.addEventListener("click", () => {
+            SHOW_ALL_PLAYERS = true;
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+        }
+        if (btnClearPlayerFilter){
+          btnClearPlayerFilter.addEventListener("click", () => {
+            PLAYER_FILTER = new Set();
+            SHOW_ALL_PLAYERS = true;
+            renderPlayerChips();
+            renderPlayerSuggest();
+            applySearchFilter();
+            saveRankingsViewState();
+          });
+        }
+      }
       function setUrlParam(k, v){
         const u = new URL(window.location.href);
         if (v === null || v === undefined || v === "") u.searchParams.delete(k);
@@ -607,32 +742,7 @@ function looksLikeResultColumn(colName) {
         drawer.classList.add('open');
       }
 
-      function attachRowClicks(){
-        tbody.addEventListener('click', (ev) => {
-          const td = ev.target.closest('td');
-          if (!td) return;
-          if (td.classList.contains('result-cell')) return; // keep tournament cell click behavior
-          const tr = td.parentElement;
-          if (!tr) return;
-          const pkey = getRowPlayerKey(tr);
-          if (pkey) openPlayerDrawer(pkey);
-        });
-
-        tbody.addEventListener('keydown', (ev) => {
-          if (ev.key !== 'Enter') return;
-          const tr = ev.target.closest('tr');
-          if (!tr) return;
-          const pkey = getRowPlayerKey(tr);
-          if (pkey) openPlayerDrawer(pkey);
-        });
-
-        const { closeBtn, backdrop } = getDrawerEls();
-        closeBtn?.addEventListener('click', closePlayerDrawer);
-        backdrop?.addEventListener('click', closePlayerDrawer);
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') closePlayerDrawer();
-        });
-      }
+      function attachRowClicks(){ /* intentionally disabled */ }
 
       function getCellValue(row, idx) {
         const td = row.children[idx];
@@ -688,23 +798,8 @@ function looksLikeResultColumn(colName) {
         });
 
         searchBox.addEventListener("input", () => {
-          const q = searchBox.value.trim().toUpperCase();
-          const rows = Array.from(tbody.querySelectorAll("tr"));
-          let shown = 0;
-          rows.forEach(tr => {
-            const cols = window.__CURRENT_COLS__ || [];
-            const idxRank = cols.indexOf("Rank") >= 0 ? cols.indexOf("Rank") : 0;
-            const idxInit = cols.indexOf("Initial");
-            const idxSur = cols.indexOf("Surname");
-            const rank = (tr.children[idxRank]?.textContent || "").toUpperCase();
-            const init = (tr.children[idxInit]?.textContent || "").toUpperCase();
-            const sur = (tr.children[idxSur]?.textContent || "").toUpperCase();
-            const hay = `${rank} ${init} ${sur}`;
-            const ok = !q || hay.includes(q);
-            tr.style.display = ok ? "" : "none";
-            if (ok) shown++;
-          });
-          countEl.textContent = `${shown} / ${rows.length} players`;
+          renderPlayerSuggest();
+          saveRankingsViewState();
         });
 
         // Default sort by Rank (column 1 at top)
@@ -746,6 +841,35 @@ function looksLikeResultColumn(colName) {
         }
         backdrop.style.display = "flex";
         backdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function eloWinProb(teamA, teamB){
+        const d = Number(teamA) - Number(teamB);
+        if (!Number.isFinite(d)) return null;
+        return 1 / (1 + Math.pow(10, -d / 400));
+      }
+      function expectedSetScore(pWin){
+        if (!Number.isFinite(pWin)) return "—";
+        if (pWin >= 0.85) return "3-0";
+        if (pWin >= 0.68) return "3-1";
+        if (pWin >= 0.52) return "3-2";
+        if (pWin >= 0.38) return "2-3";
+        if (pWin >= 0.22) return "1-3";
+        return "0-3";
+      }
+      function shockLabel(pWinner){
+        if (!Number.isFinite(pWinner)) return "";
+        if (pWinner < 0.20) return `<div class=\"shock-pill major\">Major shock</div>`;
+        if (pWinner < 0.35) return `<div class=\"shock-pill\">Shock</div>`;
+        return "";
+      }
+
+      function scoreForViewedPlayer(rawScore, won){
+        const s = (rawScore || "").toString().trim();
+        if (!s || won) return s;
+        // When viewing from the losing side, swap all score pairs so the
+        // displayed match score and set scores are from the viewed player's perspective.
+        return s.replace(/(\d+)\s*-\s*(\d+)/g, (_, a, b) => `${b}-${a}`);
       }
 
       function closeMatchModal() {
@@ -1006,6 +1130,12 @@ function looksLikeResultColumn(colName) {
           }
 
           const byRound = {};
+          const eloMap = new Map();
+          for (const r of (window.__CURRENT_RENDER_DATA || [])) {
+            const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+            const v = Number(r.Elo);
+            if (k && Number.isFinite(v)) eloMap.set(k, v);
+          }
           for (const m of matches) {
             const r = m.round || "UNK";
             byRound[r] = byRound[r] || [];
@@ -1017,12 +1147,30 @@ function looksLikeResultColumn(colName) {
             if (!list || list.length === 0) continue;
             body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
             for (const m of list) {
-              const score = escapeHtml(m.score || "");
               const won = (m.winners || []).includes(playerKey);
+              const scoreText = scoreForViewedPlayer(m.score || "", won);
+              const score = escapeHtml(scoreText);
+              const wKeys = Array.isArray(m.winners) ? m.winners : [];
+              const lKeys = Array.isArray(m.losers) ? m.losers : [];
+              const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+              const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+              const wTeam = wE.length ? wE.reduce((a,b)=>a+b,0) : NaN;
+              const lTeam = lE.length ? lE.reduce((a,b)=>a+b,0) : NaN;
+              const pWinner = eloWinProb(wTeam, lTeam);
+              const pShown = won ? pWinner : (Number.isFinite(pWinner) ? (1 - pWinner) : NaN);
+              const expScore = expectedSetScore(pShown);
+              // Shock should reflect whether the *actual winner* was an underdog,
+              // independent of which side the viewed player was on.
+              const shock = shockLabel(pWinner);
               body += `<div class="match">` +
-                      `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>` +
-                      (score ? `<div class="line">${score}</div>` : ``) +
-                      `</div>`;
+                      `<div class="match-row">`
+                      + `<div class="match-main">`
+                      + `<div class="line"><span class="pill ${won ? "pill-won" : "pill-lost"}">${escapeHtml(won ? "Won" : "Lost")}</span><i>vs</i> ${escapeHtml(won ? (m.loserTeam || "") : (m.winnerTeam || ""))}</div>`
+                      + (score ? `<div class="line">${score}</div>` : ``)
+                      + `</div>`
+                      + `<div class="match-metrics"><div class="small">Win% ${Number.isFinite(pShown) ? Math.round(pShown*100) + '%' : '—'}</div><div class="small">Expected ${expScore}</div>${shock}</div>`
+                      + `</div>`
+                      + `</div>`;
             }
           }
 
@@ -1097,18 +1245,30 @@ function looksLikeResultColumn(colName) {
                 setUrlParam('snapshot', v);
               }
             }
-            // reset search + sort
+            // reset input text + sort
             searchBox.value = '';
+            renderPlayerSuggest();
             sortBy(0, true);
+            saveRankingsViewState();
 
-            const selected = window.__SELECTED_PLAYER_KEY__ || getUrlParam('player');
-            if (selected) {
-              const exists = (window.__CURRENT_RENDER_DATA || []).some(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === selected);
-              if (exists) openPlayerDrawer(selected);
-              else closePlayerDrawer();
-            }
+            applySearchFilter();
+            renderPlayerChips();
           });
         }
+
+          const saved = readRankingsViewState();
+          if (!getUrlParam('snapshot') && saved?.snapshot && snapshotSelect &&
+              Array.from(snapshotSelect.options).some(o => o.value === saved.snapshot)) {
+            snapshotSelect.value = saved.snapshot;
+            if (saved.snapshot === 'latest') {
+              render(loaded.latest);
+              setStatus('Showing latest');
+            } else {
+              const snap = snapsChrono.find(x => x.key === saved.snapshot);
+              render((snap && Array.isArray(snap.records)) ? snap.records : loaded.latest);
+              setStatus((snap && snap.label) ? `As of ${snap.label}` : 'Showing latest');
+            }
+          }
 
           if (snapshotSelect?.value && snapshotSelect.value !== 'latest') {
             const snap = snapsChrono.find(x => x.key === snapshotSelect.value);
@@ -1119,13 +1279,19 @@ function looksLikeResultColumn(colName) {
           }
 
           enableSortAndSearch();
+          setupPlayerFilterControls();
+          const saved2 = readRankingsViewState();
+          if (!getUrlParam('snapshot') && saved2) {
+            if (saved2.search) searchBox.value = saved2.search;
+            PLAYER_FILTER = new Set(Array.isArray(saved2.selectedPlayers) ? saved2.selectedPlayers : []);
+            SHOW_ALL_PLAYERS = (typeof saved2.showAllPlayers === 'boolean') ? saved2.showAllPlayers : !PLAYER_FILTER.size;
+          }
+          renderPlayerChips();
+          renderPlayerSuggest();
+          applySearchFilter();
+          saveRankingsViewState();
           attachCellClicks(matchesData);
           attachRowClicks();
-          const deepPlayer = getUrlParam('player');
-          if (deepPlayer) {
-            const exists = (window.__CURRENT_RENDER_DATA || []).some(r => `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}` === deepPlayer);
-            if (exists) openPlayerDrawer(deepPlayer);
-          }
 
           if (!getStatus() || getStatus() === 'Loading…') setStatus('Showing latest');
         } catch (e) {
