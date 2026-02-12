@@ -98,6 +98,12 @@ h1, h2, h3 { letter-spacing: -0.02em; color: var(--text); }
   margin-bottom: 4px;
 }
 
+.page-header .page-subtitle {
+  color: var(--muted) !important;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 
 .header-tools {
   display: flex;
