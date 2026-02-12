@@ -197,12 +197,14 @@ font-variant-numeric: tabular-nums;
     .peakBtn{ appearance:none; border:1px solid #ccc; background:#fff; border-radius:999px; padding:6px 10px; font-size:12px; cursor:pointer; }
 
     /* Help modal tabs */
-    .tabs{ display:flex; gap:8px; padding: 0 16px 12px; border-bottom: 1px solid #eee; }
+    .tabs{ display:flex; gap:8px; padding: 8px 16px; border-bottom: 1px solid #eee; }
     .tabbtn{
       appearance:none; border:1px solid #ccc; background:#fff;
       border-radius: 999px; padding: 8px 12px; font-size: 13px; cursor:pointer;
     }
-    .tabbtn[aria-selected="true"]{ border-color:#111; }
+    .tabbtn:hover{ background:#f6f6f6; color:#111; }
+    .tabbtn[aria-selected="true"]{ border-color:#111; background:#111; color:#fff; font-weight:600; }
+    .tabbtn[aria-selected="true"]:hover{ background:#1a73e8 !important; color:#fff; }
     .tabpanel{ display:none; padding: 12px 16px 16px; }
     .tabpanel.active{ display:block; }
     .tabpanel h3{ margin: 10px 0 6px; font-size: 15px; }
@@ -410,17 +412,20 @@ const statusEl = document.getElementById("status");
         let shown = 0;
         rows.forEach(tr => {
           const pkey = rowPlayerKeyFromCells(tr);
-          const ok = SHOW_ALL_PLAYERS || !PLAYER_FILTER.size || (pkey && PLAYER_FILTER.has(pkey));
+          const ok = SHOW_ALL_PLAYERS || (PLAYER_FILTER.size > 0 && pkey && PLAYER_FILTER.has(pkey));
           tr.style.display = ok ? "" : "none";
           if (ok) shown++;
         });
-        if (btnShowAllPlayers) btnShowAllPlayers.style.fontWeight = SHOW_ALL_PLAYERS ? "700" : "400";
+        if (btnShowAllPlayers) {
+          btnShowAllPlayers.textContent = SHOW_ALL_PLAYERS ? "Show All" : "Filter";
+          btnShowAllPlayers.style.fontWeight = "700";
+        }
         countEl.textContent = `${shown} / ${rows.length} players`;
       }
       function setupPlayerFilterControls(){
         if (btnShowAllPlayers){
           btnShowAllPlayers.addEventListener("click", () => {
-            SHOW_ALL_PLAYERS = true;
+            SHOW_ALL_PLAYERS = !SHOW_ALL_PLAYERS;
             applySearchFilter();
             saveRankingsViewState();
           });
@@ -984,6 +989,35 @@ function looksLikeResultColumn(colName) {
         const title = `${tourn.tournament}`;
         const subtitle = `Draw`;
 
+        const eloMap = new Map();
+        for (const r of (window.__CURRENT_RENDER_DATA || [])) {
+          const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+          const v = Number(r.Elo);
+          if (k && Number.isFinite(v)) eloMap.set(k, v);
+        }
+
+        function renderDrawMatchCard(m){
+          const wKeys = Array.isArray(m.winners) ? m.winners : [];
+          const lKeys = Array.isArray(m.losers) ? m.losers : [];
+          const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+          const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+          const wTeamElo = wE.length ? wE.reduce((a,b)=>a+b,0) : NaN;
+          const lTeamElo = lE.length ? lE.reduce((a,b)=>a+b,0) : NaN;
+          const pWinner = eloWinProb(wTeamElo, lTeamElo);
+          const expScore = expectedSetScore(pWinner);
+          const shock = shockLabel(pWinner);
+          const score = (m.score || "").toString().trim();
+          return `<div class="match">`
+            + `<div class="match-row">`
+            + `<div class="match-main">`
+            + `<div class="line"><b>${escapeHtml(m.winnerTeam || "")}</b> beat ${escapeHtml(m.loserTeam || "")}</div>`
+            + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
+            + `</div>`
+            + `<div class="match-metrics"><div class="small">Win% ${Number.isFinite(pWinner) ? Math.round(pWinner*100) + '%' : '—'}</div><div class="small">Expected ${expScore}</div>${shock}</div>`
+            + `</div>`
+            + `</div>`;
+        }
+
         const order = ["L16", "QF", "SF", "F"];
         const byRound = {};
         for (const m of (tourn.matches || [])){
@@ -1015,13 +1049,7 @@ function looksLikeResultColumn(colName) {
           if (!list.length) continue;
           body += `<div class="match-round">${escapeHtml(roundNames[r])}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || "";
-            const lTeam = m.loserTeam || "";
-            const score = (m.score || "").toString().trim();
-            body += `<div class="match">`
-              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
-              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
-              + `</div>`;
+            body += renderDrawMatchCard(m);
           }
         }
 
@@ -1031,13 +1059,7 @@ function looksLikeResultColumn(colName) {
           if (!list.length) continue;
           body += `<div class="match-round">${escapeHtml(r)}</div>`;
           for (const m of list){
-            const wTeam = m.winnerTeam || "";
-            const lTeam = m.loserTeam || "";
-            const score = (m.score || "").toString().trim();
-            body += `<div class="match">`
-              + `<div class="line"><b>${escapeHtml(wTeam)}</b> beat ${escapeHtml(lTeam)}</div>`
-              + (score ? `<div class="line">${escapeHtml(score)}</div>` : ``)
-              + `</div>`;
+            body += renderDrawMatchCard(m);
           }
         }
 
@@ -1229,6 +1251,59 @@ function looksLikeResultColumn(colName) {
           const [loaded, matchesData] = await Promise.all([loadData(), loadMatches()]);
           window.__MATCHES_DATA__ = matchesData;
 
+          function buildEloMapFromRecords(records){
+            const m = new Map();
+            for (const r of (records || [])) {
+              const k = `${String(r.Initial||'').toUpperCase()}|${String(r.Surname||'').toUpperCase()}`;
+              const v = Number(r.Elo);
+              if (k && Number.isFinite(v)) m.set(k, v);
+            }
+            return m;
+          }
+
+          function buildShockRows(allMatchesData, latestRows, snapsChrono){
+            const rows = [];
+            const latestMap = buildEloMapFromRecords(latestRows || []);
+            const snapMapByKey = new Map();
+            for (const s of (snapsChrono || [])) {
+              if (!s || !s.key) continue;
+              snapMapByKey.set(normaliseHeader(s.key), buildEloMapFromRecords(s.records || []));
+            }
+
+            for (const [, t] of Object.entries((allMatchesData && allMatchesData.tournaments) || {})) {
+              const tKey = normaliseHeader((t && t.key) || '');
+              const eloMap = snapMapByKey.get(tKey) || latestMap;
+              const year = Number(t && t.year);
+              if (Number.isFinite(year) && year < 2013) continue;
+              for (const m of ((t && t.matches) || [])) {
+                const wKeys = Array.isArray(m.winners) ? m.winners : [];
+                const lKeys = Array.isArray(m.losers) ? m.losers : [];
+                const wE = wKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+                const lE = lKeys.map(k => eloMap.get(k)).filter(Number.isFinite);
+                if (!wE.length || !lE.length) continue;
+                const wTeamElo = wE.reduce((a,b)=>a+b,0);
+                const lTeamElo = lE.reduce((a,b)=>a+b,0);
+                const pWinner = eloWinProb(wTeamElo, lTeamElo);
+                if (!Number.isFinite(pWinner)) continue;
+                rows.push({
+                  year: Number.isFinite(year) ? year : null,
+                  tournament: (t && t.tournament) || '',
+                  round: (m && m.round) || '—',
+                  winnerTeam: (m && m.winnerTeam) || '',
+                  loserTeam: (m && m.loserTeam) || '',
+                  score: (m && m.score) || '',
+                  winPct: Math.round(pWinner * 100),
+                  expected: expectedSetScore(pWinner),
+                  shock: pWinner < 0.20 ? 'Major shock' : (pWinner < 0.35 ? 'Shock' : ''),
+                  improb: 1 - pWinner
+                });
+              }
+            }
+
+            rows.sort((a,b) => b.improb - a.improb);
+            return rows;
+          }
+
         const snapsRaw = (loaded.snapshots && Array.isArray(loaded.snapshots.snapshots)) ? loaded.snapshots.snapshots : [];
         function _parseSnapKey(k){
           const m = /^([0-9]{2})\\s+([NKL])$/i.exec((k||"").trim());
@@ -1250,6 +1325,7 @@ function looksLikeResultColumn(colName) {
         const snapsDesc = snapsChrono.slice().reverse();
         // Keep around for modal sparklines / peak Elo stats
         window.__SNAPS_CHRONO = snapsChrono;
+        window.__SHOCK_ROWS__ = buildShockRows(matchesData, loaded.latest, snapsChrono);
         if (snapshotSelect) {
           snapshotSelect.innerHTML = '';
           const optLatest = document.createElement('option');
@@ -1394,17 +1470,35 @@ document.addEventListener('fullscreenchange', () => {
 function wireHelpModal(){
   const helpBackdrop = document.getElementById('helpModalBackdrop');
   const helpClose = document.getElementById('helpModalClose');
+  const helpShocksBtn = document.getElementById('helpShocksBtn');
   const tabRank = document.getElementById('tabRank');
   const tabElo = document.getElementById('tabElo');
+  const tabShocks = document.getElementById('tabShocks');
   const panelRank = document.getElementById('panelRank');
   const panelElo = document.getElementById('panelElo');
+  const panelShocks = document.getElementById('panelShocks');
+  const shocksBody = document.getElementById('shocksPanelBody');
+  const shocksYearSelect = document.getElementById('shocksYearSelect');
+
+  function esc(s){
+    return (s ?? "").toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
   function switchHelpTab(which){
     const isRank = (which === 'rank');
+    const isElo = (which === 'elo');
+    const isShocks = (which === 'shocks');
     if(tabRank) tabRank.setAttribute('aria-selected', isRank ? 'true' : 'false');
-    if(tabElo) tabElo.setAttribute('aria-selected', isRank ? 'false' : 'true');
+    if(tabElo) tabElo.setAttribute('aria-selected', isElo ? 'true' : 'false');
+    if(tabShocks) tabShocks.setAttribute('aria-selected', isShocks ? 'true' : 'false');
     if(panelRank) panelRank.classList.toggle('active', isRank);
-    if(panelElo) panelElo.classList.toggle('active', !isRank);
+    if(panelElo) panelElo.classList.toggle('active', isElo);
+    if(panelShocks) panelShocks.classList.toggle('active', isShocks);
   }
 
   function openHelp(){
@@ -1419,11 +1513,62 @@ function wireHelpModal(){
     helpBackdrop.setAttribute('aria-hidden','true');
   }
 
+  function renderShocksList(){
+    if(!shocksBody) return;
+    const rows = Array.isArray(window.__SHOCK_ROWS__) ? window.__SHOCK_ROWS__ : [];
+    const yearVal = (shocksYearSelect && shocksYearSelect.value) ? shocksYearSelect.value : 'all';
+    const filtered = (yearVal === 'all')
+      ? rows
+      : rows.filter(r => String(r.year || '') === String(yearVal));
+    const top = filtered.slice(0, 30);
+
+    let html = `<div class="small" style="margin-bottom:8px;">Ranked by lowest pre-match winner probability from Elo at the relevant snapshot.</div>`;
+    if (!top.length) {
+      shocksBody.innerHTML = html + `<div class="match">No shock rows available for this selection.</div>`;
+      return;
+    }
+
+    html += top.map((r, i) => {
+      const shockPill = (r.shock === 'Major shock')
+        ? `<div class="shock-pill major">Major shock</div>`
+        : (r.shock === 'Shock' ? `<div class="shock-pill">Shock</div>` : ``);
+      return `<div class="match">`
+        + `<div class="line"><b>#${i+1}</b> ${esc(String(r.tournament || ''))} · ${esc(String(r.round || '—'))}</div>`
+        + `<div class="match-row">`
+        + `<div class="match-main">`
+        + `<div class="line"><b>${esc(String(r.winnerTeam || ''))}</b> beat ${esc(String(r.loserTeam || ''))}</div>`
+        + `${r.score ? `<div class="line">${esc(String(r.score))}</div>` : ``}`
+        + `</div>`
+        + `<div class="match-metrics"><div class="small">Winner Win% ${Number.isFinite(Number(r.winPct)) ? String(Math.round(Number(r.winPct))) + '%' : '—'}</div><div class="small">Expected ${esc(String(r.expected || '—'))}</div>${shockPill}</div>`
+        + `</div>`
+        + `</div>`;
+    }).join('');
+
+    shocksBody.innerHTML = html;
+  }
+
+  function openShocksTab(){
+    if(tabShocks) tabShocks.style.display = '';
+    const rows = Array.isArray(window.__SHOCK_ROWS__) ? window.__SHOCK_ROWS__ : [];
+    if (shocksYearSelect){
+      const years = Array.from(new Set(rows.map(r => Number(r.year)).filter(y => Number.isFinite(y)))).sort((a,b)=>b-a);
+      const prev = shocksYearSelect.value || 'all';
+      shocksYearSelect.innerHTML = `<option value="all">All time</option>`
+        + years.map(y => `<option value="${String(y)}">${String(y)}</option>`).join('');
+      shocksYearSelect.value = years.some(y => String(y) === String(prev)) ? String(prev) : 'all';
+    }
+    renderShocksList();
+    switchHelpTab('shocks');
+  }
+
   if(helpBtn) helpBtn.addEventListener('click', openHelp);
   if(helpClose) helpClose.addEventListener('click', closeHelp);
+  if(helpShocksBtn) helpShocksBtn.addEventListener('click', openShocksTab);
   if(helpBackdrop) helpBackdrop.addEventListener('click', (e)=>{ if(e.target===helpBackdrop) closeHelp(); });
   if(tabRank) tabRank.addEventListener('click', ()=>switchHelpTab('rank'));
   if(tabElo) tabElo.addEventListener('click', ()=>switchHelpTab('elo'));
+  if(tabShocks) tabShocks.addEventListener('click', ()=>switchHelpTab('shocks'));
+  if(shocksYearSelect) shocksYearSelect.addEventListener('change', renderShocksList);
 
   // ESC closes help (and exits fullscreen CSS mode if open)
   document.addEventListener('keydown', (e)=>{
@@ -1465,12 +1610,16 @@ if (document.readyState === 'loading') {
           <h2 id="helpModalTitle">Help</h2>
           <div class="small" id="helpModalSub">How rankings and Elo are calculated</div>
         </div>
-        <button class="close" id="helpModalClose" type="button">Close</button>
+        <div style="display:flex; gap:8px;">
+          <button class="close" id="helpShocksBtn" type="button" title="Most improbable results">⚡</button>
+          <button class="close" id="helpModalClose" type="button">Close</button>
+        </div>
       </header>
 
       <div class="tabs" role="tablist" aria-label="Help tabs">
         <button class="tabbtn" id="tabRank" role="tab" aria-selected="true" aria-controls="panelRank" type="button">Rank</button>
         <button class="tabbtn" id="tabElo" role="tab" aria-selected="false" aria-controls="panelElo" type="button">Elo</button>
+        <button class="tabbtn" id="tabShocks" role="tab" aria-selected="false" aria-controls="panelShocks" type="button" style="display:none;">Shocks</button>
       </div>
 
       <div class="tabpanel active" id="panelRank" role="tabpanel" aria-labelledby="tabRank">
@@ -1591,6 +1740,17 @@ if (document.readyState === 'loading') {
     <li>Repeated historical dominance accumulates in Skill.</li>
     <li>Ratings reflect opposition quality, not just finishing position.</li>
   </ul>
+</div>
+
+<div class="tabpanel" id="panelShocks" role="tabpanel" aria-labelledby="tabShocks">
+  <div class="small" style="margin-bottom:8px;">Most improbable results based on Elo winner win%.</div>
+  <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px;">
+    <label for="shocksYearSelect" class="small" style="margin:0;">View:</label>
+    <select id="shocksYearSelect" aria-label="Filter shocks by year" style="min-width:140px;">
+      <option value="all">All time</option>
+    </select>
+  </div>
+  <div id="shocksPanelBody"></div>
 </div>
     </div>
   </div>
