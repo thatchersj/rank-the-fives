@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "generatedAt": "2026-02-12T21:55:50Z",
+  "generatedAt": "2026-03-30T10:47:37Z",
   "tournaments": {
     "25 K": {
       "tournament": "2025 Kinnaird",
@@ -11855,6 +11855,357 @@
             "H|YOUNG"
           ],
           "raw": "T.Dunbar & S.Cooley beat R.Houlden & H.Young 3-1 (12-7, 12-7, 5-12, 12-10)",
+          "round": "F",
+          "roundName": "Final"
+        }
+      ]
+    },
+    "26 K": {
+      "tournament": "2026 Kinnaird",
+      "year": 2026,
+      "comp": "Kinnaird",
+      "key": "26 K",
+      "nq": [
+        "A|KNIGHT",
+        "A|PHILLIPS",
+        "A|SAPOZHENKO",
+        "B|MARSHALL-RICE",
+        "C|AUSTIN",
+        "E|GOSNELL",
+        "E|SCOONES",
+        "H|BARTON-SMITH",
+        "H|ETHERINGTON",
+        "H|GARDNER",
+        "H|HUTCHINSON",
+        "J|FORMIGE",
+        "J|MICHALSKI",
+        "J|POULARD",
+        "L|DRUMMOND",
+        "M|DAVIS",
+        "M|DYER",
+        "O|RUSHTON",
+        "P|HOLLAND",
+        "S|SIMMONS",
+        "T|LEACH",
+        "W|THOMAS"
+      ],
+      "nqTeams": [
+        {
+          "team": "H.Hutchinson & M.Dyer",
+          "players": [
+            "H|HUTCHINSON",
+            "M|DYER"
+          ]
+        },
+        {
+          "team": "J.Michalski & J.Formige",
+          "players": [
+            "J|MICHALSKI",
+            "J|FORMIGE"
+          ]
+        },
+        {
+          "team": "T.Leach & B.Marshall-Rice",
+          "players": [
+            "T|LEACH",
+            "B|MARSHALL-RICE"
+          ]
+        },
+        {
+          "team": "H.Etherington & O.Rushton",
+          "players": [
+            "H|ETHERINGTON",
+            "O|RUSHTON"
+          ]
+        },
+        {
+          "team": "A.Sapozhenko & H.Barton-Smith",
+          "players": [
+            "A|SAPOZHENKO",
+            "H|BARTON-SMITH"
+          ]
+        },
+        {
+          "team": "S.Simmons & C.Austin",
+          "players": [
+            "S|SIMMONS",
+            "C|AUSTIN"
+          ]
+        },
+        {
+          "team": "M.Davis & A.Knight",
+          "players": [
+            "M|DAVIS",
+            "A|KNIGHT"
+          ]
+        },
+        {
+          "team": "W.Thomas & P.Holland",
+          "players": [
+            "W|THOMAS",
+            "P|HOLLAND"
+          ]
+        },
+        {
+          "team": "A.Phillips & H.Gardner",
+          "players": [
+            "A|PHILLIPS",
+            "H|GARDNER"
+          ]
+        },
+        {
+          "team": "L.Drummond & E.Scoones",
+          "players": [
+            "L|DRUMMOND",
+            "E|SCOONES"
+          ]
+        },
+        {
+          "team": "E.Gosnell & J.Poulard",
+          "players": [
+            "E|GOSNELL",
+            "J|POULARD"
+          ]
+        }
+      ],
+      "matches": [
+        {
+          "winnerTeam": "S.Cooley & T.Dunbar",
+          "loserTeam": "D.Ingram & C.Dinmore",
+          "score": "3-0 (12-0, 12-1, 12-3)",
+          "winners": [
+            "S|COOLEY",
+            "T|DUNBAR"
+          ],
+          "losers": [
+            "D|INGRAM",
+            "C|DINMORE"
+          ],
+          "raw": "S.Cooley & T.Dunbar beat D.Ingram & C.Dinmore 3-0 (12-0, 12-1, 12-3)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "A.Abrahams & T.McCahon",
+          "loserTeam": "V.Bhimjiyani & H.Gibson-Leitao",
+          "score": "3-2 (9-12, 12-4, 12-8, 9-12, 12-10)",
+          "winners": [
+            "A|ABRAHAMS",
+            "T|MCCAHON"
+          ],
+          "losers": [
+            "V|BHIMJIYANI",
+            "H|GIBSON-LEITAO"
+          ],
+          "raw": "A.Abrahams & T.McCahon beat V.Bhimjiyani & H.Gibson-Leitao 3-2 (9-12, 12-4, 12-8, 9-12, 12-10)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "S.Welti & E.Taylor",
+          "loserTeam": "A.Agarwal & T.Arjaria",
+          "score": "3-0 (12-5, 12-4, 12-9)",
+          "winners": [
+            "S|WELTI",
+            "E|TAYLOR"
+          ],
+          "losers": [
+            "A|AGARWAL",
+            "T|ARJARIA"
+          ],
+          "raw": "S.Welti & E.Taylor beat A.Agarwal & T.Arjaria 3-0 (12-5, 12-4, 12-9)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "S.Tailor & C.Plummer",
+          "loserTeam": "T.Gallagher & H.Ravi",
+          "score": "3-0 (12-5, 12-3, 12-3)",
+          "winners": [
+            "S|TAILOR",
+            "C|PLUMMER"
+          ],
+          "losers": [
+            "T|GALLAGHER",
+            "H|RAVI"
+          ],
+          "raw": "S.Tailor & C.Plummer beat T.Gallagher & H.Ravi 3-0 (12-5, 12-3, 12-3)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "J.Toop & M.Wiseman",
+          "loserTeam": "C.Nicholls & S.Shah",
+          "score": "3-0 (12-3, 12-4, 12-4)",
+          "winners": [
+            "J|TOOP",
+            "M|WISEMAN"
+          ],
+          "losers": [
+            "C|NICHOLLS",
+            "S|SHAH"
+          ],
+          "raw": "J.Toop & M.Wiseman beat C.Nicholls & S.Shah 3-0 (12-3, 12-4, 12-4)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "L.Brock & N.Caplin",
+          "loserTeam": "I.Weaver & F.Prickett",
+          "score": "3-0 (12-6, 12-9, 12-7)",
+          "winners": [
+            "L|BROCK",
+            "N|CAPLIN"
+          ],
+          "losers": [
+            "I|WEAVER",
+            "F|PRICKETT"
+          ],
+          "raw": "L.Brock & N.Caplin beat I.Weaver & F.Prickett 3-0 (12-6, 12-9, 12-7)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "R.Perrie & G.Wiseman",
+          "loserTeam": "T.Cox & R.Worth",
+          "score": "3-0 (12-7, 14-11, 13-10)",
+          "winners": [
+            "R|PERRIE",
+            "G|WISEMAN"
+          ],
+          "losers": [
+            "T|COX",
+            "R|WORTH"
+          ],
+          "raw": "R.Perrie & G.Wiseman beat T.Cox & R.Worth 3-0 (12-7, 14-11, 13-10)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "H.Wiseman & Y.Luo",
+          "score": "3-0 (12-2, 12-0, 12-3)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "H|WISEMAN",
+            "Y|LUO"
+          ],
+          "raw": "R.Houlden & H.Young beat H.Wiseman & Y.Luo 3-0 (12-2, 12-0, 12-3)",
+          "round": "L16",
+          "roundName": "Last 16"
+        },
+        {
+          "winnerTeam": "S.Cooley & T.Dunbar",
+          "loserTeam": "A.Abrahams & T.McCahon",
+          "score": "3-0 (12-1, 12-5, 12-1)",
+          "winners": [
+            "S|COOLEY",
+            "T|DUNBAR"
+          ],
+          "losers": [
+            "A|ABRAHAMS",
+            "T|MCCAHON"
+          ],
+          "raw": "S.Cooley & T.Dunbar beat A.Abrahams & T.McCahon 3-0 (12-1, 12-5, 12-1)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "S.Tailor & C.Plummer",
+          "loserTeam": "S.Welti & E.Taylor",
+          "score": "3-2 (12-1, 8-12, 12-3, 8-12, 12-6)",
+          "winners": [
+            "S|TAILOR",
+            "C|PLUMMER"
+          ],
+          "losers": [
+            "S|WELTI",
+            "E|TAYLOR"
+          ],
+          "raw": "S.Tailor & C.Plummer beat S.Welti & E.Taylor 3-2 (12-1, 8-12, 12-3, 8-12, 12-6)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "J.Toop & M.Wiseman",
+          "loserTeam": "L.Brock & N.Caplin",
+          "score": "3-0 (12-2, 12-5, 12-4)",
+          "winners": [
+            "J|TOOP",
+            "M|WISEMAN"
+          ],
+          "losers": [
+            "L|BROCK",
+            "N|CAPLIN"
+          ],
+          "raw": "J.Toop & M.Wiseman beat L.Brock & N.Caplin 3-0 (12-2, 12-5, 12-4)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "R.Perrie & G.Wiseman",
+          "score": "3-0 (12-2, 12-3, 12-7)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "R|PERRIE",
+            "G|WISEMAN"
+          ],
+          "raw": "R.Houlden & H.Young beat R.Perrie & G.Wiseman 3-0 (12-2, 12-3, 12-7)",
+          "round": "QF",
+          "roundName": "Quarter-Finals"
+        },
+        {
+          "winnerTeam": "T.Dunbar & S.Cooley",
+          "loserTeam": "S.Tailor & C.Plummer",
+          "score": "3-0 (12-5, 12-2, 12-3)",
+          "winners": [
+            "T|DUNBAR",
+            "S|COOLEY"
+          ],
+          "losers": [
+            "S|TAILOR",
+            "C|PLUMMER"
+          ],
+          "raw": "T.Dunbar & S.Cooley beat S.Tailor & C.Plummer 3-0 (12-5, 12-2, 12-3)",
+          "round": "SF",
+          "roundName": "Semi-Finals"
+        },
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "J.Toop & M.Wiseman",
+          "score": "3-0 (12-0, 12-8, 12-6)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "J|TOOP",
+            "M|WISEMAN"
+          ],
+          "raw": "R.Houlden & H.Young beat J.Toop & M.Wiseman 3-0 (12-0, 12-8, 12-6)",
+          "round": "SF",
+          "roundName": "Semi-Finals"
+        },
+        {
+          "winnerTeam": "R.Houlden & H.Young",
+          "loserTeam": "T.Dunbar & S.Cooley",
+          "score": "3-2 (12-15, 12-8, 12-5, 12-14, 15-11)",
+          "winners": [
+            "R|HOULDEN",
+            "H|YOUNG"
+          ],
+          "losers": [
+            "T|DUNBAR",
+            "S|COOLEY"
+          ],
+          "raw": "R.Houlden & H.Young beat T.Dunbar & S.Cooley 3-2 (12-15, 12-8, 12-5, 12-14, 15-11)",
           "round": "F",
           "roundName": "Final"
         }
